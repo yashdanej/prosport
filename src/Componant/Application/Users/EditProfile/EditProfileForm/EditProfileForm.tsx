@@ -11,24 +11,6 @@ const EditProfileForm = () => {
             <CardHeaderCommon title={EditProfile} tagClass={"card-title mb-0"} />
             <CardBody>
                 <Row>
-                    <Col md="5">
-                        <FormGroup>
-                            <Label >{Company}</Label>
-                            <Input type="text" placeholder="Company" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="6" md="3" >
-                        <FormGroup>
-                            <Label>{Username}</Label>
-                            <Input type="text" placeholder="Username" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="6" md="4" >
-                        <FormGroup>
-                            <Label >{Emailaddress}</Label>
-                            <Input type="email" placeholder="Email" />
-                        </FormGroup>
-                    </Col>
                     <Col sm="6" md="6" >
                         <FormGroup>
                             <Label >{FirstName}</Label>
@@ -39,6 +21,12 @@ const EditProfileForm = () => {
                         <FormGroup>
                             <Label >{LastName}</Label>
                             <Input type="text" placeholder="Last Name" />
+                        </FormGroup>
+                    </Col>
+                    <Col sm="12" md="12" >
+                        <FormGroup>
+                            <Label >{Emailaddress}</Label>
+                            <Input type="email" placeholder="Email" />
                         </FormGroup>
                     </Col>
                     <Col md="12">

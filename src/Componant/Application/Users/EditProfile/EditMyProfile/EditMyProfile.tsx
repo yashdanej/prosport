@@ -31,10 +31,6 @@ const EditMyProfile = () => {
               <Input placeholder="your-email@domain.com" />
             </FormGroup>
             <FormGroup>
-              <Label>{Password}</Label>
-              <Input type="password" defaultValue="password" />
-            </FormGroup>
-            <FormGroup>
               <Label>{Website}</Label>
               <Input placeholder="http://Uplor.com" />
             </FormGroup>

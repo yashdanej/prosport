@@ -1,24 +1,24 @@
 export const becomeMemberData = [
     {
-      type: "Standard",
-      price: 10,
-      benefit: ["50GB Disk Space", "50 Email Accounts", "Maintenance", "15 Subdomains"],
+      type: "Free",
+      price: "₹0/3   ",
+      benefit: ["API calls : 150 per month", "API format : JSON", "Deliver : API pull"],
     },
     {
-      type: "Premium",
-      price: 20,
-      benefit: ["10% on all product", "50 Email Accounts", "Maintenance", "15 Subdomains"],
+      type: "Starter",
+      price: "₹100/90 ",
+      benefit: ["API calls : 10000 per month", "API format : JSON", "Deliver : API pull"],
     },
     {
-      type: "Author pack",
-      price: 50,
-      benefit: ["Upload 50 product", "50 Email Accounts", "Maintenance", "15 Subdomains"],
+      type: "Pro Plan",
+      price: "₹500/6 ",
+      benefit: ["API calls : 100000 per month", "50 Email Accounts", "Maintenance"],
     },
-    {
-      type: "Author pack",
-      price: 50,
-      benefit: ["Upload 50 product", "50 Email Accounts", "Maintenance", "15 Subdomains"],
-    },
+    // {
+    //   type: "Author pack",
+    //   price: 50,
+    //   benefit: ["Upload 50 product", "50 Email Accounts", "Maintenance", "15 Subdomains"],
+    // },
   ];
 
   export const simplePricingData = [

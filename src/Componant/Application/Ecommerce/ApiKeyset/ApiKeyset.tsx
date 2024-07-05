@@ -1,13 +1,12 @@
 import { Col, Container, Row } from 'reactstrap'
-import BecomeMember from './BecomeMember'
-import SimplePricingCard from './SimplePricingCard'
+import ApiKey from './ApiKey'
 
-const PricingContainer = () => {
+const ApiKeysetContainer = () => {
   return (
     <Container fluid>
       <Row>
         <Col sm="12">
-          <BecomeMember />
+          <ApiKey/>
           {/* <SimplePricingCard /> */}
         </Col>
       </Row>
@@ -15,4 +14,4 @@ const PricingContainer = () => {
   )
 }
 
-export default PricingContainer
+export default ApiKeysetContainer

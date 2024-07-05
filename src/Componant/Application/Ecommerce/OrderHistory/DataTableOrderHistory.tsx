@@ -22,7 +22,7 @@ const DataTableOrderHistory = () => {
     return (
       <Col sm="12">
         <Card>
-          <CommonCardHeader title={OrdersHistory} />
+          <CommonCardHeader title="Billing" />
           <CardBody>
             <div className="order-history table-responsive">
               <DataTable data={filteredItems} columns={orderHistoryDataColumn} className="dataTables_wrapper theme-scrollbar no-footer" highlightOnHover noHeader pagination paginationServer subHeader subHeaderComponent={subHeaderComponentMemo} />

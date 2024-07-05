@@ -7,19 +7,18 @@ import { becomeMemberData } from '../../../../Data/Application/Ecommerce/Pricing
 const BecomeMember = () => {
   return (
     <Card>
-      <CommonCardHeader title={BecomeMembers} />
+      <CommonCardHeader title="Subscription Plans" />
       <CardBody className="pricing-block">
         <Row>
           {becomeMemberData.map((item, index) => (
-            <Col lg="3" sm="6" className="box-col-3" key={index}>
+            <Col lg="4" sm="6" className="box-col-3" key={index}>
               <div className="pricingtable">
                 <div className="pricingtable-header">
                   <H4 className="title">{item.type}</H4>
                 </div>
                 <div className="price-value">
-                  <span className="currency">$</span>
-                  <span className="amount">{item.price}</span>
-                  <span className="duration">/mo</span>
+                  <span className="amount" style={{fontSize: "1.8rem"}}>{item.price}</span>
+                  <p className="duration">per days</p>
                 </div>
                 <UL className="pricing-content simple-list">
                   {item.benefit.map((data, index) => (
@@ -27,7 +26,7 @@ const BecomeMember = () => {
                   ))}
                 </UL>
                 <div className="pricingtable-signup">
-                  <Btn tag="a" size="lg" color="primary" href={Href}>{SignUp}</Btn>
+                  <Btn tag="a" size="lg" color="primary" href="#">Try Me</Btn>
                 </div>
               </div>
             </Col>

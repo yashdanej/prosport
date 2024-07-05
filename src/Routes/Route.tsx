@@ -124,6 +124,8 @@ import InvoiceFour from "../Pages/Application/Ecommerce/Invoices/Invoice-4/Invoi
 import InvoiceFive from "../Pages/Application/Ecommerce/Invoices/Invoice-5/Invoice-5";
 import InvoiceSix from "../Pages/Application/Ecommerce/Invoices/Invoice-6/Invoice-6";
 import LetterBox from "../Pages/Application/LetterBox/LetterBox";
+import ApiKeySet from "../Pages/Application/Api_keyset/ApiKeySet";
+import Reffer from "../Pages/Application/Reffer/Reffer";
 
 
 const routes = [
@@ -132,7 +134,10 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/project`, Component:<ProjectDashboard />},
   { path: `${process.env.PUBLIC_URL}/dashboard/ecommerce`, Component: <EcommerceDashborad />},
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EducationDashboard />},
-
+  { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, Component: <Reffer />},
+  { path: `${process.env.PUBLIC_URL}/setting/profile`, Component: <EditProfile />},
+  
   // Widgets
   { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},
   { path: `${process.env.PUBLIC_URL}/widgets/chart`, Component:<Charts />},

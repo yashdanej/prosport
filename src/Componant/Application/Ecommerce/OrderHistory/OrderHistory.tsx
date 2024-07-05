@@ -9,9 +9,9 @@ const OrderHistoryContainer = () => {
     <Container fluid>
       <Row>
         <Col sm="12">
-          <NewOrders />
+          {/* <NewOrders />
           <ShippedOrders />
-          <CancelledOrders />
+          <CancelledOrders /> */}
           <DataTableOrderHistory />
         </Col>
       </Row>
