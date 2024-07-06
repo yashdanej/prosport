@@ -6,7 +6,7 @@ import { becomeMemberData } from '../../../../Data/Application/Ecommerce/Pricing
 import axios from 'axios'
 import { api } from '../../../../Utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { createToken } from '../../../../ReduxToolkit/Reducers/Change/Subscribe'
+import { createToken, getSubscribe } from '../../../../ReduxToolkit/Reducers/Change/Subscribe'
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store'
 import BottomRightToast from '../../../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast'
 import { useEffect, useState } from 'react'
@@ -16,6 +16,7 @@ const BecomeMember = () => {
   const [showToast, setShowToast] = useState(false);
   const [txt, setTxt] = useState("");
   const tokenData = useSelector((state: RootState) => state.subscribe.token);
+  const plansData = useSelector((state: RootState) => state.subscribe.plans);
   const dispatch = useDispatch<AppDispatch>();
   const storedUser: any = localStorage.getItem("login-user");
   console.log('storedUser', storedUser);
@@ -45,7 +46,7 @@ const BecomeMember = () => {
     }
   }
 
-  const handleTry = async () => {
+  const handleTry = async (id: number) => {
     try {
       // Calculate the expiry date as one month from the current date
       const currentDate = new Date();
@@ -53,6 +54,7 @@ const BecomeMember = () => {
       const formattedExpiryDate = expiryDate.toISOString().slice(0, 19).replace('T', ' '); // Formatting as 'YYYY-MM-DD HH:mm:ss'
   
       const data = {
+        id: id,
         name: user.name,
         email: user.email,
         expire_date: formattedExpiryDate
@@ -63,7 +65,7 @@ const BecomeMember = () => {
       console.log("res*784", res);
   
       // Check if the response indicates success
-      if (res.payload.status) {
+      if (res?.payload?.status) {
         setTxt(`${user.name} Token Created Successfully`);
         setShowToast(true);
       } else {
@@ -75,32 +77,39 @@ const BecomeMember = () => {
       console.log("error", error);
     }
   }
-  // useEffect(() => {
-  // }, [tokenData]);
+  
+  const fetchPlans = () => {
+    dispatch(getSubscribe());
+  }
+
+  useEffect(() => {
+    fetchPlans();
+  }, [dispatch]);
+
   
   return (
     <Card>
       <CommonCardHeader title="Subscription Plans" />
       <CardBody className="pricing-block">
         <Row>
-          {becomeMemberData.map((item, index) => (
+          {plansData && plansData?.data?.map((item:any, index: number) => (
             <Col lg="4" sm="6" className="box-col-3" key={index}>
               <div className="pricingtable">
                 <div className="pricingtable-header">
-                  <H4 className="title">{item.type}</H4>
+                  <H4 className="title">{item.name}</H4>
                 </div>
                 <div className="price-value">
-                  <span className="amount" style={{fontSize: "1.8rem"}}>{item.price}</span>
+                  <span className="amount" style={{fontSize: "1.8rem"}}>${item.amount}/{item.validity.split(" ")[0]}</span>
                   <p className="duration">per days</p>
                 </div>
                 <UL className="pricing-content simple-list">
-                  {item.benefit.map((data, index) => (
-                    <LI key={index}>{data}</LI>
-                  ))}
+                    <LI>API calls : {item.api_call}</LI>
+                    <LI>Deliver : API pull</LI>
+                    <LI>Maintenance</LI>
                 </UL>
                 <div className="pricingtable-signup">
                   {/* <Btn className='mx-2' onClick={HandleSubscribe} tag="a" size="lg" color="primary">Subscribe</Btn> */}
-                  <Btn onClick={handleTry} tag="a" size="lg" color="primary">Subscribe</Btn>
+                  <Btn onClick={() => {handleTry(item.id)}} tag="a" size="lg" color="primary">Subscribe</Btn>
                 </div>
               </div>
             </Col>

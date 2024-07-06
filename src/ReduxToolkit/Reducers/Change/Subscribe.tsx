@@ -5,10 +5,10 @@ import { RootState } from "../../Store";
 // Thunk for createToken
 export const createToken = createAsyncThunk(
   "subscribe/token",
-  async (data: { name: string; email: string; expire_date: any}, { rejectWithValue }) => {
+  async (data: { id: number, name: string; email: string; expire_date: any}, { rejectWithValue }) => {
     try {
       console.log("createToken---------", data);
-      const res = await api(`/order/create-token`, "post", data, false, true);
+      const res = await api(`/order/create-token/${data.id}`, "post", data, false, true);
       console.log("res---", res);
       if (!res?.data?.success) {
         return rejectWithValue(res?.data?.message);
@@ -43,6 +43,17 @@ export const getBilling = createAsyncThunk('getBilling', async (id) => {
     }
 });
 
+export const getSubscribe = createAsyncThunk('getSubscribe', async (id) => {
+  try {
+      const res = await api(`/order/subscription`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 // Define the type of dispatch that includes Thunks
 export type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
 
@@ -67,7 +78,13 @@ const subscribeSlice = createSlice({
         data: null as any | null,
         isError: false,
         errorMessage: "",
-    }
+    },
+    plans: {
+      isLoading: false,
+      data: null as any | null,
+      isError: false,
+      errorMessage: "",
+  }
   },
   reducers: {
     // Add any reducers if needed
@@ -120,6 +137,21 @@ const subscribeSlice = createSlice({
         state.billing.isLoading = false;
         state.billing.isError = true;
     });
+
+    // getSubscribe
+    builder.addCase(getSubscribe.pending, (state, action) => {
+      state.plans.isLoading = true;
+  });
+  builder.addCase(getSubscribe.fulfilled, (state, action) => {
+      state.plans.isLoading = false;
+      console.log("action...pa", action.payload);
+      state.plans.data = action.payload;
+  });
+  builder.addCase(getSubscribe.rejected, (state, action) => {
+      console.log("error in getSubscribe", action.payload);
+      state.plans.isLoading = false;
+      state.plans.isError = true;
+  });
   }
 });
 

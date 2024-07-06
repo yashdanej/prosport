@@ -6,6 +6,7 @@ const authController = require('../../controller/auth/authController');
 router
     .post("/signup", authController.Signup)
     .post("/login", authController.Login)
+    .get("/refferal", authController.Refferal)
     // .patch("/updaterole/:id", verifyToken, authController.UpdateRole) // activity
 
 module.exports = router;

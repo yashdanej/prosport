@@ -8,9 +8,10 @@ router
     .post("/", verifyToken, paymentController.Payment)
     .post("/status/:txnId", verifyToken, paymentController.Status)
 
-    router.post('/create-token', verifyToken, paymentController.createToken);
+    router.post('/create-token/:id', verifyToken, paymentController.createToken);
     router.get('/api_key', verifyToken, paymentController.apiKeys);
     router.get('/billing', verifyToken, paymentController.Billing);
+    router.get('/subscription', verifyToken, paymentController.Subscription);
     router.post('/update-subscription-status', verifyToken, paymentController.updateSubscriptionStatus);
 
 module.exports = router;

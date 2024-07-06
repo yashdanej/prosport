@@ -18,7 +18,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
     name: '',
     email: '',
     password: '',
-    referral_code: '',
+    reffer_code: '',
   });
   const userData = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<AppDispatch>();
@@ -34,7 +34,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
       name: '',
       email: '',
       password: '',
-      referral_code: '',
+      reffer_code: '',
     });
   };
 
@@ -79,7 +79,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
             </FormGroup>
             <FormGroup>
               <Label className="col-form-label">Referral Code</Label>
-              <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.referral_code} name="referral_code" autoComplete="off" placeholder="Optional" />
+              <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.reffer_code} name="reffer_code" autoComplete="off" placeholder="Optional" />
             </FormGroup>
             <FormGroup>
               <Label className="col-form-label">{Password}*</Label>

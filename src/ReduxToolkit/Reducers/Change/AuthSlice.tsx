@@ -42,11 +42,28 @@ export const login = createAsyncThunk(
   }
 );
 
+export const getRefferer = createAsyncThunk('getRefferer', async (id) => {
+  try {
+      const res = await api(`/refferal`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 // Auth slice
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {
+      isLoading: false,
+      data: null as any | null,
+      isError: false,
+      errorMessage: "",
+    },
+    refferer: {
       isLoading: false,
       data: null as any | null,
       isError: false,
@@ -94,6 +111,21 @@ const authSlice = createSlice({
       state.user.isLoading = false;
       state.user.isError = true;
       state.user.errorMessage = action.payload as string;
+    });
+
+    // getRefferer
+    builder.addCase(getRefferer.pending, (state, action) => {
+      state.refferer.isLoading = true;
+    });
+    builder.addCase(getRefferer.fulfilled, (state, action) => {
+        state.refferer.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.refferer.data = action.payload;
+    });
+    builder.addCase(getRefferer.rejected, (state, action) => {
+        console.log("error in getRefferer", action.payload);
+        state.refferer.isLoading = false;
+        state.refferer.isError = true;
     });
   }
 });

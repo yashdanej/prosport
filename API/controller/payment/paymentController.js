@@ -152,6 +152,7 @@ exports.Status = async (req, res) => {
 // Create Token
 exports.createToken = async (req, res, next) => {
     try {
+        const id = req.params.id;
         const { name, email, expire_date } = req.body;
         // Get user from token or session (assuming verifyToken function handles this)
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
@@ -186,7 +187,7 @@ exports.createToken = async (req, res, next) => {
         const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-        await query(createSubscriptionQuery, [getUser, 1, startDate, expireDateIST, token]);
+        await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token]);
 
         // Log subscription history
         const createSubscriptionHistoryQuery = `INSERT INTO user_subscription_histories (user_id, plan_id, subscribe_date, transation_id, amount) VALUES (?, ?, ?, ?, ?)`;
@@ -194,7 +195,7 @@ exports.createToken = async (req, res, next) => {
         const transactionId = null; // Replace with actual transaction ID if available
         const amount = 150; // Replace with actual amount if applicable
 
-        await query(createSubscriptionHistoryQuery, [getUser, 1, subscribeDate, transactionId, amount]);
+        await query(createSubscriptionHistoryQuery, [getUser, id, subscribeDate, transactionId, amount]);
 
         return res.status(200).json({
             status: true,
@@ -244,6 +245,23 @@ exports.Billing = async (req, res, next) => {
         });
     } catch (error) {
         console.error("Error fetching billing:", error);
+        return res.status(500).json({ status: false, message: "Internal Server Error" });
+    }
+};
+
+// Subscription
+exports.Subscription = async (req, res, next) => {
+    try {
+        // Get the user's subscriptions
+        const plans = await query("SELECT * FROM plans");
+
+        // Send the response
+        return res.status(200).json({
+            status: true,
+            data: plans
+        });
+    } catch (error) {
+        console.error("Error fetching Subscription:", error);
         return res.status(500).json({ status: false, message: "Internal Server Error" });
     }
 };

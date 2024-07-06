@@ -2,9 +2,13 @@ import React from 'react'
 import { Card, CardBody, Col, Row } from 'reactstrap'
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader'
 import { H5 } from '../../../../AbstractElements'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../../ReduxToolkit/Store'
 
 const RefferOther = () => {
-    const refferData = [
+  const reffererData = useSelector((state: RootState) => state.auth.user);
+
+  const refferData = [
         {
             title: "User #hashtag in a photo on social media and get $10 for each purchase you make.",
             btn: "Read More"

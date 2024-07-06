@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const util = require('util');
 const db = require("../../db");
 const jwt = require("jsonwebtoken");
+const { verifyToken } = require('../../middleware/verifyToken');
 
 const query = util.promisify(db.query).bind(db);
 
@@ -28,6 +29,7 @@ exports.Signup = async (req, res) => {
     // Create the user
     let userQuery;
     let userResult;
+    console.log("reffer_code", reffer_code);
     if (reffer_code && reffer_code.trim() !== "") {
       console.log(reffer_code);
       userQuery = 'INSERT INTO users (name, email, password, secret_key, reffer_code, reffer_by) VALUES (?, ?, ?, ?, ?, ?)';
@@ -66,33 +68,53 @@ exports.Signup = async (req, res) => {
   }
 };
 
+// Fetch Refferal
+exports.Refferal = async (req, res, next) => {
+  try {
+      // Verify the token and get the user
+      const getUser = await verifyToken(req, res, next, { verifyUser: true });
+      
+      // Get the user's subscriptions
+      const refferer = await query("SELECT * FROM referrals WHERE referrer_id = ? ORDER BY id DESC", [getUser]);
+
+      // Send the response
+      return res.status(200).json({
+          status: true,
+          data: refferer
+      });
+  } catch (error) {
+      console.error("Error fetching Refferal:", error);
+      return res.status(500).json({ status: false, message: "Internal Server Error" });
+  }
+};
+
 exports.Login = async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      // Retrieve the user by email
-      const userQuery = 'SELECT * FROM users WHERE email = ?';
-      const userRows = await query(userQuery, [email]);
-  
-      if (userRows.length === 0) {
-        return res.status(400).json({ success: false, message: 'Invalid email or password' });
-      }
-  
-      const user = userRows[0];
-  
-      // Verify the password
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-        return res.status(400).json({ success: false, message: 'Invalid email or password' });
-      }
-  
-      // Generate JWT token
-      const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY);
-  
-      return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email } });
-    } catch (error) {
-      console.error('Error during login:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+  const { email, password } = req.body;
+
+  try {
+    // Retrieve the user by email
+    const userQuery = 'SELECT * FROM users WHERE email = ?';
+    const userRows = await query(userQuery, [email]);
+
+    if (userRows.length === 0) {
+      return res.status(400).json({ success: false, message: 'Invalid email or password' });
     }
-  };
+
+    const user = userRows[0];
+
+    // Verify the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    // Generate JWT token using the user's secret key
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY);
+
+    return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, reffer_code: user.reffer_code } });
+  } catch (error) {
+    console.error('Error during login:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
