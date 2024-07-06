@@ -14,8 +14,8 @@ const LiveToast = () => {
         <CardHeaderCommon title={LiveToasts} span={liveToastData} />
         <CardBody className="position-relative common-flex">
           <TopRightToast />
-          <BottomRightToast />
-          <TopLeftToast />
+          <BottomRightToast txt="Your time over after 5 minute." isOpen={false} />
+          <TopLeftToast txt="Your time over after 5 minute." isOpen={false} />
           <BottomLeftToast />
         </CardBody>
       </Card>

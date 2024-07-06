@@ -1,29 +1,39 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Toast, ToastBody } from 'reactstrap';
-import { BottomRightToasts } from '../../../../../utils/Constant';
 import { Btn } from '../../../../../AbstractElements';
+import './toast.css';
 
-const BottomRightToast = () => {
+const BottomRightToast = ({ txt = 'Default Toast Message', isOpen }: { txt?: string; isOpen: boolean }) => {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(isOpen);
+  }, [isOpen]);
+
   const toggle = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000);
+    setOpen(!open);
   };
+
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        setOpen(false);
+      }, 3000);
+    }
+  }, [open]);
+
   return (
     <>
-      <Btn color="secondary" onClick={toggle}>{BottomRightToasts}</Btn>
       <div className="toast-container position-fixed bottom-0 end-0 p-3 toast-index toast-rtl">
-        <Toast fade isOpen={open}>
-          <div className="d-flex justify-content-between alert-secondary align-items-center">
-            <ToastBody>Your time over after 5 minute.</ToastBody>
-            <Btn close className="btn-close-white me-2 m-auto" onClick={()=>setOpen(false)}></Btn>
+        <Toast fade isOpen={open} className="custom-toast">
+          <div className="d-flex justify-content-between alert-primary align-items-center">
+            <ToastBody>{txt}</ToastBody>
+            <Btn close className="btn-close-white me-2 m-auto" onClick={toggle}></Btn>
           </div>
         </Toast>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default BottomRightToast
+export default BottomRightToast;

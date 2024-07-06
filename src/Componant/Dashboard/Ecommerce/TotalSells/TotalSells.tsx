@@ -1,16 +1,29 @@
 import { Card, CardBody, Col } from "reactstrap";
 import CommonCardHeader from "../../../../CommonElements/CommonCardHeader/CommonCardHeader";
-import { Image } from "../../../../AbstractElements";
-import { dynamicImage } from "../../../../Service";
-import { topSellData } from "../../../../Data/Dashboard/Ecommerce";
-import ReactApexChart from "react-apexcharts";
 import TotalSellsDetails from "./TotalSellsDetails";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getApiLogs } from "../../../../ReduxToolkit/Reducers/Change/Dashboard";
+import { AppDispatch, RootState } from "../../../../ReduxToolkit/Store";
+import { dynamicImage } from "../../../../Service";
+import { Image } from "../../../../AbstractElements";
+import { getApiKeys } from "../../../../ReduxToolkit/Reducers/Change/Subscribe";
 
 const TotalSells = () => {
+  // const apiLogsData = useSelector((state: RootState) => state.dashboard.api_logs);
+  const apiKeyData = useSelector((state: RootState) => state.subscribe.api_keys);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    // dispatch(getApiLogs());
+    dispatch(getApiKeys());
+  }, [dispatch]);
+  console.log("apiKeyData", apiKeyData);
+
   return (
     <>
-      {topSellData.map((data, i) => (
-        <Col xl="3" sm="6" key={i}>
+    {
+      apiKeyData && apiKeyData.data &&
+        <Col xl="3" sm="6">
           <Card>
             <CommonCardHeader
               headClass="card-no-border pb-0"
@@ -19,23 +32,14 @@ const TotalSells = () => {
               secondItem="Monthly"
               thirdItem="Yearly"
               subClass="daily-revenue-card"
-              title={data.title}
+              title="Total Hits" // Assuming `endpoint` is a property in each `log` item
             />
-            <CardBody className={`pb-0 ${data.class}`}>
-              <div className="d-flex align-items-center gap-3">
-                <div className="flex-shrink-0">
-                  <Image
-                    src={dynamicImage(`dashboard-3/icon/${data.image}`)}
-                    alt="icon"
-                  />
-                </div>
-                <TotalSellsDetails data={data}/>
-              </div>
-              <ReactApexChart id={data.chartId} options={data.chart} series={data.chart.series} type="area" height={90} />
+            <CardBody className={`pb-5 success`}>
+                <TotalSellsDetails data={apiKeyData}/>
             </CardBody>
           </Card>
         </Col>
-      ))}
+    }
     </>
   );
 };

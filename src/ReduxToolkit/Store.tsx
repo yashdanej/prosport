@@ -18,6 +18,9 @@ import AddProductSlice from "./Reducers/AddProductSlice";
 import ThemeCustomizerSlice from "./Reducers/ThemeCustomizerSlice";
 import LetterBoxSlice from "./Reducers/LetterBoxSlice";
 import BookmarkHeaderSlice from "./Reducers/BookmarkHeaderSlice";
+import { authReducer } from "./Reducers/Change/AuthSlice";
+import { subscribeReducer } from "./Reducers/Change/Subscribe";
+import { dashboardReducer } from "./Reducers/Change/Dashboard";
 
 const Store = configureStore({
   reducer: {
@@ -40,6 +43,11 @@ const Store = configureStore({
     themeCustomizer: ThemeCustomizerSlice,
     letterBox:LetterBoxSlice,
     bookmarkHeader:BookmarkHeaderSlice,
+
+    // Change
+    auth:authReducer,
+    subscribe:subscribeReducer,
+    dashboard: dashboardReducer
   },
 });
 

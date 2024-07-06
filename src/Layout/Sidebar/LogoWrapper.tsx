@@ -11,7 +11,7 @@ const LogoWrapper = () => {
 
     return (
       <>
-        <div className="logo-wrapper">
+        <div className="logo-wrapper" style={{background: "white"}}>
           <Link to={`/dashboard/default`}>
             <Image className="img-fluid" src={dynamicImage("logo/logo_light.png")} alt="logo" />
           </Link>

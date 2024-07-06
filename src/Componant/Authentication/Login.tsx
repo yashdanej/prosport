@@ -3,25 +3,54 @@ import { Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { Btn, H3, H4, Image, P } from "../../AbstractElements";
 import { dynamicImage } from "../../Service";
 import { CreateAccount, DoNotAccount, EmailAddress, ForgotPassword, Href, Password, RememberPassword, SignIn, SignInAccount, SignInWith } from "../../utils/Constant";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import SocialApp from "./SocialApp";
+import { login } from "../../ReduxToolkit/Reducers/Change/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../ReduxToolkit/Store";
+import { Loading } from "../../Utils";
+import BottomRightToast from "../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast";
 
 const Login = () => {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState("test123@gmail.com");
     const [password, setPassword] = useState("Test@123");
+    const [showToast, setShowToast] = useState(false);
+    const [txt, setTxt] = useState("");
+    const userData = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
   
-    const SimpleLoginHandle = (event: React.FormEvent<HTMLFormElement>) => {
+    const SimpleLoginHandle = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (email === "test123@gmail.com" && password === "Test@123") {
-        localStorage.setItem("login", JSON.stringify(true));
-        navigate(`${process.env.PUBLIC_URL}/dashboard/default`);
-      } else {
-        toast.error("Please Enter valid email or password...!");
+      const data = {
+        email: email,
+        password: password
+      }
+      try {
+        if(email === "" || password === ""){
+          setTxt("Both fields are required");
+          setShowToast(true);
+        }else{
+          const res = await dispatch(login(data)).unwrap();
+          console.log("res---- login", res);
+          const userJsonString = JSON.stringify({ user: res.data, token: res.token });
+          localStorage.setItem("login", JSON.stringify(true));
+          localStorage.setItem("login-user", userJsonString);
+          navigate(`${process.env.PUBLIC_URL}/dashboard/ecommerce`);
+          // Handle successful signup, e.g., redirect to another page or show a success message
+        }
+      } catch (error) {
+        console.error("Signup error:", error);
+        setTxt("Invalid email or password");
+        setShowToast(true);
       }
     };
+
+    useEffect(() => {
+      console.log("email, password", email, password);
+    }, [email, password]);
   return (
     <Container fluid className="p-0">
       <Row className="m-0">
@@ -40,12 +69,12 @@ const Login = () => {
                   <P>{"Enter your email & password to login"}</P>
                   <FormGroup>
                     <Label className="col-form-label">{EmailAddress}</Label>
-                    <Input type="email" required placeholder="Test@gmail.com" value={email} name="email" onChange={(event) => setEmail(event.target.value)}  />
+                    <Input autoComplete="off" type="email" required placeholder="Test@gmail.com" value={email} name="email" onChange={(event) => setEmail(event.target.value)}  />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">{Password}</Label>
                     <div className="form-input position-relative">
-                      <Input type={show ? "text" : "password"} placeholder="*********"  onChange={(event) => setPassword(event.target.value)} value={password} name="password"/>
+                      <Input autoComplete="off" type={show ? "text" : "password"} placeholder="*********"  onChange={(event) => setPassword(event.target.value)} value={password} name="password"/>
                       <div className="show-hide" onClick={() => setShow(!show)}>
                         <span className="show"> </span>
                       </div>
@@ -63,7 +92,7 @@ const Login = () => {
                     </Link>
                     <div className="text-end mt-3">
                       <Btn color="primary" block  className="w-100" >
-                        {SignIn}
+                      {userData.isLoading?<Loading/>:"SignIn"}
                       </Btn>
                     </div>
                   </FormGroup>
@@ -81,6 +110,7 @@ const Login = () => {
           </div>
         </Col>
       </Row>
+      {showToast && <BottomRightToast txt={txt} isOpen={showToast} />}
     </Container>
   );
 };

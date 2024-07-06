@@ -1,16 +1,7 @@
 export interface OrderHistoryTableColumns {
-    image: string;
-    productName: string;
-    tag:string
-    size: string;
-    color: string;
-    articleNumber: number;
-    units: number;
-    price: string;
-    icon: JSX.Element;
-  }
-  
-  export interface OrderHistoryImageType{
-    name: string;
-    tag?: string;
-  }
+  id: any;
+  user_id: number;
+  plan_id: number;
+  amount: number;
+  subscribe_date: string;
+}

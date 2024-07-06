@@ -5,32 +5,34 @@ import { recentOrdersData } from "../../../../Data/Dashboard/Ecommerce";
 import { Link } from "react-router-dom";
 import { Href } from "../../../../utils/Constant";
 
-const RecentOrdersBody = () => {
+interface Props {
+  apiLogsData: {
+    data: {
+      id: number;
+      endpoint: string;
+      count: number;
+      // Add more properties as per your actual data structure
+    }[];
+    // Add more properties as per your actual data structure
+  };
+}
+
+const RecentOrdersBody = ({ apiLogsData }: Props) => {
   return (
     <tbody>
-      {recentOrdersData.map((data, i) => (
+      {apiLogsData?.data?.map((data, i) => (
         <tr key={i}>
-          <td>
+          {/* <td>
             <div className="form-check">
               <Input type="checkbox" />
               <Label className="form-check-label" />
             </div>
-          </td>
-          <td>
-            <div className="d-flex align-items-center gap-2">
-              <div className="flex-shrink-0">
-                <Image src={dynamicImage(`dashboard-3/${data.image}`)} alt="dashboard-3" />
-              </div>
-              <div className="flex-grow-1">
-                <Link to={Href}>
-                  <H6>{data.order}</H6>
-                </Link>
-              </div>
-            </div>
-          </td>
-          <td>{data.date}</td>
-          <td>QTY:{data.quantity}</td>
-          <td className="customer-img">
+          </td> */}
+          <td>{i+1}</td>
+          <td>{data.endpoint}</td>
+          <td>{data.count}</td>
+          {/* Example of rendering additional data */}
+          {/* <td className="customer-img">
             <div className="d-flex align-items-center gap-2">
               <div className="flex-shrink-0">
                 <Image src={dynamicImage(`dashboard-3/user/${data.image1}`)} alt="dashboard-3" />
@@ -49,7 +51,7 @@ const RecentOrdersBody = () => {
                 {data.status}
               </Btn>
             </div>
-          </td>
+          </td> */}
         </tr>
       ))}
     </tbody>

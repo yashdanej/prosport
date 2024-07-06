@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import { FeatherIcons, LI, UL } from "../../../../AbstractElements";
 import { profilesMessage } from "../../../../Data/LayoutData/HeaderData";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../../ReduxToolkit/Reducers/Change/AuthSlice";
 
 const ProfileBox = () => {
+  const dispatch = useDispatch();
   const handleClick = (name:string)=>{
     if(name === "Log Out"){
+      dispatch(logout());
       localStorage.removeItem("login")
+      localStorage.removeItem("login-user")
     }
   }
   return (

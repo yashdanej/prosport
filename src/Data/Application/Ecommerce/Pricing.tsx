@@ -1,7 +1,7 @@
 export const becomeMemberData = [
     {
       type: "Free",
-      price: "₹0/3   ",
+      price: "₹0/3",
       benefit: ["API calls : 150 per month", "API format : JSON", "Deliver : API pull"],
     },
     {

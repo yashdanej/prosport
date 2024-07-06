@@ -14,12 +14,12 @@ const ContainerEcommerce = () => {
       <Row>
         <TotalSells />
         <RecentOrders />
-        <SalesOverview />
-        <RecentCustomers />
-        <RevenueByCategory />
-        <UserByContinent />
-        <ProductSlider />
-        <TopSeller />
+        {/* <SalesOverview /> */}
+        {/* <RecentCustomers /> */}
+        {/* <RevenueByCategory /> */}
+        {/* <UserByContinent /> */}
+        {/* <ProductSlider /> */}
+        {/* <TopSeller /> */}
       </Row>
     </Container>
   );

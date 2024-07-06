@@ -23,7 +23,7 @@ const Sidebar = () => {
           <UL className="sidebar-links" id="simple-bar">
             <SimpleBar style={{ width: "80px", height: "350px" }}>
               <LI className="back-btn">
-                <Link to={`/dashboard/defaULt`}>
+                <Link to={`/dashboard/default`}>
                   <Image className="img-fluid" src={dynamicImage("logo/logo-icon.png")} alt="logo" />
                 </Link>
                 <div className="mobile-back text-end ">

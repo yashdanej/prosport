@@ -2,7 +2,7 @@ import { MoreVertical } from "react-feather";
 import { Image } from "../../../AbstractElements";
 import { dynamicImage } from "../../../Service";
 import { Href } from "../../../utils/Constant";
-import { OrderHistoryImageType, OrderHistoryTableColumns } from "../../../Types/Application/Ecommerce/OrderHistory";
+import { OrderHistoryTableColumns } from "../../../Types/Application/Ecommerce/OrderHistory";
 import { TableColumn } from "react-data-table-component";
 import { Link } from "react-router-dom";
 
@@ -170,65 +170,34 @@ export const orderData = [
   ];
   
 
-  const OrderHistoryImage :React.FC<OrderHistoryImageType> = ({ name }) => {
-    return <Image className="img-fluid img-30 m-3" src={dynamicImage(`product/${name}`)} alt="#" />;
-  };
-  
-  const OrderDataHistory :React.FC<OrderHistoryImageType> = ({ name, tag }) => {
-    return (
-      <div className="product-name d-flex flex-column align-items-center">
-        <Link to={Href}>{name}</Link>
-        <div className="order-process">
-          <span className="order-process-circle"></span>{tag}
-        </div>
-      </div>
-    );
-  };
-
   export const orderHistoryDataColumn: TableColumn<OrderHistoryTableColumns>[] = [
     {
-      name: "Product",
-      cell: (row) => <OrderHistoryImage name={row.image} />,
-      center: true,
-    },
-    {
-      name: "Product Name",
-      cell: (row) => <OrderDataHistory name={row.productName} tag={row.tag} />,
+      name: "Id",
+      selector: (row) => `${row.id}`,
       sortable: true,
       center: true,
     },
     {
-      name: "Sizes",
-      selector: (row) => `${row.size}`,
+      name: "User Id",
+      selector: (row) => `${row.user_id}`,
       sortable: true,
       center: true,
     },
     {
-      name: "Color",
-      selector: (row) => `${row.color}`,
+      name: "Plan Id",
+      selector: (row) => `${row.plan_id}`,
       sortable: true,
       center: true,
     },
     {
-      name: "Article Number",
-      selector: (row) => row["articleNumber"],
+      name: "Amount",
+      selector: (row) => `${row.amount}]`,
       sortable: true,
       center: true,
     },
     {
-      name: "Units",
-      selector: (row) => row["units"],
-      center: true,
-    },
-    {
-      name: "Price",
-      selector: (row) => row["price"],
-      sortable: true,
-      center: true,
-    },
-    {
-      name: <MoreVertical />,
-      cell: (row) => row["icon"],
+      name: "Subscribe Date",
+      selector: (row) => `${row.subscribe_date}]`,
       center: true,
     },
   ];
