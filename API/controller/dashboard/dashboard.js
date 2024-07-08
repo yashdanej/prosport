@@ -11,8 +11,11 @@ exports.getApiLogs = async (req, res, next) => {
         // Verify the token and get the user
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         
-        // Get the user's subscriptions
-        const logs = await query("SELECT endpoint, count(*) as count FROM api_call_logs where user_id = ? group by endpoint;", [getUser]);
+        // Get the user's API logs grouped by endpoint
+        const logs = await query(
+            "SELECT endpoint, COUNT(*) AS count FROM api_call_logs WHERE user_id = ? GROUP BY endpoint",
+            [getUser]
+        );
 
         // Send the response
         return res.status(200).json({
@@ -20,7 +23,39 @@ exports.getApiLogs = async (req, res, next) => {
             data: logs
         });
     } catch (error) {
-        console.error("Error fetching API keys:", error);
+        console.error("Error fetching API logs:", error);
         return res.status(500).json({ status: false, message: "Internal Server Error" });
     }
-}
+};
+
+exports.GetApiLogsByUser = async (req, res, next) => {
+    try {
+        // Verify the token and get the user
+        const getUser = await verifyToken(req, res, next, { verifyUser: true });
+        
+        // Query to get API logs aggregated by created_at
+        const quer = `
+            SELECT 
+                DATE(created_at) AS date,
+                COUNT(*) AS call_count
+            FROM 
+                api_call_logs 
+            WHERE 
+                user_id = ?
+            GROUP BY 
+                DATE(created_at)
+            ORDER BY 
+                DATE(created_at) ASC`;
+
+        const logs = await query(quer, [getUser]);
+
+        // Send the response
+        return res.status(200).json({
+            status: true,
+            data: logs
+        });
+    } catch (error) {
+        console.error("Error fetching API logs:", error);
+        return res.status(500).json({ status: false, message: "Internal Server Error" });
+    }
+};

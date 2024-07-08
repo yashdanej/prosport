@@ -10,15 +10,7 @@ import { useEffect } from "react";
 
 const RecentOrders = () => {
   const apiLogsData = useSelector((state: RootState) => state.dashboard.api_logs);
-  const apiKeyData = useSelector((state: RootState) => state.subscribe.api_keys);
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(getApiLogs());
-    dispatch(getApiKeys());
-  }, [dispatch]);
-  console.log("apiLogsData", apiLogsData, apiKeyData);
-
-  console.log("apiLogsData", apiLogsData);
+ 
   return (
     <Col xxl="7" xl="8" sm="12">
       <Card>
