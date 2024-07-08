@@ -11,8 +11,11 @@ export const signup = createAsyncThunk(
       const res = await api(`/signup`, "post", data, false, false);
       console.log("res---", res);
       if (!res?.data?.success) {
-        return rejectWithValue(res?.data?.message);
+        console.log("in");
+        return rejectWithValue(res?.response?.data);
       }
+      console.log("out");
+      
       return res?.data;
     } catch (err: any) {
       console.log("err", err);
@@ -53,6 +56,17 @@ export const getRefferer = createAsyncThunk('getRefferer', async (id) => {
   }
 });
 
+export const getAllUsers = createAsyncThunk('getAllUsers', async (id) => {
+  try {
+      const res = await api(`/all_users`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 // Auth slice
 const authSlice = createSlice({
   name: "auth",
@@ -64,6 +78,12 @@ const authSlice = createSlice({
       errorMessage: "",
     },
     refferer: {
+      isLoading: false,
+      data: null as any | null,
+      isError: false,
+      errorMessage: "",
+    },
+    users: {
       isLoading: false,
       data: null as any | null,
       isError: false,
@@ -89,7 +109,7 @@ const authSlice = createSlice({
       state.user.isLoading = false;
     });
     builder.addCase(signup.rejected, (state, action) => {
-      console.log("signup rejected", action.payload);
+      console.log("signup rejected", action);
       state.user.isLoading = false;
       state.user.isError = true;
       state.user.errorMessage = action.payload as string;
@@ -126,6 +146,21 @@ const authSlice = createSlice({
         console.log("error in getRefferer", action.payload);
         state.refferer.isLoading = false;
         state.refferer.isError = true;
+    });
+
+    // getAllUsers
+    builder.addCase(getAllUsers.pending, (state, action) => {
+      state.users.isLoading = true;
+    });
+    builder.addCase(getAllUsers.fulfilled, (state, action) => {
+        state.users.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.users.data = action.payload;
+    });
+    builder.addCase(getAllUsers.rejected, (state, action) => {
+        console.log("error in getAllUsers", action.payload);
+        state.users.isLoading = false;
+        state.users.isError = true;
     });
   }
 });

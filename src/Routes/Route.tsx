@@ -132,11 +132,12 @@ const routes = [
   // dashboard 
   { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/project`, Component:<ProjectDashboard />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/ecommerce`, Component: <EcommerceDashborad />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EcommerceDashborad />},
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EducationDashboard />},
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
   { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, Component: <Reffer />},
   { path: `${process.env.PUBLIC_URL}/setting/profile`, Component: <EditProfile />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
   
   // Widgets
   { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},
@@ -158,7 +159,7 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/ecommerce/product_page`, Component: <ProductPage />},
   { path: `${process.env.PUBLIC_URL}/ecommerce/product_list`, Component: <ProductList />},
   { path: `${process.env.PUBLIC_URL}/ecommerce/payment_details`, Component: <PaymentDetails />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/order_history`, Component: <OrderHistory />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
     // Invoices
     { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice1`, Component: <InvoiceOne />},
     { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice2`, Component: <InvoiceTwo />},
@@ -169,7 +170,7 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/ecommerce/cart`, Component: <Cart />},
   { path: `${process.env.PUBLIC_URL}/ecommerce/wishlist`, Component: <WishList />},
   { path: `${process.env.PUBLIC_URL}/ecommerce/checkout`, Component: <Checkout />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/pricing`, Component: <Pricing />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, Component: <Pricing />},
 
   // LetterBox
   { path: `${process.env.PUBLIC_URL}/email/letter_box`, Component: <LetterBox />},

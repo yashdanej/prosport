@@ -77,25 +77,25 @@ export interface profilesMessageType{
 
 export const profilesMessage:profilesMessageType[] = [
     {
-        name: "Account",
+        name: "Profile",
         icon:"User",
-        link: `${process.env.PUBLIC_URL}/chat/private_chat  `
+        link: `${process.env.PUBLIC_URL}/setting/profile  `
     },
-    {
-        name: "Inbox",
-        icon:"Mail",
-        link: `${process.env.PUBLIC_URL}/email/letter_box`
-    },
-    {
-        name: "Taskboard",
-        icon:"FileText",
-        link:`${process.env.PUBLIC_URL}/app/task`
-    },
-    {
-        name: "Settings",
-        icon:"Settings",
-        link: `${process.env.PUBLIC_URL}/users/user_edit`
-    },
+    // {
+    //     name: "Inbox",
+    //     icon:"Mail",
+    //     link: `${process.env.PUBLIC_URL}/email/letter_box`
+    // },
+    // {
+    //     name: "Taskboard",
+    //     icon:"FileText",
+    //     link:`${process.env.PUBLIC_URL}/app/task`
+    // },
+    // {
+    //     name: "Settings",
+    //     icon:"Settings",
+    //     link: `${process.env.PUBLIC_URL}/users/user_edit`
+    // },
     {
         name: "Log Out",
         icon:"LogOut",

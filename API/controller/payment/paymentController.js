@@ -153,7 +153,9 @@ exports.Status = async (req, res) => {
 exports.createToken = async (req, res, next) => {
     try {
         const id = req.params.id;
+        const selectPlan = await query("SELECT * FROM plans WHERE id = ?", [id]);
         const { name, email, expire_date } = req.body;
+
         // Get user from token or session (assuming verifyToken function handles this)
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
 
@@ -167,6 +169,10 @@ exports.createToken = async (req, res, next) => {
 
         // Check if user already has an active subscription
         const getSub = await query("SELECT * FROM user_subscriptions WHERE user_id = ?", [getUser]);
+
+        // Flag to track if a new subscription is being created or renewed
+        let isNewSubscription = true;
+
         if (getSub.length > 0) {
             // Check if the current subscription is still active
             const currentSubscription = getSub[0];
@@ -174,37 +180,83 @@ exports.createToken = async (req, res, next) => {
             const subscriptionEndDate = moment(currentSubscription.expire_date).tz('Asia/Kolkata');
 
             if (currentDateIST.isBefore(subscriptionEndDate)) {
-                return res.status(200).json({
-                    status: true,
-                    message: 'Already subscribed',
-                });
+                isNewSubscription = false; // Subscription is active and being renewed
             }
             // If the subscription has expired, you can choose to renew or create a new one
         }
 
-        // Proceed to create a new subscription
-        const createSubscriptionQuery = `INSERT INTO user_subscriptions (user_id, plan_id, start_date, expire_date, token) VALUES (?, ?, ?, ?, ?)`;
+        // Proceed to create a new subscription or renew existing subscription
+        const createSubscriptionQuery = isNewSubscription
+            ? `INSERT INTO user_subscriptions (user_id, plan_id, start_date, expire_date, token) VALUES (?, ?, ?, ?, ?)`
+            : `UPDATE user_subscriptions SET plan_id = ?, start_date = ?, expire_date = ?, token = ? WHERE user_id = ?`;
+
         const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-        await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token]);
+        if (isNewSubscription) {
+            await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token]);
+        } else {
+            await query(createSubscriptionQuery, [id, startDate, expireDateIST, token, getUser]);
+        }
 
         // Log subscription history
         const createSubscriptionHistoryQuery = `INSERT INTO user_subscription_histories (user_id, plan_id, subscribe_date, transation_id, amount) VALUES (?, ?, ?, ?, ?)`;
         const subscribeDate = new Date().toISOString().slice(0, 10); // Current date
         const transactionId = null; // Replace with actual transaction ID if available
-        const amount = 150; // Replace with actual amount if applicable
+        const amount = selectPlan[0].amount; // Replace with actual amount if applicable
 
         await query(createSubscriptionHistoryQuery, [getUser, id, subscribeDate, transactionId, amount]);
+
+        // Calculate and update commission for referrer (5% of amount)
+        const referralQuery = 'SELECT referrer_id FROM referrals WHERE referred_id = ?';
+        const referralResult = await query(referralQuery, [getUser]);
+
+        if (referralResult.length > 0) {
+            const referrerId = referralResult[0].referrer_id;
+            const commissionAmount = amount * 0.05; // 5% commission
+
+            // Update referrer's wallet with commission
+            const updateWalletQuery = `INSERT INTO wallet (referred_id, referrer_id, commission) VALUES (?, ?, ?)`;
+            await query(updateWalletQuery, [getUser, referrerId, commissionAmount]);
+
+            // Optionally, update referrer's commission balance directly if needed
+            // const updateCommissionQuery = 'UPDATE users SET commission_balance = commission_balance + ? WHERE id = ?';
+            // await query(updateCommissionQuery, [commissionAmount, referrerId]);
+        }
 
         return res.status(200).json({
             status: true,
             response: { user_id: getUser, token },
-            message: 'Token Created Successfully',
+            message: isNewSubscription ? 'Token Created Successfully' : 'Subscription Renewed Successfully',
         });
 
     } catch (error) {
         console.error("Error creating token:", error);
+        return res.status(500).json({ status: false, message: "Internal Server Error" });
+    }
+};
+
+// Fetch commission
+exports.GetCommission = async (req, res, next) => {
+    try {
+        // Verify the token and get the user
+        const getUser = await verifyToken(req, res, next, { verifyUser: true });
+        
+        // Get the user's subscriptions
+        const commissions = await query("SELECT * FROM wallet WHERE referrer_id = ?", [getUser]);
+        // Calculate total commission
+        let totalCommission = 0;
+        commissions.forEach(commission => {
+            totalCommission += commission.commission;
+        });
+        // Send the response
+        return res.status(200).json({
+            status: true,
+            data: commissions,
+            totalCommission
+        });
+    } catch (error) {
+        console.error("Error fetching API keys:", error);
         return res.status(500).json({ status: false, message: "Internal Server Error" });
     }
 };

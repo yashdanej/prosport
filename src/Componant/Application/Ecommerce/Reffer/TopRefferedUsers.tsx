@@ -6,6 +6,8 @@ import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRefferer } from '../../../../ReduxToolkit/Reducers/Change/AuthSlice'
 import DataTable, { TableColumn } from 'react-data-table-component'
+import { convertToIST } from '../../../../Utils'
+import { getCommission } from '../../../../ReduxToolkit/Reducers/Change/Subscribe'
 
 
 type ReffererdData = {
@@ -18,6 +20,8 @@ type ReffererdData = {
 
 const TopRefferedUsers = () => {
   const reffererData = useSelector((state: RootState) => state.auth.refferer);
+  const usersData = useSelector((state: RootState) => state.auth.users);
+  const commissionData = useSelector((state: RootState) => state.subscribe.commission?.data);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -25,28 +29,32 @@ const TopRefferedUsers = () => {
     dispatch(getRefferer());
   }
 
+  const fetchCommission = () => {
+    dispatch(getCommission());
+  }
+
   const apiHistoryDataColumn: TableColumn<ReffererdData>[] = [
     {
       name: "ID",
-      selector: (row) => row.id || 'N/A',
+      selector: (row, index: any) => index+1,
       sortable: true,
       center: true,
     },
     {
-      name: "Refferer ID",
-      selector: (row) => row.referrer_id,
+      name: "Referred",
+      selector: (row) => usersData?.data?.find((user: any) => user.id === row.referred_id)?.name,
       sortable: true,
       center: true,
     },
     {
-      name: "Referred ID",
-      selector: (row) => row.referred_id,
+      name: "Commission Earned (₹)",
+      selector: (row) => commissionData?.data?.find((user: any) => user.referred_id === row.referred_id)?.commission || 0,
       sortable: true,
       center: true,
     },
     {
       name: "Register At",
-      selector: (row) => new Date(row.created_at).toLocaleDateString(),
+      selector: (row) => convertToIST((row.created_at)).split(",")[0],
       sortable: true,
       center: true,
     }
@@ -54,6 +62,7 @@ const TopRefferedUsers = () => {
 
   useEffect(() => {
     fetchRefferer();
+    fetchCommission();
   }, [dispatch]);
   return (
     // <Card>

@@ -6,7 +6,8 @@ import { MoreVertical } from 'react-feather';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
-import { getApiKeys } from '../../../../ReduxToolkit/Reducers/Change/Subscribe';
+import { getApiKeys, getSubscribe } from '../../../../ReduxToolkit/Reducers/Change/Subscribe';
+import { convertToIST } from '../../../../Utils';
 
 type ApiKeyData = {
   id: number;
@@ -24,6 +25,10 @@ type ApiKeyData = {
 
 const ApiKey = () => {
   const apiKeysData = useSelector((state: RootState) => state.subscribe.api_keys);
+  const userData = localStorage.getItem("login-user");
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+  const plansData = useSelector((state: RootState) => state.subscribe.plans);
+
   console.log("apiKeysData", apiKeysData?.data); // Ensure apiKeysData is not null
 
   const apiData = [
@@ -41,50 +46,43 @@ const ApiKey = () => {
 
   const apiHistoryDataColumn: TableColumn<ApiKeyData>[] = [
     {
-      name: "Sport ID",
-      selector: (row) => row.sport_id || 'N/A',
+      name: "Category",
+      selector: (row) => row.sport_id || 'Cricket',
       sortable: true,
       center: true,
     },
     {
-      name: "User ID",
-      selector: (row) => row.user_id,
+      name: "Plan",
+      selector: (row) => `${plansData?.data?.find((plan: any) => plan.id === row.plan_id)?.name}`,
       sortable: true,
       center: true,
     },
     {
-      name: "Plan ID",
-      selector: (row) => row.plan_id,
+      name: "Token Expiry",
+      selector: (row) => convertToIST(row.expire_date).split(",")[0],
       sortable: true,
       center: true,
     },
     {
-      name: "Start Date",
-      selector: (row) => new Date(row.start_date).toLocaleDateString(),
+      name: "Secret Key",
+      selector: (row) => parsedUserData?.user?.secretKey,
       sortable: true,
       center: true,
     },
     {
-      name: "Expire Date",
-      selector: (row) => new Date(row.expire_date).toLocaleDateString(),
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "Token",
+      name: "Access Keys",
       selector: (row) => row.token,
       sortable: true,
       center: true,
     },
     {
       name: "Status",
-      selector: (row) => row.status.toString(),
+      cell: (row) => (
+        <Btn className={`background-light-${row.status === 1 ? 'success' : 'danger'} font-${row.status === 1 ? 'success' : 'danger'} f-w-500`} color="">
+          {row.status === 1 ? 'Active' : 'Inactive'}
+        </Btn>
+      ),
       sortable: true,
-      center: true,
-    },
-    {
-      name: "Actions",
-      cell: () => <MoreVertical />,
       center: true,
     },
   ];
@@ -98,7 +96,13 @@ const ApiKey = () => {
   useEffect(() => {
     fetchApiKeys();
   }, [dispatch]);
+  const fetchPlans = () => {
+    dispatch(getSubscribe());
+  }
 
+  useEffect(() => {
+    fetchPlans();
+  }, [dispatch]);
   return (
     <>
       <Card>

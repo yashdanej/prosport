@@ -29,7 +29,13 @@ const EditProfileForm = () => {
                             <Input type="email" placeholder="Email" />
                         </FormGroup>
                     </Col>
-                    <Col md="12">
+                    <Col sm="12" md="12" >
+                        <FormGroup>
+                            <Label >Phone</Label>
+                            <Input type="number" placeholder="Phone" />
+                        </FormGroup>
+                    </Col>
+                    {/* <Col md="12">
                         <FormGroup>
                             <Label >{Address}</Label>
                             <Input type="text" placeholder="Home Address" />
@@ -58,16 +64,27 @@ const EditProfileForm = () => {
                             <option>{'Aus'}</option>
                             </Input>
                         </FormGroup>
-                    </Col>
-                    <Col md="12">
+                    </Col> */}
+                    {/* <Col md="12">
                         <Label>{AboutMe}</Label>
                         <textarea className="form-control" rows={3} placeholder="Enter About your description" />
-                    </Col>
+                    </Col> */}
                 </Row>
             </CardBody>
             <CardFooter className="text-end">
                 <Btn color="primary" type="submit">{UpdateProfile}</Btn>
             </CardFooter>
+        </Card>
+      </Form>
+      <Form>
+        <Card>
+            <CardHeaderCommon title="Session" tagClass={"card-title mb-0"} />
+            <CardBody>
+                <p>This is a list of devices that have logged into your account. Remove those that you do not recognize.</p>
+            </CardBody>
+            {/* <CardFooter className="text-end">
+                <Btn color="primary" type="submit">{UpdateProfile}</Btn>
+            </CardFooter> */}
         </Card>
       </Form>
     </Col>

@@ -178,12 +178,6 @@ export const orderData = [
       center: true,
     },
     {
-      name: "User Id",
-      selector: (row) => `${row.user_id}`,
-      sortable: true,
-      center: true,
-    },
-    {
       name: "Plan Id",
       selector: (row) => `${row.plan_id}`,
       sortable: true,

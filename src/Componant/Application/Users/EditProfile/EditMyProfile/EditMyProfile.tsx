@@ -5,6 +5,8 @@ import { Bio, Emailaddress, MyProfile, Password, Save, Website } from '../../../
 import CardHeaderCommon from '../../../../../CommonElements/CardHeaderCommon/CardHeaderCommon'
 
 const EditMyProfile = () => {
+  const userData = localStorage.getItem("login-user");
+  const parsedUserData = userData ? JSON.parse(userData) : null;
   return (
     <Col xl="4">
       <Card>
@@ -16,8 +18,8 @@ const EditMyProfile = () => {
                 <div className='d-flex'>
                   <Image className="img-70 rounded-circle" alt="edit-user" src={dynamicImage("user/7.jpg")} />
                   <div className='flex-grow-1'>
-                    <H4 className="mb-1">{'MARK JECNO'}</H4>
-                    <P>{'DESIGNER'}</P>
+                    <H4 className="mb-1">{parsedUserData?.user?.name}</H4>
+                    <P>Operator</P>
                   </div>
                 </div>
               </div>

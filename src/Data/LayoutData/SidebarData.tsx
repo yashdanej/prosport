@@ -19,7 +19,7 @@ export const MenuList: MenuItem[] = [
       //     // { path: `${process.env.PUBLIC_URL}/dashboard/education`, title: "Education", type: "link" },
       //   ],
       // },
-      { path: `${process.env.PUBLIC_URL}/dashboard/ecommerce`, title: "Dashboard", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/home`, title: "Dashboard", type: "link" },
       {
         title: "Games",
         id: 2,
@@ -42,8 +42,8 @@ export const MenuList: MenuItem[] = [
       //     { path: `${process.env.PUBLIC_URL}/page_layout/hide_nav_scroll`, title: "Hide Nav Scroll", type: "link" }
       //   ],
       // },
-      { path: `${process.env.PUBLIC_URL}/ecommerce/order_history`, title: "Billing", type: "link" },
-      { path: `${process.env.PUBLIC_URL}/ecommerce/pricing`, title: "Subscription", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/billing`, title: "Billing", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, title: "Subscription", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, title: "API Keyset", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, title: "Reffer", type: "link" },
     ],
@@ -63,7 +63,7 @@ export const MenuList: MenuItem[] = [
       //     { path: `${process.env.PUBLIC_URL}/project/create_new`, type: "link", title: "Create New" },
       //   ],
       // },
-      { path: `${process.env.PUBLIC_URL}/setting/profile`, icon: "file", title: "Profile", type: "link" },
+      // { path: `${process.env.PUBLIC_URL}/setting/profile`, icon: "file", title: "Profile", type: "link" },
       // { path: `${process.env.PUBLIC_URL}/app/file_manager`, icon: "file", title: "File Manager", type: "link" },
   //     {
   //       title: "Ecommerce",

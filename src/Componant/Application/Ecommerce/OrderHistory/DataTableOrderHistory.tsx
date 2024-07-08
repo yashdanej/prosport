@@ -2,15 +2,46 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Card, CardBody, Col, Input, Label } from 'reactstrap';
 import { OrdersHistory, SearchTableButton } from '../../../../utils/Constant';
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader';
-import DataTable from 'react-data-table-component';
-import { orderHistoryData, orderHistoryDataColumn } from '../../../../Data/Application/Ecommerce/OrderHistory';
+import DataTable, { TableColumn } from 'react-data-table-component';
+import { orderHistoryData } from '../../../../Data/Application/Ecommerce/OrderHistory';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
-import { getBilling } from '../../../../ReduxToolkit/Reducers/Change/Subscribe';
+import { getBilling, getSubscribe } from '../../../../ReduxToolkit/Reducers/Change/Subscribe';
+import { OrderHistoryTableColumns } from '../../../../Types/Application/Ecommerce/OrderHistory';
+import { convertToIST } from '../../../../Utils';
+
 
 const DataTableOrderHistory = () => {
   // const apiLogsData = useSelector((state: RootState) => state.dashboard.api_logs);
   const billingData = useSelector((state: RootState) => state.subscribe.billing);
+  const plansData = useSelector((state: RootState) => state.subscribe.plans);
+
+  const orderHistoryDataColumn: TableColumn<OrderHistoryTableColumns>[] = [
+    {
+      name: "S.No",
+      selector: (row, index: any) => `${index + 1}`,
+      sortable: false,
+      center: true,
+    },
+    {
+      name: "Plan",
+      selector: (row) => `${plansData?.data?.find((plan: any) => plan.id === row.plan_id)?.name}`,
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Amount",
+      selector: (row) => `${row.amount}`,
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Subscribe Date",
+      selector: (row) => `${convertToIST(row.subscribe_date).split(",")[0]}`,
+      center: true,
+    },
+  ];
+
     const [filterText, setFilterText] = useState("");
 
     const filteredItems = billingData?.data?.filter((item:any) =>item.id);
@@ -30,7 +61,14 @@ const DataTableOrderHistory = () => {
       dispatch(getBilling());
     }, [dispatch]);
     console.log("billingData", billingData);
+
+    const fetchPlans = () => {
+      dispatch(getSubscribe());
+    }
   
+    useEffect(() => {
+      fetchPlans();
+    }, [dispatch]);
     return (
       <Col sm="12">
           <Card>

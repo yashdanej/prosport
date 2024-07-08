@@ -9,6 +9,7 @@ router
     .post("/status/:txnId", verifyToken, paymentController.Status)
 
     router.post('/create-token/:id', verifyToken, paymentController.createToken);
+    router.get('/commission', verifyToken, paymentController.GetCommission);
     router.get('/api_key', verifyToken, paymentController.apiKeys);
     router.get('/billing', verifyToken, paymentController.Billing);
     router.get('/subscription', verifyToken, paymentController.Subscription);

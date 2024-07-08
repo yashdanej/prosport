@@ -55,6 +55,25 @@ export const changeText = (e: { target: { name: any; value: any } }, set: (arg0:
     set({...content, [e.target.name]: value?value:e.target.value})
 }
 
+export const convertToIST = (dateString: any) => {
+  const date = new Date(dateString);
+  // Convert to IST by adding 5 hours and 30 minutes
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const istDate = new Date(date.getTime() + istOffset);
+  // Format the date in the desired format (e.g., DD-MM-YYYY HH:mm:ss)
+  const formattedDate = istDate.toLocaleString("en-IN", {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Kolkata'
+  });
+  return formattedDate;
+};
+
 export const Loading = () => {
     const loaderStyle = {
       display: 'flex',

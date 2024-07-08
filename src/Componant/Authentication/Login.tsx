@@ -38,7 +38,7 @@ const Login = () => {
           const userJsonString = JSON.stringify({ user: res.data, token: res.token });
           localStorage.setItem("login", JSON.stringify(true));
           localStorage.setItem("login-user", userJsonString);
-          navigate(`${process.env.PUBLIC_URL}/dashboard/ecommerce`);
+          navigate(`${process.env.PUBLIC_URL}/dashboard/home`);
           // Handle successful signup, e.g., redirect to another page or show a success message
         }
       } catch (error) {
@@ -96,8 +96,8 @@ const Login = () => {
                       </Btn>
                     </div>
                   </FormGroup>
-                  <H4 className="text-muted mt-4 or">{SignInWith}</H4>
-                  <SocialApp />
+                  {/* <H4 className="text-muted mt-4 or">{SignInWith}</H4>
+                  <SocialApp /> */}
                   <P className="mt-4 mb-0 text-center">
                     {DoNotAccount}
                     <Link className="ms-2" to={`${process.env.PUBLIC_URL}/authentication/register_simple`} >

@@ -10,11 +10,12 @@ import { useState } from "react";
 import BottomRightToast from "../../../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast";
 
 const PricingPlans = () => {
-  const reffererData = useSelector((state: RootState) => state.auth.user);
+  const userData = localStorage.getItem("login-user");
+  const parsedUserData = userData ? JSON.parse(userData) : null;
   const [showToast, setShowToast] = useState(false);
   const [txt, setTxt] = useState("");
   const handleCopyCode = () => {
-    const referralCode = reffererData?.data?.data?.reffer_code;
+    const referralCode = parsedUserData?.user?.reffer_code;
     if (referralCode) {
       navigator.clipboard.writeText(referralCode).then(() => {
         setTxt("Referral Code Copied Successfully!");
@@ -29,7 +30,7 @@ const PricingPlans = () => {
       <CommonCardHeader title="How To Use" />
       <div className="pricing-plan">
         <H6>You cannot generate codes.</H6>
-        <H5>CODE: <b>{reffererData?.data?.data?.reffer_code}</b></H5>
+        <H5>CODE: <b>{parsedUserData?.user?.reffer_code}</b></H5>
         <P>Contact us to generate more referrals link.</P>
         <Btn onClick={handleCopyCode} size="xs" color="primary" outline>Copy</Btn>
         <Image className="bg-img" src={dynamicImage('dashboard/folder.png')} alt="dashboard"/>

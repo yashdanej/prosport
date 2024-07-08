@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../../ReduxToolkit/Store'
 
 const RefferOther = () => {
-  const reffererData = useSelector((state: RootState) => state.auth.user);
-
   const refferData = [
         {
             title: "User #hashtag in a photo on social media and get $10 for each purchase you make.",

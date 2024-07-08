@@ -44,7 +44,8 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
       if (user.name === '' || user.email === '' || user.password === '') {
         setShowToast(true); // Show toast for required fields
       } else {
-        await dispatch(signup(user)).unwrap();
+        const registerRes = await dispatch(signup(user)).unwrap();
+        console.log("registerRes", registerRes);
         resetField();
         navigate(`${process.env.PUBLIC_URL}/login`);
         // Handle successful signup, e.g., redirect to another page or show a success message
@@ -78,10 +79,6 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
               <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.email} name="email" autoComplete="off" required placeholder={EmailsPlaceHolder} />
             </FormGroup>
             <FormGroup>
-              <Label className="col-form-label">Referral Code</Label>
-              <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.reffer_code} name="reffer_code" autoComplete="off" placeholder="Optional" />
-            </FormGroup>
-            <FormGroup>
               <Label className="col-form-label">{Password}*</Label>
               <div className="form-input position-relative">
                 <Input type={showPassWord ? "text" : "password"} onChange={(e) => changeText(e, setUser, user)} value={user.password} name="password" autoComplete="off" placeholder="*********" required />
@@ -89,6 +86,10 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
                   <span onClick={() => setShowPassWord(!showPassWord)} className={!showPassWord ? "show" : ""} />
                 </div>
               </div>
+            </FormGroup>
+            <FormGroup>
+              <Label className="col-form-label">Referral Code</Label>
+              <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.reffer_code} name="reffer_code" autoComplete="off" placeholder="Optional" />
             </FormGroup>
             <FormGroup className="mb-0">
               <div className="checkbox p-0">
@@ -98,7 +99,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
               <Btn onClick={handleCreateAccount} block color="primary" className="w-100">{userData.isLoading ? <Loading /> : "Create Account"}</Btn>
             </FormGroup>
             <H6 className="text-muted mt-4 or">{SignUpWith}</H6>
-            <div className="social mt-4">
+            {/* <div className="social mt-4">
               <div className="btn-showcase">
                 <Link className="btn btn-light" to="https://www.linkedin.com/login" target="_blank" rel="noreferrer">
                   <Linkedin className="txt-linkedin" />{LinkedInHeading}
@@ -110,7 +111,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
                   <Facebook className="txt-fb" />{FacebookHeading}
                 </Link>
               </div>
-            </div>
+            </div> */}
             <P className="mt-4 mb-0">{"Already have an account?"}<Link className="ms-2" to={`${process.env.PUBLIC_URL}/authentication/loginsimple`}>{SignIn}</Link></P>
           </Form>
         </div>

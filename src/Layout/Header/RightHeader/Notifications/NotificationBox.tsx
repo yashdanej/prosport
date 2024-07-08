@@ -6,26 +6,27 @@ import { CheckAll, Href } from "../../../../utils/Constant"
 
 const NotificationBox = () => {
   return (
-    <UL className="notification-box simple-list">
-        {notificationData.map((data, index) => (
-            <LI className="d-flex" key={index}>
-                <div className={`flex-shrink-0 bg-light-${data.color}`}>
-                    <Image src={dynamicImage(`dashboard/icon/${data.img}`)} alt="Wallet" />
-                </div>
-                <div className="flex-grow-1">
-                    <Link to={data.link}>
-                        <H6>{data.title}</H6>
-                    </Link>
-                    <P>{data.subTitle}</P>
-                </div>
-            </LI>
-        ))}
-        <LI>
-            <Link className="f-w-700" to={"/chat/private_chat"}>
-                {CheckAll}
-            </Link>
-        </LI>
-    </UL>
+    // <UL className="notification-box simple-list">
+    //     {notificationData.map((data, index) => (
+    //         <LI className="d-flex" key={index}>
+    //             <div className={`flex-shrink-0 bg-light-${data.color}`}>
+    //                 <Image src={dynamicImage(`dashboard/icon/${data.img}`)} alt="Wallet" />
+    //             </div>
+    //             <div className="flex-grow-1">
+    //                 <Link to={data.link}>
+    //                     <H6>{data.title}</H6>
+    //                 </Link>
+    //                 <P>{data.subTitle}</P>
+    //             </div>
+    //         </LI>
+    //     ))}
+    //     <LI>
+    //         <Link className="f-w-700" to={"/chat/private_chat"}>
+    //             {CheckAll}
+    //         </Link>
+    //     </LI>
+    // </UL>
+    <></>
   )
 }
 

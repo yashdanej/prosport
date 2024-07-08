@@ -88,6 +88,23 @@ exports.Refferal = async (req, res, next) => {
   }
 };
 
+// Fetch Refferal
+exports.AllUsers = async (req, res, next) => {
+  try {
+      // Get the user's subscriptions
+      const users = await query("SELECT * FROM users");
+
+      // Send the response
+      return res.status(200).json({
+          status: true,
+          data: users
+      });
+  } catch (error) {
+      console.error("Error fetching users:", error);
+      return res.status(500).json({ status: false, message: "Internal Server Error" });
+  }
+};
+
 exports.Login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -112,7 +129,7 @@ exports.Login = async (req, res) => {
     // Generate JWT token using the user's secret key
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY);
 
-    return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, reffer_code: user.reffer_code } });
+    return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, reffer_code: user.reffer_code, secretKey: user.secret_key } });
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ error: 'Internal server error' });

@@ -48,33 +48,15 @@ export const tourProfileData = [
 
 export const addProjectsAndUploadData = [
     {
-      date: "28 May 2024",
-      status: "Completed",
-      statusClass: "bg-success",
-      price: "$56,908",
+      title: "Subscription",
+      subTitle: "Notify when new subscription"
     },
     {
-      date: "12 June 2024",
-      status: "On going",
-      statusClass: "bg-danger",
-      price: "$45,087",
+      title: "Subscription",
+      subTitle: "Notify when subscription expire"
     },
     {
-      date: "12 July 2024",
-      status: "Pending",
-      statusClass: "bg-warning",
-      price: "$60,123",
+      title: "API Usage",
+      subTitle: "Notify when usage about to finish.",
     },
-    {
-      date: "14 June 2024",
-      status: "Pending",
-      statusClass: "bg-warning",
-      price: "$70,435",
-    },
-    {
-      date: "25 June 2024",
-      status: "Completed",
-      statusClass: "bg-success",
-      price: "$15,987",
-    }
   ];

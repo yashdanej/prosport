@@ -1,9 +1,26 @@
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import RouterData from "./Routes";
 import { ToastContainer } from "react-toastify";
-import Store from "./ReduxToolkit/Store";
+import Store, { AppDispatch, RootState } from "./ReduxToolkit/Store";
+import { useEffect } from "react";
+import { getAllUsers } from "./ReduxToolkit/Reducers/Change/AuthSlice";
+import { getSubscribe } from "./ReduxToolkit/Reducers/Change/Subscribe";
 
 const App = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const fetchRefferer = () => {
+    dispatch(getAllUsers());
+  }
+  const fetchPlans = () => {
+    dispatch(getSubscribe());
+  }
+  
+  useEffect(() => {
+    fetchRefferer();
+    fetchPlans();
+  }, [dispatch]);
+    
   return (
     <>
       <Provider store={Store} >

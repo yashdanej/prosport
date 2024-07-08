@@ -48,22 +48,23 @@ const SearchInput = () => {
     setSearchedArray(result);
   };
   return (
-    <Form className={`form-inline search-full ${responsiveSearch ? "open" : ""}`} method="get">
-      <div className="w-100 form-group">
-        <div className="Typeahead Typeahead--twitterUsers">
-          <div className="u-posRelative">
-            <Input className="demo-input Typeahead-input form-control-plaintext w-100" type="text"  placeholder={SearchMofi} name="q" value={searchedWord} onChange={(e) => handleSearch(e)} />
-            <div className="spinner-border Typeahead-spinner" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-            <FeatherIcons className="close-search" iconName="X" onClick={handleClose}/>
-          </div>
-          <div className={`Typeahead-menu ${searchedWord.length ? "is-open" : ""}`} >
-            <ResponsiveSearchList searchedArray={searchedArray} setSearchedWord={setSearchedWord}/>
-          </div>
-        </div>
-      </div>
-    </Form>
+    // <Form className={`form-inline search-full ${responsiveSearch ? "open" : ""}`} method="get">
+    //   <div className="w-100 form-group">
+    //     <div className="Typeahead Typeahead--twitterUsers">
+    //       <div className="u-posRelative">
+    //         <Input className="demo-input Typeahead-input form-control-plaintext w-100" type="text"  placeholder={SearchMofi} name="q" value={searchedWord} onChange={(e) => handleSearch(e)} />
+    //         <div className="spinner-border Typeahead-spinner" role="status">
+    //           <span className="sr-only">Loading...</span>
+    //         </div>
+    //         <FeatherIcons className="close-search" iconName="X" onClick={handleClose}/>
+    //       </div>
+    //       <div className={`Typeahead-menu ${searchedWord.length ? "is-open" : ""}`} >
+    //         <ResponsiveSearchList searchedArray={searchedArray} setSearchedWord={setSearchedWord}/>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </Form>
+    <></>
   );
 };
 

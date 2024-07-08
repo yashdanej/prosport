@@ -32,6 +32,17 @@ export const getApiKeys = createAsyncThunk('getApiKeys', async (id) => {
     }
 });
 
+export const getCommission = createAsyncThunk('getCommission', async (id) => {
+  try {
+      const res = await api(`/order/commission`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 export const getBilling = createAsyncThunk('getBilling', async (id) => {
     try {
         const res = await api(`/order/billing`, "get", false, false, true);
@@ -84,7 +95,13 @@ const subscribeSlice = createSlice({
       data: null as any | null,
       isError: false,
       errorMessage: "",
-  }
+    },
+    commission: {
+      isLoading: false,
+      data: null as any | null,
+      isError: false,
+      errorMessage: "",
+    }
   },
   reducers: {
     // Add any reducers if needed
@@ -141,17 +158,32 @@ const subscribeSlice = createSlice({
     // getSubscribe
     builder.addCase(getSubscribe.pending, (state, action) => {
       state.plans.isLoading = true;
-  });
-  builder.addCase(getSubscribe.fulfilled, (state, action) => {
-      state.plans.isLoading = false;
-      console.log("action...pa", action.payload);
-      state.plans.data = action.payload;
-  });
-  builder.addCase(getSubscribe.rejected, (state, action) => {
-      console.log("error in getSubscribe", action.payload);
-      state.plans.isLoading = false;
-      state.plans.isError = true;
-  });
+    });
+    builder.addCase(getSubscribe.fulfilled, (state, action) => {
+        state.plans.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.plans.data = action.payload;
+    });
+    builder.addCase(getSubscribe.rejected, (state, action) => {
+        console.log("error in getSubscribe", action.payload);
+        state.plans.isLoading = false;
+        state.plans.isError = true;
+    });
+
+    // getCommission
+    builder.addCase(getCommission.pending, (state, action) => {
+      state.commission.isLoading = true;
+    });
+    builder.addCase(getCommission.fulfilled, (state, action) => {
+        state.commission.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.commission.data = action.payload;
+    });
+    builder.addCase(getCommission.rejected, (state, action) => {
+        console.log("error in getCommission", action.payload);
+        state.commission.isLoading = false;
+        state.commission.isError = true;
+    });
   }
 });
 
