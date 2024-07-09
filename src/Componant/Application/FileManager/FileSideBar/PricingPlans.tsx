@@ -35,7 +35,7 @@ const PricingPlans = () => {
         <Btn onClick={handleCopyCode} size="xs" color="primary" outline>Copy</Btn>
         <Image className="bg-img" src={dynamicImage('dashboard/folder.png')} alt="dashboard"/>
       </div>
-      {showToast && <BottomRightToast txt={txt} isOpen={showToast} />}
+      {showToast && <BottomRightToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </Card>
   )
 }

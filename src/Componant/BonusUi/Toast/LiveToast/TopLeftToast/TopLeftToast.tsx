@@ -4,19 +4,18 @@ import { TopLeftToasts } from '../../../../../utils/Constant';
 import { Btn, Image } from '../../../../../AbstractElements';
 import { dynamicImage } from '../../../../../Service';
 
-const TopLeftToast = ({ txt = 'Default Toast Message', isOpen }: { txt?: string; isOpen: boolean }) => {
-  const [open, setOpen] = useState(isOpen);
+const TopLeftToast = ({ txt = 'Default Toast Message', open, setOpenToast }: { txt?: string; open: boolean, setOpenToast: any }) => {
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        setOpenToast(false);
+      }, 3000);
+    }
+  }, [open]);
 
   const toggle = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000);
+    setOpenToast(!open);
   };
-
-  useEffect(() => {
-    setOpen(isOpen);
-  }, [isOpen]);
 
   return (
     <>
@@ -26,7 +25,7 @@ const TopLeftToast = ({ txt = 'Default Toast Message', isOpen }: { txt?: string;
             <Image className="rounded me-2" src={dynamicImage(`other-images/profile.png`)} alt="profile" />
             <strong className="me-auto">{txt.split(" ")[0]}</strong>
             <small className="d-sm-block d-none">Just now</small>
-            <Btn close onClick={() => setOpen(false)}></Btn>
+            <Btn close onClick={() => setOpenToast(false)}></Btn>
           </ToastHeader>
           <ToastBody className="toast-dark">
             <strong className="txt-success">Well done!</strong> {txt}.

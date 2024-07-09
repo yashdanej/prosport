@@ -24,6 +24,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
+  const [txt, setTxt] = useState("");
 
   useEffect(() => {
     console.log('user', user);
@@ -42,6 +43,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
     e.preventDefault();
     try {
       if (user.name === '' || user.email === '' || user.password === '') {
+        setTxt("* fields are required");
         setShowToast(true); // Show toast for required fields
       } else {
         const registerRes = await dispatch(signup(user)).unwrap();
@@ -50,8 +52,10 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
         navigate(`${process.env.PUBLIC_URL}/login`);
         // Handle successful signup, e.g., redirect to another page or show a success message
       }
-    } catch (error) {
-      console.error('Signup error:', error);
+    } catch (error: any) {
+      console.log('Signup error:', error);
+      setTxt(error.error);
+      setShowToast(true); // Show toast for required fields
       // Handle signup error, e.g., show an error message
     }
   };
@@ -116,7 +120,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
           </Form>
         </div>
       </div>
-      {showToast && <BottomRightToast txt="* fields are required" isOpen={showToast} />}
+      {showToast && <BottomRightToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </div>
   );
 };

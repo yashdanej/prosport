@@ -3,24 +3,18 @@ import { Toast, ToastBody } from 'reactstrap';
 import { Btn } from '../../../../../AbstractElements';
 import './toast.css';
 
-const BottomRightToast = ({ txt = 'Default Toast Message', isOpen }: { txt?: string; isOpen: boolean }) => {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(isOpen);
-  }, [isOpen]);
-
-  const toggle = () => {
-    setOpen(!open);
-  };
-
+const BottomRightToast = ({ txt = 'Default Toast Message', open, setOpenToast }: { txt?: string; open: boolean, setOpenToast: any }) => {
   useEffect(() => {
     if (open) {
       setTimeout(() => {
-        setOpen(false);
+        setOpenToast(false);
       }, 3000);
     }
   }, [open]);
+
+  const toggle = () => {
+    setOpenToast(!open);
+  };
 
   return (
     <>

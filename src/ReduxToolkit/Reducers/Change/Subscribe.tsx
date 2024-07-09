@@ -10,8 +10,8 @@ export const createToken = createAsyncThunk(
       console.log("createToken---------", data);
       const res = await api(`/order/create-token/${data.id}`, "post", data, false, true);
       console.log("res---", res);
-      if (!res?.data?.success) {
-        return rejectWithValue(res?.data?.message);
+      if (res?.response?.status === 400) {
+        return rejectWithValue(res?.response?.data?.message);
       }
       return res?.data;
     } catch (err: any) {

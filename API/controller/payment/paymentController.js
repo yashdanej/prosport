@@ -161,7 +161,7 @@ exports.createToken = async (req, res, next) => {
 
         // Validate input
         if (!name || !email || !expire_date) {
-            return res.status(400).json({ status: false, message: "Missing required fields" });
+            return res.status(400).json({ success: false, message: "Missing required fields" });
         }
 
         // Convert expire_date to Indian Standard Time (IST)
@@ -179,10 +179,11 @@ exports.createToken = async (req, res, next) => {
             const currentDateIST = moment().tz('Asia/Kolkata');
             const subscriptionEndDate = moment(currentSubscription.expire_date).tz('Asia/Kolkata');
             if (currentDateIST.isBefore(subscriptionEndDate)) {
-                isNewSubscription = false; // Subscription is active and being renewed
+                // If the subscription is still active, send a response indicating that
+                return res.status(400).json({ success: false, message: "Already subscribed" });
             }
-            // If the subscription has expired, you can choose to renew or create a new one
         }
+
         console.log("isNewSubscription", isNewSubscription);
 
         // Proceed to create a new subscription or renew existing subscription
@@ -225,14 +226,14 @@ exports.createToken = async (req, res, next) => {
         }
 
         return res.status(200).json({
-            status: true,
+            success: true,
             response: { user_id: getUser, token },
             message: isNewSubscription ? 'Token Created Successfully' : 'Subscription Renewed Successfully',
         });
 
     } catch (error) {
         console.error("Error creating token:", error);
-        return res.status(500).json({ status: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -257,7 +258,7 @@ exports.GetCommission = async (req, res, next) => {
         });
     } catch (error) {
         console.error("Error fetching API keys:", error);
-        return res.status(500).json({ status: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 

@@ -47,34 +47,35 @@ const BecomeMember = () => {
   }
 
   const handleTry = async (id: number) => {
+    // Calculate the expiry date as one month from the current date
+    const currentDate = new Date();
+    const expiryDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+    const formattedExpiryDate = expiryDate.toISOString().slice(0, 19).replace('T', ' '); // Formatting as 'YYYY-MM-DD HH:mm:ss'
+    
+    const data = {
+      id: id,
+      name: user.name,
+      email: user.email,
+      expire_date: formattedExpiryDate
+    };
+    
     try {
-      // Calculate the expiry date as one month from the current date
-      const currentDate = new Date();
-      const expiryDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
-      const formattedExpiryDate = expiryDate.toISOString().slice(0, 19).replace('T', ' '); // Formatting as 'YYYY-MM-DD HH:mm:ss'
-  
-      const data = {
-        id: id,
-        name: user.name,
-        email: user.email,
-        expire_date: formattedExpiryDate
-      };
-  
       // Await the dispatch to ensure it completes before proceeding
-      const res = await dispatch(createToken(data));
-      console.log("res*784", res);
+      const res = await dispatch(createToken(data)).unwrap();
   
-      // Check if the response indicates success
-      if (res?.payload?.status) {
-        setTxt(`${user.name} Token Created Successfully`);
-        setShowToast(true);
-      } else {
-        setTxt(`${res.payload}`);
-        setShowToast(true);
-        console.log("Token creation failed:", res.payload);
-      }
-    } catch (error) {
-      console.log("error", error);
+      // // Check if the response indicates success
+      // if (res?.payload?.status) {
+      //   setTxt(`${user.name} Token Created Successfully`);
+      //   setShowToast(true);
+      // } else {
+      //   setTxt(`${res.payload}`);
+      //   setShowToast(true);
+      //   console.log("Token creation failed:", res.payload);
+      // }
+    } catch (error: any) {
+      console.log("error in subscription", error);
+      setTxt(`${user.name} ${error}`);
+      setShowToast(true);
     }
   }
   
@@ -116,7 +117,7 @@ const BecomeMember = () => {
           ))}
         </Row>
       </CardBody>
-      {showToast && <TopLeftToast txt={txt} isOpen={showToast} />}
+      {showToast && <TopLeftToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </Card>
   )
 }

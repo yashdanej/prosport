@@ -110,7 +110,7 @@ const Login = () => {
           </div>
         </Col>
       </Row>
-      {showToast && <BottomRightToast txt={txt} isOpen={showToast} />}
+      {showToast && <BottomRightToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </Container>
   );
 };

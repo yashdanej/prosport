@@ -6,12 +6,7 @@ const path = require('path');
 const PORT = 3000;
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:3001',  // i am doing this because of cookie request
-    // origin: 'http://65.0.30.99',  // i am doing this because of cookie request
-    // origin: 'http://crm.bhupeshmittal.com',  // i am doing this because of cookie request
-    credentials: true,
-}));
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 // app.use(cookieParser());

@@ -60,10 +60,7 @@ const EditProfileForm = () => {
 
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    const body = { ...user, file };
-    console.log("body", body);
-    
-    dispatch(updateProfile(body)).then(() => {
+    dispatch(updateProfile(user)).then(() => {
       setTxt(`${user?.name} Profile Updated Successfully`);
       setShowToast(true);
     }).catch((error) => {
@@ -73,9 +70,21 @@ const EditProfileForm = () => {
     });
   };
 
+  const handleFileChange = (fileItems: any) => {
+    // Set the file state
+    setFile(fileItems.map((fileItem: any) => fileItem.file));
+    // Optionally update the user state or handle the file as needed
+    if (fileItems.length > 0) {
+      const updatedUser = { ...user, file: fileItems[0].file };
+      setUser(updatedUser);
+    } else {
+      const updatedUser = { ...user, file: null };
+      setUser(updatedUser);
+    }
+  };
+
   useEffect(() => {
     console.log("user", user);
-    console.log("profileData", profileData);
   }, [user]);
 
   return (
@@ -101,6 +110,7 @@ const EditProfileForm = () => {
                     allowMultiple={false}
                     maxFiles={1}
                     labelIdle={'Drag & Drop your profile pic or <span class="filepond--label-action text-danger text-decoration-none">Browse</span>'}
+                    onupdatefiles={handleFileChange}
                   />
                 </FormGroup>
               </Col>
@@ -176,7 +186,7 @@ const EditProfileForm = () => {
           </CardBody>
         </Card>
       </Form>
-      {showToast && <TopLeftToast txt={txt} isOpen={showToast} />}
+      {showToast && <TopLeftToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </Col>
   );
 };
