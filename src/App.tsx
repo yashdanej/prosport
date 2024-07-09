@@ -5,6 +5,7 @@ import Store, { AppDispatch, RootState } from "./ReduxToolkit/Store";
 import { useEffect } from "react";
 import { getAllUsers } from "./ReduxToolkit/Reducers/Change/AuthSlice";
 import { getSubscribe } from "./ReduxToolkit/Reducers/Change/Subscribe";
+import { getLoggedUserProfile } from "./ReduxToolkit/Reducers/Change/ProfileSlice";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,12 +16,17 @@ const App = () => {
   const fetchPlans = () => {
     dispatch(getSubscribe());
   }
+
+  const fetchUser = () => {
+    dispatch(getLoggedUserProfile());
+  }
   
   useEffect(() => {
     fetchRefferer();
     fetchPlans();
+    fetchUser();
   }, [dispatch]);
-    
+  
   return (
     <>
       <Provider store={Store} >

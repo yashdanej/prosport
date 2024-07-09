@@ -32,12 +32,12 @@ exports.Signup = async (req, res) => {
     console.log("reffer_code", reffer_code);
     if (reffer_code && reffer_code.trim() !== "") {
       console.log(reffer_code);
-      userQuery = 'INSERT INTO users (name, email, password, secret_key, reffer_code, reffer_by) VALUES (?, ?, ?, ?, ?, ?)';
-      userResult = await query(userQuery, [name, email, hashedPassword, secretKey, generatedReferralCode, reffer_code]);
+      userQuery = 'INSERT INTO users (name, email, password, secret_key, reffer_code, reffer_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)';
+      userResult = await query(userQuery, [name, email, hashedPassword, secretKey, generatedReferralCode, reffer_code, new Date()]);
     } else {
       console.log(reffer_code);
-      userQuery = 'INSERT INTO users (name, email, password, secret_key, reffer_code) VALUES (?, ?, ?, ?, ?)';
-      userResult = await query(userQuery, [name, email, hashedPassword, secretKey, generatedReferralCode]);
+      userQuery = 'INSERT INTO users (name, email, password, secret_key, reffer_code, created_at) VALUES (?, ?, ?, ?, ?, ?)';
+      userResult = await query(userQuery, [name, email, hashedPassword, secretKey, generatedReferralCode, new Date()]);
     }
 
     const userId = userResult.insertId;
@@ -57,6 +57,7 @@ exports.Signup = async (req, res) => {
         // const commissionUpdateQuery = 'UPDATE users SET commission_balance = commission_balance + ? WHERE id = ?';
         // await query(commissionUpdateQuery, [commissionAmount, referrerId]);
       } else {
+        await query("delete from users where email = ?", [email]);
         return res.status(400).json({ success: false, message: 'Invalid referral code' });
       }
     }

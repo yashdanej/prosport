@@ -1,94 +1,184 @@
-import { Card, CardBody, CardFooter, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap'
-import { Btn } from '../../../../../AbstractElements'
-import { AboutMe, Address, City, Company, Country, EditProfile, Emailaddress, FirstName, LastName, PostalCode, UpdateProfile, Username } from '../../../../../utils/Constant'
-import CardHeaderCommon from '../../../../../CommonElements/CardHeaderCommon/CardHeaderCommon'
+import React, { useEffect, useState } from 'react';
+import { Card, CardBody, CardFooter, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Btn, H4, P, Image } from '../../../../../AbstractElements';
+import CardHeaderCommon from '../../../../../CommonElements/CardHeaderCommon/CardHeaderCommon';
+import { dynamicImage } from '../../../../../Service';
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import { changeText } from '../../../../../Utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../../ReduxToolkit/Store';
+import { getLoggedUserProfile, updateProfile } from '../../../../../ReduxToolkit/Reducers/Change/ProfileSlice';
+import moment from 'moment';
+import TopLeftToast from '../../../../BonusUi/Toast/LiveToast/TopLeftToast/TopLeftToast';
+
+registerPlugin(FilePondPluginImagePreview);
 
 const EditProfileForm = () => {
-  return (
-    <Col xl="8" >
-      <Form>
-        <Card>
-            <CardHeaderCommon title={EditProfile} tagClass={"card-title mb-0"} />
-            <CardBody>
-                <Row>
-                    <Col sm="6" md="6" >
-                        <FormGroup>
-                            <Label >{FirstName}</Label>
-                            <Input type="text" placeholder="Company" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="6" md="6" >
-                        <FormGroup>
-                            <Label >{LastName}</Label>
-                            <Input type="text" placeholder="Last Name" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="12" md="12" >
-                        <FormGroup>
-                            <Label >{Emailaddress}</Label>
-                            <Input type="email" placeholder="Email" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="12" md="12" >
-                        <FormGroup>
-                            <Label >Phone</Label>
-                            <Input type="number" placeholder="Phone" />
-                        </FormGroup>
-                    </Col>
-                    {/* <Col md="12">
-                        <FormGroup>
-                            <Label >{Address}</Label>
-                            <Input type="text" placeholder="Home Address" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="6" md="4" >
-                        <FormGroup>
-                            <Label >{City}</Label>
-                            <Input type="text" placeholder="City" />
-                        </FormGroup>
-                    </Col>
-                    <Col sm="6" md="3" >
-                        <FormGroup>
-                            <Label >{PostalCode}</Label>
-                            <Input type="number" placeholder="ZIP Code" />
-                        </FormGroup>
-                    </Col>
-                    <Col md="5">
-                        <FormGroup>
-                            <Label>{Country}</Label>
-                            <Input type='select' className="btn-square form-select">
-                            <option>{'Select'}</option>
-                            <option>{'Germany'}</option>
-                            <option>{'Canada'}</option>
-                            <option>{'Usa'}</option>
-                            <option>{'Aus'}</option>
-                            </Input>
-                        </FormGroup>
-                    </Col> */}
-                    {/* <Col md="12">
-                        <Label>{AboutMe}</Label>
-                        <textarea className="form-control" rows={3} placeholder="Enter About your description" />
-                    </Col> */}
-                </Row>
-            </CardBody>
-            <CardFooter className="text-end">
-                <Btn color="primary" type="submit">{UpdateProfile}</Btn>
-            </CardFooter>
-        </Card>
-      </Form>
-      <Form>
-        <Card>
-            <CardHeaderCommon title="Session" tagClass={"card-title mb-0"} />
-            <CardBody>
-                <p>This is a list of devices that have logged into your account. Remove those that you do not recognize.</p>
-            </CardBody>
-            {/* <CardFooter className="text-end">
-                <Btn color="primary" type="submit">{UpdateProfile}</Btn>
-            </CardFooter> */}
-        </Card>
-      </Form>
-    </Col>
-  )
-}
+  const [showToast, setShowToast] = useState(false);
+  const [txt, setTxt] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const profileData = useSelector((state: RootState) => state.profile.profile);
+  const userData = localStorage.getItem("login-user");
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+  const profile = profileData?.data;
+  const [file, setFile] = useState([]);
+  const [user, setUser] = useState({
+    name: profile?.name || "",
+    lastname: profile?.lastname || "",
+    email: profile?.email || "",
+    gender: profile?.gender || "",
+    dob: profile?.dob || "",
+    location: profile?.location || "",
+    phone: profile?.phone || "",
+    language: profile?.language || "English",
+    skills: profile?.skills || "",
+    module: "profile",
+    image: profile?.image || ""
+  });
 
-export default EditProfileForm
+  useEffect(() => {
+      if(profileData?.data){
+        const profile = profileData?.data;
+        setUser({
+            name: profile?.name || "",
+            lastname: profile?.lastname || "",
+            email: profile?.email || "",
+            gender: profile?.gender || "",
+            dob: profile?.dob || "",
+            location: profile?.location || "",
+            phone: profile?.phone || "",
+            language: profile?.language || "English",
+            skills: profile?.skills || "",
+            module: "profile",
+            image: profile?.image || ""
+        })
+    }
+  }, [profileData.data]);
+
+  const handleUpdateProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    const body = { ...user, file };
+    console.log("body", body);
+    
+    dispatch(updateProfile(body)).then(() => {
+      setTxt(`${user?.name} Profile Updated Successfully`);
+      setShowToast(true);
+    }).catch((error) => {
+      setTxt("Error updating profile");
+      setShowToast(true);
+      console.error("Error updating profile:", error);
+    });
+  };
+
+  useEffect(() => {
+    console.log("user", user);
+    console.log("profileData", profileData);
+  }, [user]);
+
+  return (
+    <Col xl="12">
+      <Form onSubmit={handleUpdateProfile}>
+        <Card>
+          <CardHeaderCommon title="Edit Profile" tagClass={"card-title mb-0"} />
+          <CardBody>
+            <Row>
+              <div className="profile-title">
+                <div className='d-flex'>
+                  <Image className="img-70 rounded-circle" style={{objectFit: "cover", height: "70px"}} alt="edit-user" src={user?.image} />
+                  <div className='flex-grow-1'>
+                    <H4 className="mb-1">{parsedUserData?.user?.name}</H4>
+                    <P>Operator</P>
+                  </div>
+                </div>
+              </div>
+              <Col lg="12">
+                <FormGroup>
+                  <FilePond
+                    files={file}
+                    allowMultiple={false}
+                    maxFiles={1}
+                    labelIdle={'Drag & Drop your profile pic or <span class="filepond--label-action text-danger text-decoration-none">Browse</span>'}
+                  />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>First Name</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="text" name='name' placeholder="First Name" value={user?.name} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>Last Name</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='lastname' placeholder="Last Name" value={user?.lastname} />
+                </FormGroup>
+              </Col>
+              <Col sm="12" md="12">
+                <FormGroup>
+                  <Label>Email</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="email"  name='email' placeholder="Email" value={user?.email} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>Phone</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="number"  name='phone' placeholder="Phone" value={user?.phone} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>DOB</Label>
+                  <Input 
+                    onChange={(e) => changeText(e, setUser, user)} 
+                    type="date"  
+                    name='dob' 
+                    placeholder="DOB" 
+                    value={user?.dob ? moment(user.dob).format('YYYY-MM-DD') : ''} 
+                  />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>Location</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='location' placeholder="Location" value={user?.location} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <Label>Gender</Label>
+                <div className="card-wrapper border rounded-3 checkbox-checked">
+                  <div className="radio-form">
+                    <FormGroup check>
+                      <Input onChange={(e) => changeText(e, setUser, user)} type="radio" id="flexRadioDefault1" name="gender" value="male" checked={user?.gender === "male"} />
+                      <Label for='flexRadioDefault1' check>Male</Label>
+                    </FormGroup>
+                    <FormGroup check>
+                      <Input onChange={(e) => changeText(e, setUser, user)} type="radio" id="flexRadioDefault2" name="gender" value="female" checked={user?.gender === "female"} />
+                      <Label for='flexRadioDefault2' check>Female</Label>
+                    </FormGroup>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </CardBody>
+          <CardFooter className="text-end">
+            <Btn color="primary" type="submit">Update Profile</Btn>
+          </CardFooter>
+        </Card>
+      </Form>
+      <Form>
+        <Card>
+          <CardHeaderCommon title="Session" tagClass={"card-title mb-0"} />
+          <CardBody>
+            <p>This is a list of devices that have logged into your account. Remove those that you do not recognize.</p>
+          </CardBody>
+        </Card>
+      </Form>
+      {showToast && <TopLeftToast txt={txt} isOpen={showToast} />}
+    </Col>
+  );
+};
+
+export default EditProfileForm;

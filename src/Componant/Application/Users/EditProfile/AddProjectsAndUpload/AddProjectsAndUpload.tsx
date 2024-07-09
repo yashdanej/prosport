@@ -21,7 +21,7 @@ const AddProjectsAndUpload = () => {
                     </Col>
                     <Col sm="6" md="6" >
                         <FormGroup>
-                            <Label >new Password</Label>
+                            <Label >New Password</Label>
                             <Input type="text" placeholder="New Password" />
                         </FormGroup>
                     </Col>

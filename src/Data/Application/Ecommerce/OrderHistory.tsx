@@ -170,28 +170,3 @@ export const orderData = [
   ];
   
 
-  export const orderHistoryDataColumn: TableColumn<OrderHistoryTableColumns>[] = [
-    {
-      name: "Id",
-      selector: (row) => `${row.id}`,
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "Plan Id",
-      selector: (row) => `${row.plan_id}`,
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "Amount",
-      selector: (row) => `${row.amount}]`,
-      sortable: true,
-      center: true,
-    },
-    {
-      name: "Subscribe Date",
-      selector: (row) => `${row.subscribe_date}]`,
-      center: true,
-    },
-  ];

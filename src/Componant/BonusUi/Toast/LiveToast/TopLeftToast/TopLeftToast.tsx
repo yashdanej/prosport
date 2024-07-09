@@ -20,7 +20,7 @@ const TopLeftToast = ({ txt = 'Default Toast Message', isOpen }: { txt?: string;
 
   return (
     <>
-      <div className="toast-container position-fixed start-0 top-0 p-3 toast-index toast-rtl">
+      <div className="toast-container position-fixed end-0 top-0 p-3 toast-index toast-rtl">
         <Toast fade isOpen={open}>
           <ToastHeader className="toast-img">
             <Image className="rounded me-2" src={dynamicImage(`other-images/profile.png`)} alt="profile" />

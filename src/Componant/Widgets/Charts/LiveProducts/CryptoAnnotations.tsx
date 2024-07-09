@@ -96,6 +96,7 @@ const CryptoAnnotations = () => {
         },
     }]
 };
+
   return (
     <Col xl="6" lg="12" className="xl-50">
       <Card>
@@ -106,13 +107,16 @@ const CryptoAnnotations = () => {
           <div className="chart-container">
             <Row>
               <Col xs="12">
+              {
+                apiLogsData?.data?.length>0 &&
                 <ReactApexChart
                   id="crypto-annotation"
                   options={cryptoAnnotationChart}
-                  series={cryptoAnnotationChart.series}
+                  series={cryptoAnnotationChart?.series}
                   type="line"
                   height={400}
                 />
+              }
               </Col>
             </Row>
           </div>

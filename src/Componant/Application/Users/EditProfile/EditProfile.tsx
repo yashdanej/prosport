@@ -8,7 +8,7 @@ const EditProfileContainer = () => {
     <Container fluid>
       <div className="edit-profile">
         <Row>
-          <EditMyProfile />
+          {/* <EditMyProfile /> */}
           <EditProfileForm />
           <AddProjectsAndUpload />
         </Row>

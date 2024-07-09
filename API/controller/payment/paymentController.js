@@ -172,18 +172,18 @@ exports.createToken = async (req, res, next) => {
 
         // Flag to track if a new subscription is being created or renewed
         let isNewSubscription = true;
-
+        console.log("getSub", getSub);
         if (getSub.length > 0) {
             // Check if the current subscription is still active
             const currentSubscription = getSub[0];
             const currentDateIST = moment().tz('Asia/Kolkata');
             const subscriptionEndDate = moment(currentSubscription.expire_date).tz('Asia/Kolkata');
-
             if (currentDateIST.isBefore(subscriptionEndDate)) {
                 isNewSubscription = false; // Subscription is active and being renewed
             }
             // If the subscription has expired, you can choose to renew or create a new one
         }
+        console.log("isNewSubscription", isNewSubscription);
 
         // Proceed to create a new subscription or renew existing subscription
         const createSubscriptionQuery = isNewSubscription
