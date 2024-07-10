@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store'
 import BottomRightToast from '../../../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast'
 import { useEffect, useState } from 'react'
 import TopLeftToast from '../../../BonusUi/Toast/LiveToast/TopLeftToast/TopLeftToast'
+import ContentLoaderBecomeMember from './ContentLoaderBecomeMember'
 
 const BecomeMember = () => {
   const [showToast, setShowToast] = useState(false);
@@ -93,7 +94,14 @@ const BecomeMember = () => {
       <CommonCardHeader title="Subscription Plans" />
       <CardBody className="pricing-block">
         <Row>
-          {plansData && plansData?.data?.map((item:any, index: number) => (
+          { plansData?.isLoading ? (
+            Array(3).fill(0).map((_, index) => (
+              <Col lg="4" sm="6" className="box-col-3" key={index}>
+                <ContentLoaderBecomeMember />
+              </Col>
+            ))
+          ):
+          plansData && plansData?.data?.map((item:any, index: number) => (
             <Col lg="4" sm="6" className="box-col-3" key={index}>
               <div className="pricingtable">
                 <div className="pricingtable-header">

@@ -168,7 +168,7 @@ exports.createToken = async (req, res, next) => {
         const expireDateIST = moment(expire_date).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
 
         // Check if user already has an active subscription
-        const getSub = await query("SELECT * FROM user_subscriptions WHERE user_id = ?", [getUser]);
+        const getSub = await query("SELECT * FROM user_subscriptions WHERE userId = ?", [getUser]);
 
         // Flag to track if a new subscription is being created or renewed
         let isNewSubscription = true;
@@ -188,8 +188,8 @@ exports.createToken = async (req, res, next) => {
 
         // Proceed to create a new subscription or renew existing subscription
         const createSubscriptionQuery = isNewSubscription
-            ? `INSERT INTO user_subscriptions (user_id, plan_id, start_date, expire_date, token) VALUES (?, ?, ?, ?, ?)`
-            : `UPDATE user_subscriptions SET plan_id = ?, start_date = ?, expire_date = ?, token = ? WHERE user_id = ?`;
+            ? `INSERT INTO user_subscriptions (userId, planId, start_date, expire_date, token) VALUES (?, ?, ?, ?, ?)`
+            : `UPDATE user_subscriptions SET planId = ?, start_date = ?, expire_date = ?, token = ? WHERE userId = ?`;
 
         const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -269,7 +269,7 @@ exports.apiKeys = async (req, res, next) => {
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         
         // Get the user's subscriptions
-        const plans = await query("SELECT * FROM user_subscriptions WHERE user_id = ?", [getUser]);
+        const plans = await query("SELECT * FROM user_subscriptions WHERE userId = ?", [getUser]);
 
         // Send the response
         return res.status(200).json({

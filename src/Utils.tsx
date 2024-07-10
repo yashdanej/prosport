@@ -86,7 +86,7 @@ export const Loading = () => {
       height: '20px',
       borderRadius: '50%',
       margin: '0 10px',
-      backgroundColor: '#333',
+      backgroundColor: 'white',
       animation: 'circle1 1s ease-in-out infinite'
     };
   

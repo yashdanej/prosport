@@ -13,7 +13,7 @@ type ApiKeyData = {
   id: number;
   sport_id: number | null;
   user_id: number;
-  plan_id: number;
+  planId: number;
   start_date: string;
   expire_date: string;
   token: string;
@@ -53,7 +53,7 @@ const ApiKey = () => {
     },
     {
       name: "Plan",
-      selector: (row) => `${plansData?.data?.find((plan: any) => plan.id === row.plan_id)?.name}`,
+      selector: (row) => `${plansData?.data?.find((plan: any) => plan.id === row.planId)?.name}`,
       sortable: true,
       center: true,
     },

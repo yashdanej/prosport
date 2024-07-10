@@ -59,6 +59,13 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     // Add any reducers if needed
+    emptyProfile(state){
+        console.log('state', state);
+        state.profile.isLoading = false
+        state.profile.data = null
+        state.profile.isError = false
+        state.profile.errorMessage = ""
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getLoggedUserProfile.pending, (state) => {
@@ -92,4 +99,5 @@ const profileSlice = createSlice({
   }
 });
 
+export const { emptyProfile } = profileSlice.actions;
 export const profileReducer = profileSlice.reducer;

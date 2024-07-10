@@ -8,6 +8,7 @@ import { getRefferer } from '../../../../ReduxToolkit/Reducers/Change/AuthSlice'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { convertToIST } from '../../../../Utils'
 import { getCommission } from '../../../../ReduxToolkit/Reducers/Change/Subscribe'
+import ContentLoaderTopReffer from './ContentLoaderTopReffer'
 
 
 type ReffererdData = {
@@ -90,6 +91,10 @@ const TopRefferedUsers = () => {
           <CardBody>
             <div className="order-history table-responsive">
               {
+                reffererData?.isLoading ?
+                Array(3).fill(0).map((_, index) => (
+                  <ContentLoaderTopReffer key={index} />
+                )):
                 reffererData && reffererData.data && reffererData.data.length > 0 &&
                 <DataTable
                   data={reffererData.data}

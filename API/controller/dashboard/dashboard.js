@@ -13,7 +13,7 @@ exports.getApiLogs = async (req, res, next) => {
         
         // Get the user's API logs grouped by endpoint
         const logs = await query(
-            "SELECT endpoint, COUNT(*) AS count FROM api_call_logs WHERE user_id = ? GROUP BY endpoint",
+            "SELECT endpoint, COUNT(*) AS count FROM api_call_logs WHERE userId = ? GROUP BY endpoint",
             [getUser]
         );
 
@@ -41,7 +41,7 @@ exports.GetApiLogsByUser = async (req, res, next) => {
             FROM 
                 api_call_logs 
             WHERE 
-                user_id = ?
+                userId = ?
             GROUP BY 
                 DATE(created_at)
             ORDER BY 

@@ -7,12 +7,13 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { changeText } from '../../../../../Utils';
+import { changeText, Loading } from '../../../../../Utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../ReduxToolkit/Store';
 import { getLoggedUserProfile, updateProfile } from '../../../../../ReduxToolkit/Reducers/Change/ProfileSlice';
 import moment from 'moment';
 import TopLeftToast from '../../../../BonusUi/Toast/LiveToast/TopLeftToast/TopLeftToast';
+import ContentLoaderEditProfile from './ContentLoaderEditProfile';
 
 registerPlugin(FilePondPluginImagePreview);
 
@@ -57,41 +58,71 @@ const EditProfileForm = () => {
         })
     }
   }, [profileData.data]);
+  const resetUser = () => {
+    setUser({
+      name: profile?.name || "",
+      lastname: profile?.lastname || "",
+      email: profile?.email || "",
+      gender: profile?.gender || "",
+      dob: profile?.dob || "",
+      location: profile?.location || "",
+      phone: profile?.phone || "",
+      language: profile?.language || "English",
+      skills: profile?.skills || "",
+      module: "profile",
+      image: profile?.image || ""
+    })
+  }
 
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(updateProfile(user)).then(() => {
       setTxt(`${user?.name} Profile Updated Successfully`);
       setShowToast(true);
+      resetUser()
     }).catch((error) => {
       setTxt("Error updating profile");
       setShowToast(true);
+      resetUser()
       console.error("Error updating profile:", error);
     });
   };
-
+  
   const handleFileChange = (fileItems: any) => {
     // Set the file state
     setFile(fileItems.map((fileItem: any) => fileItem.file));
     // Optionally update the user state or handle the file as needed
     if (fileItems.length > 0) {
-      const updatedUser = { ...user, file: fileItems[0].file };
-      setUser(updatedUser);
+      setUser((prevState) => ({
+        ...prevState,
+        file: fileItems[0].file
+      }));
     } else {
-      const updatedUser = { ...user, file: null };
-      setUser(updatedUser);
+      setUser((prevState) => ({
+        ...prevState,
+        file: null
+      }));
     }
   };
-
+  const fetchUser = () => {
+    dispatch(getLoggedUserProfile());
+  }
   useEffect(() => {
     console.log("user", user);
   }, [user]);
+    useEffect(() => {
+      fetchUser();
+    }, []);
 
   return (
     <Col xl="12">
       <Form onSubmit={handleUpdateProfile}>
         <Card>
           <CardHeaderCommon title="Edit Profile" tagClass={"card-title mb-0"} />
+            {
+              profileData?.isLoading ?
+                <ContentLoaderEditProfile/>
+              :
           <CardBody>
             <Row>
               <div className="profile-title">
@@ -173,8 +204,9 @@ const EditProfileForm = () => {
               </Col>
             </Row>
           </CardBody>
+          }
           <CardFooter className="text-end">
-            <Btn color="primary" type="submit">Update Profile</Btn>
+            <Btn color="primary" type="submit">{!profileData?.isLoading ? "Update Profile":<Loading/>}</Btn>
           </CardFooter>
         </Card>
       </Form>

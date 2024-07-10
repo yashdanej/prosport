@@ -17,14 +17,9 @@ const App = () => {
     dispatch(getSubscribe());
   }
 
-  const fetchUser = () => {
-    dispatch(getLoggedUserProfile());
-  }
-  
   useEffect(() => {
     fetchRefferer();
     fetchPlans();
-    fetchUser();
   }, [dispatch]);
   
   return (
