@@ -15,9 +15,9 @@ const HeaderLogoWrapper = () => {
           <Image className="img-fluid" src={dynamicImage("logo/logo.png")} alt="MofiLogo" />
         </Link>
       </div>
-      <div className="toggle-sidebar">
+      {/* <div className="toggle-sidebar">
         <SVG className="stroke-icon sidebar-toggle status_toggle middle" iconId={"toggle-icon"} onClick={()=>dispatch(setToggleSidebar(!toggleSidebar))}></SVG>
-      </div>
+      </div> */}
     </div>
   );
 };

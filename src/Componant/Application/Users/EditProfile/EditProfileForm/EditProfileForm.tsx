@@ -37,7 +37,9 @@ const EditProfileForm = () => {
     language: profile?.language || "English",
     skills: profile?.skills || "",
     module: "profile",
-    image: profile?.image || ""
+    image: profile?.image || "",
+    company_name: profile?.company_name || "",
+    company_domain: profile?.company_domain || "",
   });
 
   useEffect(() => {
@@ -54,7 +56,9 @@ const EditProfileForm = () => {
             language: profile?.language || "English",
             skills: profile?.skills || "",
             module: "profile",
-            image: profile?.image || ""
+            image: profile?.image || "",
+            company_name: profile?.company_name || "",
+            company_domain: profile?.company_domain || "",
         })
     }
   }, [profileData.data]);
@@ -70,7 +74,9 @@ const EditProfileForm = () => {
       language: profile?.language || "English",
       skills: profile?.skills || "",
       module: "profile",
-      image: profile?.image || ""
+      image: profile?.image || "",
+      company_name: profile?.company_name || "",
+      company_domain: profile?.company_domain || "",
     })
   }
 
@@ -161,6 +167,18 @@ const EditProfileForm = () => {
                 <FormGroup>
                   <Label>Email</Label>
                   <Input onChange={(e) => changeText(e, setUser, user)} type="email"  name='email' placeholder="Email" value={user?.email} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>Company Name</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='company_name' placeholder="Company Name" value={user?.company_name} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>Company Domain</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='company_domain' placeholder="Company Domain" value={user?.company_domain} />
                 </FormGroup>
               </Col>
               <Col sm="6" md="6">

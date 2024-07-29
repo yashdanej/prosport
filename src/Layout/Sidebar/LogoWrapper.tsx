@@ -18,9 +18,9 @@ const LogoWrapper = () => {
           <div className="back-btn" onClick={()=>dispatch(handleResponsiveToggle())}>
             <i className="fa fa-angle-left"></i>
             </div>
-          <div className="toggle-sidebar">
+          {/* <div className="toggle-sidebar">
             <SVG className={`${sidebarIconType}-icon sidebar-toggle status_toggle middle`} iconId={`${sidebarIconType === "fill" ? "fill-" : "" }toggle-icon`} onClick={()=>dispatch(setToggleSidebar(!toggleSidebar))}/>
-          </div>
+          </div> */}
         </div>
         <div className="logo-icon-wrapper">
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>

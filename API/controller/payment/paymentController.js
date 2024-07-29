@@ -270,11 +270,18 @@ exports.apiKeys = async (req, res, next) => {
         
         // Get the user's subscriptions
         const plans = await query("SELECT * FROM user_subscriptions WHERE userId = ?", [getUser]);
+        const [getSelectedUser] = await query("select * from users where id = ?", [getUser]);
+
+        // Add the domain to each plan
+        const plansWithDomain = plans.map(plan => ({
+            ...plan,
+            domain: getSelectedUser.company_domain,
+        }));
 
         // Send the response
         return res.status(200).json({
             status: true,
-            data: plans
+            data: plansWithDomain,
         });
     } catch (error) {
         console.error("Error fetching API keys:", error);

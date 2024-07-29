@@ -18,6 +18,7 @@ type ApiKeyData = {
   expire_date: string;
   token: string;
   api_hits: number | null;
+  domain: string;
   status: number;
   created_at: string;
   updated_at: string | null;
@@ -72,6 +73,12 @@ const ApiKey = () => {
     {
       name: "Access Keys",
       selector: (row) => row.token,
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Domain",
+      selector: (row) => row.domain,
       sortable: true,
       center: true,
     },

@@ -14,7 +14,7 @@ exports.updateProfile = async (req, res, next) => {
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         const [getSelectedUser] = await query("SELECT * FROM users WHERE id = ?", [getUser]);
 
-        const { name, lastname, email, gender, dob, location, phone, language = "English", skills = "", module } = req.body;
+        const { name, lastname, email, gender, dob, location, phone, language = "English", skills = "", company_name, company_domain, module } = req.body;
         
         // Ensure dob is properly formatted as a Date object
         console.log("dob", dob);
@@ -30,7 +30,8 @@ exports.updateProfile = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'Email already in use' });
         }
 
-        let imageFileName = getSelectedUser.image;
+        let imageFileName = getSelectedUser.image.substring(getSelectedUser.image.lastIndexOf('/') + 1);
+        console.log("imageFileName", imageFileName);
         if (req.file) {
             // Handle image upload logic here
             const extension = path.extname(req.file.originalname);
@@ -48,13 +49,15 @@ exports.updateProfile = async (req, res, next) => {
                 }
             }
         }
+        console.log("imageFileName2", imageFileName);
+
         console.log("imageFileName", imageFileName);
         const baseUrl = `${req.protocol}://${req.get('host')}`;
         const userimage = `${baseUrl}/uploads/profile/${imageFileName}`;
-
+        console.log("userimage", userimage);
         // Perform the database update query
-        await query("UPDATE users SET name = ?, lastname = ?, email = ?, gender = ?, dob = ?, location = ?, phone = ?, language = ?, skills = ?, image = ? WHERE id = ?", 
-                    [name, lastname, email, gender, formattedDob, location, phone, language, skills, userimage, getSelectedUser.id]);
+        await query("UPDATE users SET name = ?, lastname = ?, email = ?, gender = ?, dob = ?, location = ?, phone = ?, language = ?, skills = ?, image = ?, company_name = ?, company_domain = ? WHERE id = ?",
+                    [name, lastname, email, gender, formattedDob, location, phone, language, skills, userimage, company_name, company_domain, getSelectedUser.id]);
 
         // Retrieve the updated user data
         const [updatedUser] = await query("SELECT * FROM users WHERE id = ?", [getUser]);
