@@ -7,9 +7,61 @@ import { Link } from "react-router-dom";
 import { Href } from "../../../../utils/Constant";
 
 const ProjectsTableBody = () => {
+  const data = [
+    {
+        invoice:"PSA-001-07-24",
+        product:"Cricket",
+        color:"danger",
+        bill_date:"June 25, 2024",
+        due_date:"June 25, 2024",
+        price:"495,00",
+        tax:"5,00",
+        amount:"500,00"
+    },
+    {
+      invoice:"PSA-001-07-24",
+      product:"Cricket",
+      color:"secondary",
+      bill_date:"June 25, 2024",
+      due_date:"June 25, 2024",
+      price:"495,00",
+      tax:"5,00",
+      amount:"500,00"
+    },
+    {
+      invoice:"PSA-001-07-24",
+      product:"Cricket",
+      color:"secondary",
+      bill_date:"June 25, 2024",
+      due_date:"June 25, 2024",
+      price:"495,00",
+      tax:"5,00",
+      amount:"500,00"
+    },
+    {
+      invoice:"PSA-001-07-24",
+      product:"Cricket",
+      color:"secondary",
+      bill_date:"June 25, 2024",
+      due_date:"June 25, 2024",
+      price:"495,00",
+      tax:"5,00",
+      amount:"500,00"
+    },
+    {
+      invoice:"PSA-001-07-24",
+      product:"Cricket",
+      color:"secondary",
+      bill_date:"June 25, 2024",
+      due_date:"June 25, 2024",
+      price:"495,00",
+      tax:"5,00",
+      amount:"500,00"
+    },
+  ]
   return (
     <tbody>
-      {projectsTableBodyData.map((data, i) => (
+      {data.map((data, i) => (
         <tr key={i}>
           <td>
             <div className="form-check">
@@ -18,16 +70,7 @@ const ProjectsTableBody = () => {
             </div>
           </td>
           <td>
-            <div className="d-flex align-items-center">
-              <div className="flex-shrink-0">
-                <Image src={dynamicImage(`dashboard/project/${data.img}`)} alt="project" />
-              </div>
-              <div className="flex-grow-1 ms-2">
-                <Link to={Href}>
-                  <H6>{data.title}</H6>
-                </Link>
-              </div>
-            </div>
+            <td> {data.invoice}</td>
           </td>
           <td className="project-dot">
             <div className="d-flex">
@@ -35,13 +78,15 @@ const ProjectsTableBody = () => {
                 <span className={`bg-${data.color}`} />
               </div>
               <div className="flex-grow-1">
-                <H6>{data.type}</H6>
+                <H6>{data.product}</H6>
               </div>
             </div>
           </td>
-          <td> {data.date}</td>
-          <td> {data.size}</td>
-          <td>{data.author}</td>
+          <td> {data.bill_date}</td>
+          <td> {data.due_date}</td>
+          <td>{data.price}</td>
+          <td>{data.tax}</td>
+          <td>{data.amount}</td>
           <td className="text-center">
             <CardHeaderDropDown
               mainTitle={true}

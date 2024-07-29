@@ -1,9 +1,9 @@
 import ContainerEducation from '../../../Componant/Dashboard/Education/Education'
 
-const EducationDashboard = () => {
+const EducationDashboard = ({analytics = false}) => {
   return (
     <div className="page-body">
-      <ContainerEducation />
+      <ContainerEducation analytics={analytics} />
     </div>
   )
 }

@@ -8,20 +8,27 @@ import EnrolledClasses from "./EnrolledClasses/EnrolledClasses";
 import FeaturedCourses from "./FeaturedCourses/FeaturedCourses";
 import MonthlyAttendance from "./MonthlyAttendance/MonthlyAttendance";
 import Schedule from "./Schedule/Schedule";
+import ShiftsOverview from "../Default/ShiftsOverview/ShiftsOverview";
 
-const ContainerEducation = () => {
+const ContainerEducation = ({analytics}: any) => {
   return (
     <Container fluid className="dashboard-4">
       <Row>
-        <TotalStudents />
-        <StudyStatistics />
-        <AssignmentsTable />
-        <LiveMeeting />
-        <ActivelyHours />
-        <EnrolledClasses />
-        <FeaturedCourses />
-        <MonthlyAttendance />
-        <Schedule />
+        <TotalStudents analytics={analytics} />
+        {/* <StudyStatistics /> */}
+        {
+          !analytics&&
+          <>
+            <ShiftsOverview />
+            <AssignmentsTable />
+            <LiveMeeting />
+            <ActivelyHours />
+            <EnrolledClasses />
+            <FeaturedCourses />
+            <MonthlyAttendance />
+            <Schedule />
+          </>
+        }
       </Row>
     </Container>
   );

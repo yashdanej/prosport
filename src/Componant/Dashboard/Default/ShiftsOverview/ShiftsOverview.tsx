@@ -1,8 +1,8 @@
 import { Card, CardHeader, Col } from "reactstrap";
-import ShiftsOverviewBody from "./ShiftsOverviewBody";
+import { H4 } from "../../../../AbstractElements";
 import { ShiftsOverviews } from "../../../../utils/Constant";
 import CardHeaderDropDown from "../../../../CommonElements/CommonCardHeader/CardHeaderDropDown";
-import { H4 } from "../../../../AbstractElements";
+import ShiftsOverviewBody from "./ShiftsOverviewBody";
 
 const ShiftsOverview = () => {
   return (
@@ -10,7 +10,7 @@ const ShiftsOverview = () => {
       <Card className="shifts-char-box">
         <CardHeader className="card-no-border pb-0" >
           <div className="header-top"> 
-            <H4>{ShiftsOverviews}</H4>
+            <H4>Refferrals</H4>
             <div className="d-flex align-items-center gap-3">
               <CardHeaderDropDown firstItem={"Address Selection"} secondItem={"Geo-Menu"} thirdItem={"Place Picker"} mainTitle={false} menuTitle={"Location"}/>
               <CardHeaderDropDown firstItem={"Weekly"} secondItem={"Monthly"} thirdItem={"Yearly"} mainTitle={true} />

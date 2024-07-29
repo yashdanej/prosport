@@ -10,9 +10,12 @@ const TotalSellsDetails = ({data}:any) => {
     <>
       {
         data?.data?.length>0 ?
+      // <div className="">
+      //   <H2 className="pb-2">{data?.data[0]?.api_hits || 0}/{plansData?.data?.find((plan: any) => plan?.id === data?.data[0]?.planId)?.api_calls || <Skeleton/>}</H2>
+      //   <P className="text-truncate"><b>Cricket</b></P>
+      // </div>:<H2 className="pb-2">Not subscribed</H2>
       <div className="">
-        <H2 className="pb-2">{data?.data[0]?.api_hits || 0}/{plansData?.data?.find((plan: any) => plan?.id === data?.data[0]?.planId)?.api_calls || <Skeleton/>}</H2>
-        <P className="text-truncate"><b>Cricket</b></P>
+        <H2 className="">{plansData?.data?.find((plan: any) => plan?.id === data?.data[0]?.planId)?.api_calls || <Skeleton/>} &nbsp;&nbsp;<span style={{fontSize: "15px"}} className="f-w-500 font-success">+55%</span></H2>
       </div>:<H2 className="pb-2">Not subscribed</H2>
       }
     </>

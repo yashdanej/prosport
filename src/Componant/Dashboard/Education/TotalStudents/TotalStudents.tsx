@@ -1,18 +1,21 @@
 import { Card, CardBody, Col, Row } from "reactstrap";
 import { H2, Image, P } from "../../../../AbstractElements";
 import { dynamicImage } from "../../../../Service";
-import { totalStudentData } from "../../../../Data/Dashboard/EducationData";
+import { totalStudentData, totalStudentData2 } from "../../../../Data/Dashboard/EducationData";
+import ReactApexChart from "react-apexcharts";
+import { growthChart } from "../../../../Data/Dashboard/DefaultChartData";
 
-const TotalStudents = () => {
+const TotalStudents = ({analytics}: any) => {
+  const data = !analytics?totalStudentData:totalStudentData2
   return (
     <>
-      <Col xl="6" md="12" className="proorder-md-1">
+      <Col xl={!analytics?"8":"12"} md="12" className="proorder-md-1">
         <Row>
-          {totalStudentData.map((data, i) => (
-            <Col xl="6" sm="6" key={i}>
+          {data.map((data, i) => (
+            <Col xl="4" sm="6" key={i}>
               <Card>
                 <CardBody className={data.class}>
-                  <div className="d-flex gap-2 align-items-end">
+                  <div className="d-flex gap-2 align-items-center">
                     <div className="flex-grow-1">
                       <H2>{data.student}</H2>
                       <P className="mb-0 text-truncate"> {data.title}</P>
@@ -24,11 +27,21 @@ const TotalStudents = () => {
                         {data.detail}
                       </div>
                     </div>
-                    <div className="flex-shrink-0">
-                      <Image
-                        src={dynamicImage(`dashboard-4/icon/${data.image}`)}
-                        alt="student"
-                      />
+                    <div className="flex-grow-2">
+                      {
+                        !analytics?
+                        <Image
+                          src={dynamicImage(`dashboard-4/icon/${data.image}`)}
+                          alt="student"
+                        />:
+                        <ReactApexChart
+                          id="growthchart"
+                          options={growthChart}
+                          series={growthChart.series}
+                          height={150}
+                          type="line"
+                        />
+                      }
                     </div>
                   </div>
                 </CardBody>

@@ -13,7 +13,7 @@ const MyGallery = () => {
           <Item original={dynamicImage(`${item}`)} >
             {({ ref, open }) => (
               <Link to={Href} onClick={open}>
-                <img className="img-thumbnail mb-4" ref={ref as React.MutableRefObject<HTMLImageElement>} src={dynamicImage(`${item}`)} alt="image" />
+                {/* <img className="img-thumbnail mb-4" ref={ref as React.MutableRefObject<HTMLImageElement>} src={dynamicImage(`${item}`)} alt="image" /> */}
               </Link>
             )}
           </Item>

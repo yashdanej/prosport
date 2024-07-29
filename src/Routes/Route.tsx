@@ -126,18 +126,22 @@ import InvoiceSix from "../Pages/Application/Ecommerce/Invoices/Invoice-6/Invoic
 import LetterBox from "../Pages/Application/LetterBox/LetterBox";
 import ApiKeySet from "../Pages/Application/Api_keyset/ApiKeySet";
 import Reffer from "../Pages/Application/Reffer/Reffer";
+import ApiDocs from "../Pages/apidocs/ApiDocs";
+import SupportCompo from "../Pages/support/SupportCompo";
 
 
 const routes = [
   // dashboard 
   { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/project`, Component:<ProjectDashboard />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EcommerceDashborad />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EducationDashboard />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EducationDashboard />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EcommerceDashborad />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
   { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, Component: <Reffer />},
   { path: `${process.env.PUBLIC_URL}/setting/profile`, Component: <EditProfile />},
   { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
+  { path: `${process.env.PUBLIC_URL}/api/docs`, Component: <ApiDocs />},
   
   // Widgets
   { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},
@@ -171,6 +175,7 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/ecommerce/wishlist`, Component: <WishList />},
   { path: `${process.env.PUBLIC_URL}/ecommerce/checkout`, Component: <Checkout />},
   { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, Component: <Pricing />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/support`, Component: <SupportCompo />},
 
   // LetterBox
   { path: `${process.env.PUBLIC_URL}/email/letter_box`, Component: <LetterBox />},

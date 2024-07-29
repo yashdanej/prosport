@@ -7,7 +7,7 @@ const AssignmentsTable = () => {
   return (
     <Col xl="8" md="12" className="proorder-md-4">
       <Card>
-        <CommonCardHeader headClass="card-no-border pb-0" title={Assignments} mainTitle={true} firstItem="Weekly" secondItem="Monthly" thirdItem="Yearly" />
+        <CommonCardHeader headClass="card-no-border pb-0" title="Log Events" mainTitle={true} firstItem="Weekly" secondItem="Monthly" thirdItem="Yearly" />
         <CardBody className="pt-0 assignments-table px-0">
           <div className="dataTables_wrapper">
             <div className="table-responsive theme-scrollbar">
@@ -15,18 +15,18 @@ const AssignmentsTable = () => {
                 <thead>
                   <tr>
                     <th>
-                      <div className="form-check">
+                      {/* <div className="form-check">
                         <Input type="checkbox"/>
                         <Label className="form-check-label" />
-                      </div>
+                      </div> */}
                     </th>
-                    <th>{"Id no"}</th>
-                    <th>{"Teacher"}</th>
-                    <th>{"Subject"}</th>
-                    <th>{"Start Date"}</th>
-                    <th>{"End Date"}</th>
+                    <th>{"Company"}</th>
+                    <th>{"Date"}</th>
+                    <th>{"Time"}</th>
+                    <th>{"IP"}</th>
+                    {/* <th>{"End Date"}</th>
                     <th>{"Progress"}</th>
-                    <th>{"Actions"}</th>
+                    <th>{"Actions"}</th> */}
                   </tr>
                 </thead>
                 <AssignmentsTableBody />

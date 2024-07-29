@@ -20,6 +20,7 @@ export const MenuList: MenuItem[] = [
       //   ],
       // },
       { path: `${process.env.PUBLIC_URL}/dashboard/home`, title: "Dashboard", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, title: "Analytics", type: "link" },
       {
         title: "Games",
         id: 2,
@@ -45,7 +46,9 @@ export const MenuList: MenuItem[] = [
       { path: `${process.env.PUBLIC_URL}/dashboard/billing`, title: "Billing", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, title: "Subscription", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, title: "API Keyset", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/api/docs`, title: "API Doc", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, title: "Reffer", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/support`, title: "Support", type: "link" },
     ],
   },
   {

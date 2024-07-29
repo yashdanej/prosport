@@ -23,22 +23,24 @@ const TotalSells = () => {
     <>
     {
       apiKeyData && apiKeyData.data &&
-        <Col xl="3" sm="6">
-          <Card>
-            <CommonCardHeader
-              headClass="card-no-border pb-0"
-              mainTitle={true}
-              firstItem="Weekly"
-              secondItem="Monthly"
-              thirdItem="Yearly"
-              subClass="daily-revenue-card"
-              title="Total Hits" // Assuming `endpoint` is a property in each `log` item
-            />
-            <CardBody className={`pb-5 success`}>
-                <TotalSellsDetails data={apiKeyData}/>
-            </CardBody>
-          </Card>
-        </Col>
+        Array.from({ length: 6 }).map((_, index) => (
+          <Col xl="3" sm="6" key={index}>
+            <Card>
+              <CommonCardHeader
+                headClass="card-no-border pb-0"
+                mainTitle={true}
+                firstItem="Weekly"
+                secondItem="Monthly"
+                thirdItem="Yearly"
+                subClass="daily-revenue-card"
+                title="Total Hits"
+              />
+              <CardBody className="pb-5 success">
+                <TotalSellsDetails data={apiKeyData} />
+              </CardBody>
+            </Card>
+          </Col>
+        ))
     }
     </>
   );

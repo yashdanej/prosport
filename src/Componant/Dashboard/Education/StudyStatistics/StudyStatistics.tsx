@@ -7,7 +7,7 @@ import { studyStatisticChart } from "../../../../Data/Dashboard/DefaultChartData
 
 const StudyStatistics = () => {
   return (
-    <Col xl="6" md="6" className="proorder-md-2">
+    <Col xl="4" md="4" className="proorder-md-2">
       <Card>
         <CommonCardHeader headClass="card-no-border pb-0" title={StudyStatistic} mainTitle={true} firstItem="Weekly" secondItem="Monthly" thirdItem="Yearly" />
         <CardBody>

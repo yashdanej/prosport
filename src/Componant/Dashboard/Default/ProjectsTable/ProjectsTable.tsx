@@ -5,9 +5,9 @@ import ProjectsTableBody from "./ProjectsTableBody";
 
 const ProjectsTable = () => {
   return (
-    <Col xl="7" className="proorder-xl-5 box-col-7 proorder-md-5">
+    <Col xl="12" className="proorder-xl-5 box-col-7 proorder-md-5">
       <Card>
-        <CommonCardHeader headClass="card-no-border pb-0" title={Projects} mainTitle={true} firstItem="Weekly" secondItem="Monthly" thirdItem="Yearly" />
+        <CommonCardHeader headClass="card-no-border pb-0" title="Billing" mainTitle={true} firstItem="Weekly" secondItem="Monthly" thirdItem="Yearly" />
         <CardBody className="pt-0 projects px-0">
           <div className="dataTables_wrapper">
             <div className="table-responsive theme-scrollbar">
@@ -20,12 +20,14 @@ const ProjectsTable = () => {
                         <Label className="form-check-label"></Label>
                       </div>
                     </th>
-                    <th>{"Files Name"}</th>
-                    <th>{"File Type"}</th>
-                    <th>{"Date"}</th>
-                    <th>{"Sizes"}</th>
-                    <th>{"Author"}</th>
-                    <th>{'Actions'}</th>
+                    <th>{"Invoice No"}</th>
+                    <th>{"Products"}</th>
+                    <th>{"Bill Date"}</th>
+                    <th>{"Due Date"}</th>
+                    <th>{"Price"}</th>
+                    <th>{'Tax'}</th>
+                    <th>{'Amount'}</th>
+                    <th>{'Action'}</th>
                   </tr>
                 </thead>
                 <ProjectsTableBody />

@@ -1,0 +1,6 @@
+  .pricingtable::before {
+    background-color: #f4f4fc;
+  }
+  .pricingtable::after {
+    background-color: #f4f4fc;
+  }

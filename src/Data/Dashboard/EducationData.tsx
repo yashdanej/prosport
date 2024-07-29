@@ -3,7 +3,7 @@ import { Href } from "../../utils/Constant"
 export const totalStudentData = [
     {
         student:"42,954",
-        title:"Total Students",
+        title:"Total Hits",
         color:"danger",
         icon:"down",
         percentage:"- 17.06%",
@@ -13,7 +13,7 @@ export const totalStudentData = [
     },
     {
         student:"659",
-        title:"Total Teachers",
+        title:"Used Hits",
         color:"success",
         icon:"up",
         percentage:"+27.02%",
@@ -23,7 +23,7 @@ export const totalStudentData = [
     },
     {
         student:"984",
-        title:"Events",
+        title:"Remaining hits",
         color:"success",
         icon:"up",
         percentage:"+ 12.01%",
@@ -33,7 +33,150 @@ export const totalStudentData = [
     },
     {
         student:"1,984",
-        title:"Invoice Status",
+        title:"Cricket",
+        color:"danger",
+        icon:"down",
+        percentage:"- 15.02%",
+        detail:"than last 5 Month",
+        image:"invoice.png",
+        class:"student-4"
+    },
+    {
+        student:"984",
+        title:"Football",
+        color:"success",
+        icon:"up",
+        percentage:"+ 12.01%",
+        detail:"than last 8 Month",
+        image:"calendar.png",
+        class:"student-3"
+    },
+    {
+        student:"1,984",
+        title:"Basketball",
+        color:"danger",
+        icon:"down",
+        percentage:"- 15.02%",
+        detail:"than last 5 Month",
+        image:"invoice.png",
+        class:"student-4"
+    },
+]
+
+export const totalStudentData2 = [
+    {
+        student:"42,954",
+        title:"Total Hits",
+        color:"danger",
+        icon:"down",
+        percentage:"- 17.06%",
+        detail:"than last 6 Month",
+        image:"student.png",
+        class:"student"
+    },
+    {
+        student:"659",
+        title:"Used Hits",
+        color:"success",
+        icon:"up",
+        percentage:"+27.02%",
+        detail:"than last 4 Month",
+        image:"teacher.png",
+        class:"student-2"
+    },
+    {
+        student:"984",
+        title:"Remaining hits",
+        color:"success",
+        icon:"up",
+        percentage:"+ 12.01%",
+        detail:"than last 8 Month",
+        image:"calendar.png",
+        class:"student-3"
+    },
+    {
+        student:"1,984",
+        title:"Cricket",
+        color:"danger",
+        icon:"down",
+        percentage:"- 15.02%",
+        detail:"than last 5 Month",
+        image:"invoice.png",
+        class:"student-4"
+    },
+    {
+        student:"984",
+        title:"Football",
+        color:"success",
+        icon:"up",
+        percentage:"+ 12.01%",
+        detail:"than last 8 Month",
+        image:"calendar.png",
+        class:"student-3"
+    },
+    {
+        student:"1,984",
+        title:"Basketball",
+        color:"danger",
+        icon:"down",
+        percentage:"- 15.02%",
+        detail:"than last 5 Month",
+        image:"invoice.png",
+        class:"student-4"
+    },
+    {
+        student:"42,954",
+        title:"Total Hits",
+        color:"danger",
+        icon:"down",
+        percentage:"- 17.06%",
+        detail:"than last 6 Month",
+        image:"student.png",
+        class:"student"
+    },
+    {
+        student:"659",
+        title:"Used Hits",
+        color:"success",
+        icon:"up",
+        percentage:"+27.02%",
+        detail:"than last 4 Month",
+        image:"teacher.png",
+        class:"student-2"
+    },
+    {
+        student:"984",
+        title:"Remaining hits",
+        color:"success",
+        icon:"up",
+        percentage:"+ 12.01%",
+        detail:"than last 8 Month",
+        image:"calendar.png",
+        class:"student-3"
+    },
+    {
+        student:"1,984",
+        title:"Cricket",
+        color:"danger",
+        icon:"down",
+        percentage:"- 15.02%",
+        detail:"than last 5 Month",
+        image:"invoice.png",
+        class:"student-4"
+    },
+    {
+        student:"984",
+        title:"Football",
+        color:"success",
+        icon:"up",
+        percentage:"+ 12.01%",
+        detail:"than last 8 Month",
+        image:"calendar.png",
+        class:"student-3"
+    },
+    {
+        student:"1,984",
+        title:"Basketball",
         color:"danger",
         icon:"down",
         percentage:"- 15.02%",
