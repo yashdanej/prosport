@@ -281,7 +281,7 @@ export const featuredCourseData = [
         image:"1.png",
         title:"Mobile UX",
         link:Href,
-        name:"Erin Mooney",
+        name:"Live Score",
         date:"Feb 15",
         ratting:"4.8",
         type:"UX/UI Design",
@@ -291,40 +291,10 @@ export const featuredCourseData = [
         image:"2.png",
         title:"Illustration",
         link:Href,
-        name:"Elsie Lemon",
+        name:"Match Score Card",
         date:"Mar 22",
         ratting:"2.3",
         type:"Web Designer",
         id:"colorChangeButton1"
     },
-    {
-        image:"3.png",
-        title:"Design System",
-        link:Href,
-        name:"Anna Green",
-        date:"Jun 28",
-        ratting:"1.5",
-        type:"Developer",
-        id:"colorChangeButton2"
-    },
-    {
-        image:"4.png",
-        title:"Leadership",
-        link:Href,
-        name:"John Elliot",
-        date:"Apr 04",
-        ratting:"42.4",
-        type:"UX/UI Design",
-        id:"colorChangeButton3"
-    },
-    {
-        image:"5.png",
-        title:"Latest Figma",
-        link:Href,
-        name:"Dylan Field",
-        date:"jun 01",
-        ratting:"5.4",
-        type:"Graphic Designer",
-        id:"colorChangeButton4"
-    }
 ]

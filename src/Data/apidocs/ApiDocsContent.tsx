@@ -22,7 +22,7 @@ const ApiDocsContent = () => {
                     {
                         Array.from({ length: 9 }).map((_, index) => (
                             <Col lg="4" sm="6" className="box-col-3 my-3" key={index}>
-                              <div className="pricingtable p-5" style={{ width: "87%" }}>
+                              <div className="apidoc pricingtable p-5" style={{ width: "87%" }}>
                                 <div className="price-value mb-3" style={{ background: "#f4f4fc", borderRadius: "0", width: '75px', height: '75px' }}>
                                   <span className="amount" style={{ fontSize: "1.8rem" }}></span>
                                 </div>

@@ -10,12 +10,12 @@ const LiveMeeting = () => {
   return (
     <Col xl="4" md="6" className="proorder-md-5">
       <Card>
-        <CardHeader className="card-no-border pb-0">
+        {/* <CardHeader className="card-no-border pb-0">
           <div className="header-top">
             <H4>{LiveMeetings}</H4>
             <CardHeaderDropDown mainTitle={false} firstItem="Address Selection" secondItem="Geo-Menu" thirdItem="Place Picker" menuTitle={"1pm-2pm"} />
           </div>
-        </CardHeader>
+        </CardHeader> */}
         <CardBody className="live-meet">
           <LiveMeetingBody />
           <UL className="simple-list">

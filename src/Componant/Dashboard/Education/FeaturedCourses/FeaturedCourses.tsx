@@ -5,7 +5,7 @@ import FeaturedCoursesBody from './FeaturedCoursesBody'
 
 const FeaturedCourses = () => {
   return (
-    <Col xxl="5" xl="6" className="box-col-6 proorder-4-xl-1 proorder-md-7">
+    <Col xxl="12" xl="12" className="box-col-6 proorder-4-xl-1 proorder-md-7">
     <Card>
       <CommonCardHeader headClass="card-no-border pb-0" mainTitle={true} firstItem='Weekly' secondItem='Monthly' thirdItem='Yearly' title={FeaturedCourse} />
       <CardBody className="p-0 featured-table">
@@ -14,11 +14,9 @@ const FeaturedCourses = () => {
             <Table className="table display dataTable no-footer" id="featured-table">
               <thead>
                 <tr>
-                  <th>{"Course Name"}</th>
-                  <th>{"Start"}</th>
-                  <th>{"Rate"}</th>
-                  <th>{"Type"}</th>
-                  <th>{"Save"}</th>
+                  <th>{"API'S"}</th>
+                  <th>{"AVG. TIME"}</th>
+                  <th>{"STATUS"}</th>
                 </tr>
               </thead>
               <FeaturedCoursesBody />

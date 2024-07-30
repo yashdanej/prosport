@@ -128,6 +128,7 @@ import ApiKeySet from "../Pages/Application/Api_keyset/ApiKeySet";
 import Reffer from "../Pages/Application/Reffer/Reffer";
 import ApiDocs from "../Pages/apidocs/ApiDocs";
 import SupportCompo from "../Pages/support/SupportCompo";
+import LogOut from "../Pages/LogOut";
 
 
 const routes = [
@@ -138,6 +139,9 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EcommerceDashborad />},
   { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/shop_widget`, Component: <ApiKeySet />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/logout`, Component: <LogOut />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/setting`, Component: <ApiKeySet />},
   { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, Component: <Reffer />},
   { path: `${process.env.PUBLIC_URL}/setting/profile`, Component: <EditProfile />},
   { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},

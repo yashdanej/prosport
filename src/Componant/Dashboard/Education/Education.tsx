@@ -9,10 +9,13 @@ import FeaturedCourses from "./FeaturedCourses/FeaturedCourses";
 import MonthlyAttendance from "./MonthlyAttendance/MonthlyAttendance";
 import Schedule from "./Schedule/Schedule";
 import ShiftsOverview from "../Default/ShiftsOverview/ShiftsOverview";
+import Platform from "./Platform";
+import { H1 } from "../../../AbstractElements";
 
 const ContainerEducation = ({analytics}: any) => {
   return (
     <Container fluid className="dashboard-4">
+      <H1 className="fw-bold my-4">General Setting</H1>
       <Row>
         <TotalStudents analytics={analytics} />
         {/* <StudyStatistics /> */}
@@ -22,11 +25,12 @@ const ContainerEducation = ({analytics}: any) => {
             <ShiftsOverview />
             <AssignmentsTable />
             <LiveMeeting />
-            <ActivelyHours />
-            <EnrolledClasses />
+            {/* <ActivelyHours /> */}
+            {/* <EnrolledClasses /> */}
             <FeaturedCourses />
-            <MonthlyAttendance />
-            <Schedule />
+            {/* <MonthlyAttendance /> */}
+            <Platform/>
+            {/* <Schedule /> */}
           </>
         }
       </Row>

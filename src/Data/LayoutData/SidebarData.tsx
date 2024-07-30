@@ -22,7 +22,7 @@ export const MenuList: MenuItem[] = [
       { path: `${process.env.PUBLIC_URL}/dashboard/home`, title: "Dashboard", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, title: "Analytics", type: "link" },
       {
-        title: "Games",
+        title: "Sports",
         id: 2,
         icon: "widget",
         type: "sub",
@@ -43,12 +43,15 @@ export const MenuList: MenuItem[] = [
       //     { path: `${process.env.PUBLIC_URL}/page_layout/hide_nav_scroll`, title: "Hide Nav Scroll", type: "link" }
       //   ],
       // },
+      { path: `${process.env.PUBLIC_URL}/dashboard/shop_widget`, title: "Shop Widget", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, title: "API Keyset", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/billing`, title: "Billing", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, title: "Subscription", type: "link" },
-      { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, title: "API Keyset", type: "link" },
-      { path: `${process.env.PUBLIC_URL}/api/docs`, title: "API Doc", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, title: "Reffer", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/setting`, title: "Setting", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/api/docs`, title: "API Doc", type: "link" },
       { path: `${process.env.PUBLIC_URL}/dashboard/support`, title: "Support", type: "link" },
+      { path: `${process.env.PUBLIC_URL}/dashboard/logout`, title: "Logout", type: "link" },
     ],
   },
   {

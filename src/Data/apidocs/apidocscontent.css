@@ -1,6 +1,6 @@
-  .pricingtable::before {
-    background-color: #f4f4fc;
-  }
-  .pricingtable::after {
-    background-color: #f4f4fc;
-  }
+.apidoc.pricingtable::before {
+  background-color: #f4f4fc;
+}
+.apidoc.pricingtable::after {
+  background-color: #f4f4fc;
+}

@@ -23,6 +23,7 @@ const FaqContainer = () => {
             <SearchInput />
           </Card>
           <Questions />
+          <Questions />
           {/* <FAQFeaturesTutorial /> */}
           {/* <ArticleVideo /> */}
         </Row>
