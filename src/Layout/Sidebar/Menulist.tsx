@@ -58,7 +58,7 @@ const Menulist: React.FC<MenuListType> = ({ menu,setActiveMenu,activeMenu,level,
               : ""
           } `}
         >
-          {level === 0 && (<i className="fa fa-thumb-tack" onClick={() => dispatch(handlePined(item.title))} ></i>)}
+          {/* {level === 0 && (<i className="fa fa-thumb-tack" onClick={() => dispatch(handlePined(item.title))} ></i>)} */}
           <Link
             className={`${!className && level !== 2 ? "sidebar-link sidebar-title" : ""} 
             ${(item.children

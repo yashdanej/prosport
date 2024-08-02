@@ -3,54 +3,49 @@ import { Card, CardBody, Col, Row } from 'reactstrap'
 import { totalStudentData } from '../../../../Data/Dashboard/EducationData'
 import { H2, Image, P } from '../../../../AbstractElements'
 import { dynamicImage } from '../../../../Service'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../../ReduxToolkit/Store'
 
 const BillingCard = () => {
-    const data = [
-        {
-            student:"42,954",
-            title:"Total Hits",
-            color:"danger",
-            icon:"down",
-            bg: "rgb(150 98 229)",
-            percentage:"- 17.06%",
-            detail:" than last 6 Month",
-            image:"student.png",
-            class:"student"
-        },
-        {
-            student:"659",
-            title:"Used Hits",
-            color:"success",
-            icon:"up",
-            bg: "rgb(132 219 255)",
-            percentage:"+27.02%",
-            detail:"than last 4 Month",
-            image:"teacher.png",
-            class:"student-2"
-        },
-        {
-            student:"984",
-            title:"Remaining hits",
-            color:"success",
-            icon:"up",
-            bg: "rgb(132 219 255)",
-            percentage:"+ 12.01%",
-            detail:"than last 8 Month",
-            image:"calendar.png",
-            class:"student-3"
-        },
-        {
-            student:"984",
-            title:"Remaining hits",
-            color:"success",
-            icon:"up",
-            bg: "rgb(132 219 255)",
-            percentage:"+ 12.01%",
-            detail:"than last 8 Month",
-            image:"calendar.png",
-            class:"student-3"
-        },
-    ]
+     // const data = !analytics?totalStudentData:totalStudentData2
+  const apiKeyData = useSelector((state: RootState) => state.subscribe.api_keys);
+  
+  const plansData = useSelector((state: RootState) => state.subscribe.plans);
+  const data = [
+    {
+      hits: plansData?.data?.find((plan: any) => plan?.id === apiKeyData?.data[0]?.planId)?.api_calls,
+      title:"Total Hits",
+      color:"danger",
+      icon:"down",
+      bg: "rgb(150 98 229)",
+      percentage:"- 17.06%",
+      detail:"than last 6 Month",
+      image:"student.png",
+      class:"student"
+    },
+    {
+      hits: apiKeyData?.data[0]?.api_hits,
+      title:"Used Hits",
+      color:"danger",
+      icon:"down",
+      bg: "rgb(132 219 255)",
+      percentage:"- 17.06%",
+      detail:"than last 6 Month",
+      image:"student.png",
+      class:"student"
+    },
+    {
+      hits: plansData?.data?.find((plan: any) => plan?.id === apiKeyData?.data[0]?.planId)?.api_calls - apiKeyData?.data[0]?.api_hits,
+      title:"Remaining Hits",
+      color:"danger",
+      icon:"down",
+      bg: "rgb(132 219 255)",
+      percentage:"- 17.06%",
+      detail:"than last 6 Month",
+      image:"student.png",
+      class:"student"
+    },
+  ]
   return (
     <>
         <Col xl={12} md="12" className="proorder-md-1">
@@ -62,7 +57,7 @@ const BillingCard = () => {
                   <div className="d-flex gap-2 align-items-center">
                     <div className="flex-grow-1">
                       <P className="mb-0 text-truncate"> {data.title}</P>
-                      <H2>{data.student}</H2>
+                      <H2>{data.hits}</H2>
                       <div className="d-flex student-arrow text-truncate">
                         <P className={`mb-0 up-arrow bg-light-${data.color}`}>
                           <i className={`icon-arrow-${data.icon} font-${data.color}`} />

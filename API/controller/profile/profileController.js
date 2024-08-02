@@ -14,7 +14,7 @@ exports.updateProfile = async (req, res, next) => {
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         const [getSelectedUser] = await query("SELECT * FROM users WHERE id = ?", [getUser]);
 
-        const { name, lastname, email, gender, dob, location, phone, language = "English", skills = "", company_name, company_domain, module } = req.body;
+        const { name, lastname, email, gender, dob, location, phone, language = "English", skills = "", company_name, company_domain, operator, module } = req.body;
         
         // Ensure dob is properly formatted as a Date object
         console.log("dob", dob);
@@ -56,8 +56,8 @@ exports.updateProfile = async (req, res, next) => {
         const userimage = `${baseUrl}/uploads/profile/${imageFileName}`;
         console.log("userimage", userimage);
         // Perform the database update query
-        await query("UPDATE users SET name = ?, lastname = ?, email = ?, gender = ?, dob = ?, location = ?, phone = ?, language = ?, skills = ?, image = ?, company_name = ?, company_domain = ? WHERE id = ?",
-                    [name, lastname, email, gender, formattedDob, location, phone, language, skills, userimage, company_name, company_domain, getSelectedUser.id]);
+        await query("UPDATE users SET name = ?, lastname = ?, email = ?, gender = ?, dob = ?, location = ?, phone = ?, language = ?, skills = ?, image = ?, company_name = ?, company_domain = ?, operator = ? WHERE id = ?",
+                    [name, lastname, email, gender, formattedDob, location, phone, language, skills, userimage, company_name, company_domain, operator, getSelectedUser.id]);
 
         // Retrieve the updated user data
         const [updatedUser] = await query("SELECT * FROM users WHERE id = ?", [getUser]);

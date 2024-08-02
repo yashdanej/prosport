@@ -11,25 +11,30 @@ import Schedule from "./Schedule/Schedule";
 import ShiftsOverview from "../Default/ShiftsOverview/ShiftsOverview";
 import Platform from "./Platform";
 import { H1 } from "../../../AbstractElements";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../ReduxToolkit/Store";
+import { getApiKeys } from "../../../ReduxToolkit/Reducers/Change/Subscribe";
 
 const ContainerEducation = ({analytics}: any) => {
+  
   return (
     <Container fluid className="dashboard-4">
-      <H1 className="fw-bold my-4">General Setting</H1>
+      {/* <H1 className="fw-bold my-4">{!analytics?"General Setting":"Analytics"}</H1> */}
       <Row>
-        <TotalStudents analytics={analytics} />
+        <TotalStudents analytics={analytics}/>
         {/* <StudyStatistics /> */}
         {
           !analytics&&
           <>
-            <ShiftsOverview />
+            {/* <ShiftsOverview /> */}
             <AssignmentsTable />
             <LiveMeeting />
             {/* <ActivelyHours /> */}
             {/* <EnrolledClasses /> */}
-            <FeaturedCourses />
+            {/* <FeaturedCourses /> */}
             {/* <MonthlyAttendance /> */}
-            <Platform/>
+            {/* <Platform/> */}
             {/* <Schedule /> */}
           </>
         }

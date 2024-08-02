@@ -130,7 +130,41 @@ exports.Login = async (req, res) => {
     // Generate JWT token using the user's secret key
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY);
 
+    // Capture IP address and device information
+    const ipAddress = req.headers['x-forwarded-for'] || req.ip || req.connection.remoteAddress;
+    const userAgent = req.headers['user-agent'];
+
+    // Insert data into stored_ip table
+    const insertIpQuery = 'INSERT INTO stored_ip (user_id, ip_address, device) VALUES (?, ?, ?)';
+    await query(insertIpQuery, [user.id, ipAddress, userAgent]);
+
     return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, reffer_code: user.reffer_code, secretKey: user.secret_key } });
+  } catch (error) {
+    console.error('Error during login:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.Log_Events = async (req, res, next) => {
+  try {
+     // Verify the token and get the user
+     const getUser = await verifyToken(req, res, next, { verifyUser: true });
+        
+     // Get the user's API logs grouped by endpoint
+     const logs = await query(
+         `SELECT log.*, users.email, users.name
+          FROM stored_ip as log
+          inner join users
+          on log.user_id=users.id
+          WHERE user_id = ?`,
+         [getUser]
+     );
+
+     // Send the response
+     return res.status(200).json({
+         status: true,
+         data: logs
+     });
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ error: 'Internal server error' });

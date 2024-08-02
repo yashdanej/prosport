@@ -6,8 +6,8 @@ import AddProjectsAndUploadTableBody from './AddProjectsAndUploadTableBody'
 
 const AddProjectsAndUpload = () => {
   return (
+    <>
     <Col md="12">
-      <>
       <Form>
         <Card>
             <CardHeaderCommon title="Change Password" tagClass={"card-title mb-0"} />
@@ -38,7 +38,6 @@ const AddProjectsAndUpload = () => {
             </CardFooter>
         </Card>
       </Form>
-      </>
       <Card>
         <CardHeaderCommon title="Notification" tagClass="card-title mb-0" />
         <div className="table-responsive add-project theme-scrollbar">
@@ -55,6 +54,15 @@ const AddProjectsAndUpload = () => {
         </div>
       </Card>
     </Col>
+    <Form>
+      <Card>
+        <CardHeaderCommon title="Session" tagClass={"card-title mb-0"} />
+        <CardBody>
+          <p>This is a list of devices that have logged into your account. Remove those that you do not recognize.</p>
+        </CardBody>
+      </Card>
+    </Form>
+  </>
   )
 }
 

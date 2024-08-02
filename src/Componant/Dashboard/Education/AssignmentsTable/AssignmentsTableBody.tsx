@@ -4,29 +4,53 @@ import { dynamicImage } from "../../../../Service";
 import { assignmentData } from "../../../../Data/Dashboard/EducationData";
 import { Link } from "react-router-dom";
 import CardHeaderDropDown from "../../../../CommonElements/CommonCardHeader/CardHeaderDropDown";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getLogEvents } from "../../../../ReduxToolkit/Reducers/Change/AuthSlice";
+import { AppDispatch, RootState } from "../../../../ReduxToolkit/Store";
 
 const AssignmentsTableBody = () => {
+  const logEventsData = useSelector((state: RootState) => state.auth.logs);
+  const dispatch = useDispatch<AppDispatch>();
+  const getLogEventsHandle = () => {
+    dispatch(getLogEvents());
+  }
+  useEffect(() => {
+    getLogEventsHandle();
+  }, []);
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    let hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+  
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+    const strMinutes = minutes < 10 ? '0' + minutes : minutes;
+  
+    return `${hours}:${strMinutes} ${ampm}`;
+  };
   return (
     <tbody>
-      {assignmentData.map((data, i) => (
+      {logEventsData?.data?.map((item: any, i: number) => (
         <tr key={i}>
           <td>
-            <Image src={dynamicImage(`dashboard-4/user/${data.image}`)} alt="user"/>
+            {i+1}
           </td>
           <td>
-            <span>United States</span>
+            <span>{item?.email}</span>
           </td>
           <td>
-            <H6>20.01.2021</H6>
+            <H6>{item?.created_at.split("T")[0]}</H6>
           </td>
           {/* <td>{data.subjects}</td>
           <td>{data.startDate}</td>
           <td>{data.endDate} </td> */}
           <td>
-            10:00 PM
+            {formatTime(item?.created_at)}
           </td>
-          <td className="text-center">
-            192.1.1
+          <td>
+            {item?.ip_address}
           </td>
         </tr>
       ))}

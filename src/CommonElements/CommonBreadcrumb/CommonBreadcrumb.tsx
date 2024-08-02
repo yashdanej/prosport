@@ -9,7 +9,7 @@ const CommonBreadcrumb = () => {
   return (
     <Col xs="4" xl="4" className="page-title">
       <H4 className="f-w-700 text-capitalize">{thirdPart ? thirdPart.replaceAll("_", " ") : secondPart.replaceAll("_", " ")}</H4>
-      <Breadcrumb>
+      {/* <Breadcrumb>
         <BreadcrumbItem >
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
             <FeatherIcons iconName="Home" />
@@ -18,7 +18,7 @@ const CommonBreadcrumb = () => {
         <BreadcrumbItem className="f-w-400 text-capitalize">{firstPart.replaceAll("_"," ")}</BreadcrumbItem>
         <BreadcrumbItem className={`f-w-400 ${!thirdPart ?"active" : ""}`}>{secondPart.replaceAll("_"," ")}</BreadcrumbItem>
         {thirdPart && <BreadcrumbItem className="f-w-400 active">{thirdPart.replaceAll("_", " ")}</BreadcrumbItem>}
-      </Breadcrumb>
+      </Breadcrumb> */}
     </Col>
   )
 }

@@ -1,13 +1,14 @@
-import { Card, CardBody, Col, Row } from 'reactstrap';
+import { Card, CardBody, Col, Row, Tooltip } from 'reactstrap';
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader';
 import { Btn, H4 } from '../../../../AbstractElements';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { MoreVertical } from 'react-feather';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
 import { getApiKeys, getSubscribe } from '../../../../ReduxToolkit/Reducers/Change/Subscribe';
 import { convertToIST } from '../../../../Utils';
+import BottomRightToast from '../../../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast';
 
 type ApiKeyData = {
   id: number;
@@ -29,6 +30,16 @@ const ApiKey = () => {
   const userData = localStorage.getItem("login-user");
   const parsedUserData = userData ? JSON.parse(userData) : null;
   const plansData = useSelector((state: RootState) => state.subscribe.plans);
+  const [showToast, setShowToast] = useState(false);
+  const [txt, setTxt] = useState("");
+  const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
+
+  const toggleTooltip = (id: any) => {
+    setTooltipOpen((prevState: any) => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
+  };
 
   console.log("apiKeysData", apiKeysData?.data); // Ensure apiKeysData is not null
 
@@ -44,6 +55,18 @@ const ApiKey = () => {
       btn: "Create Rule"
     }
   ];
+  
+  const handleCopyCode = (prop: any) => {
+    const referralCode = prop==="secret"?parsedUserData?.user?.secretKey:prop;
+    if (referralCode) {
+      navigator.clipboard.writeText(referralCode).then(() => {
+        setTxt("Copied Successfully!");
+        setShowToast(true);
+      }).catch(err => {
+        console.error("Failed to copy text: ", err);
+      });
+    }
+  }
 
   const apiHistoryDataColumn: TableColumn<ApiKeyData>[] = [
     {
@@ -66,13 +89,41 @@ const ApiKey = () => {
     },
     {
       name: "Secret Key",
-      selector: (row) => parsedUserData?.user?.secretKey,
+      cell: (row) => (
+        <>
+          <Btn id={`secret-key-${row.id}`} className={`background-light-info font-dark f-w-500`} onClick={() => handleCopyCode("secret")} color="">
+            {parsedUserData?.user?.secretKey}
+          </Btn>
+          <Tooltip
+            placement="top"
+            isOpen={tooltipOpen[`secret-key-${row.id}`]}
+            target={`secret-key-${row.id}`}
+            toggle={() => toggleTooltip(`secret-key-${row.id}`)}
+          >
+            Copy Secret Key
+          </Tooltip>
+        </>
+      ),
       sortable: true,
       center: true,
     },
     {
       name: "Access Keys",
-      selector: (row) => row.token,
+      cell: (row) => (
+        <>
+          <Btn id={`access-key-${row.id}`} className={`background-light-info font-dark f-w-500`} onClick={() => handleCopyCode(row.token)} color="">
+            {row.token}
+          </Btn>
+          <Tooltip
+            placement="top"
+            isOpen={tooltipOpen[`access-key-${row.id}`]}
+            target={`access-key-${row.id}`}
+            toggle={() => toggleTooltip(`access-key-${row.id}`)}
+          >
+            Copy Access Key
+          </Tooltip>
+        </>
+      ),
       sortable: true,
       center: true,
     },
@@ -94,6 +145,8 @@ const ApiKey = () => {
     },
   ];
 
+  
+
   const dispatch = useDispatch<AppDispatch>();
 
   const fetchApiKeys = () => {
@@ -112,7 +165,7 @@ const ApiKey = () => {
   }, [dispatch]);
   return (
     <>
-      <Card>
+      {/* <Card>
         <CommonCardHeader title="Api Overview" />
         <CardBody className="pricing-block">
           <Row>
@@ -131,7 +184,7 @@ const ApiKey = () => {
             ))}
           </Row>
         </CardBody>
-      </Card>
+      </Card> */}
       <Col sm="12">
         <Card>
           <CommonCardHeader title="API Keyset" />
@@ -153,6 +206,7 @@ const ApiKey = () => {
           </CardBody>
         </Card>
       </Col>
+      {showToast && <BottomRightToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </>
   );
 }

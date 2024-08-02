@@ -11,7 +11,7 @@ const OrderHistoryContainer = () => {
     <Container fluid className='default-dashboard'>
       <Row>
         <Col sm="12">
-          <BillingCard />
+          {/* <BillingCard /> */}
           <ProjectsTable />
           {/* <NewOrders />
           <ShippedOrders />

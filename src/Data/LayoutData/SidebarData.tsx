@@ -3,7 +3,7 @@ import { MenuItem } from "../../Types/Layout/SidebarType";
 
 export const MenuList: MenuItem[] = [
   {
-    title: "General",
+    title: "",
     lanClass: "lan-1",
     Items: [
       // {

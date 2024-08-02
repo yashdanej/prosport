@@ -67,6 +67,17 @@ export const getAllUsers = createAsyncThunk('getAllUsers', async (id) => {
   }
 });
 
+export const getLogEvents = createAsyncThunk('getLogEvents', async (id) => {
+  try {
+      const res = await api(`/log_events`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 // Auth slice
 const authSlice = createSlice({
   name: "auth",
@@ -84,6 +95,12 @@ const authSlice = createSlice({
       errorMessage: "",
     },
     users: {
+      isLoading: false,
+      data: null as any | null,
+      isError: false,
+      errorMessage: "",
+    },
+    logs: {
       isLoading: false,
       data: null as any | null,
       isError: false,
@@ -161,6 +178,21 @@ const authSlice = createSlice({
         console.log("error in getAllUsers", action.payload);
         state.users.isLoading = false;
         state.users.isError = true;
+    });
+
+    // getLogEvents
+    builder.addCase(getLogEvents.pending, (state, action) => {
+      state.logs.isLoading = true;
+    });
+    builder.addCase(getLogEvents.fulfilled, (state, action) => {
+        state.logs.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.logs.data = action.payload;
+    });
+    builder.addCase(getLogEvents.rejected, (state, action) => {
+        console.log("error in getLogEvents", action.payload);
+        state.logs.isLoading = false;
+        state.logs.isError = true;
     });
   }
 });

@@ -5,63 +5,49 @@ import { H6, Image } from "../../../../AbstractElements";
 import { dynamicImage } from "../../../../Service";
 import { Link } from "react-router-dom";
 import { Href } from "../../../../utils/Constant";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../ReduxToolkit/Store";
+import { useEffect } from "react";
+import { getApiKeys, getBilling, getSubscribe } from "../../../../ReduxToolkit/Reducers/Change/Subscribe";
 
 const ProjectsTableBody = () => {
-  const data = [
-    {
-        invoice:"PSA-001-07-24",
-        product:"Cricket",
-        color:"danger",
-        bill_date:"June 25, 2024",
-        due_date:"June 25, 2024",
-        price:"495,00",
-        tax:"5,00",
-        amount:"500,00"
-    },
-    {
-      invoice:"PSA-001-07-24",
+  // const apiLogsData = useSelector((state: RootState) => state.dashboard.api_logs);
+  const billingData = useSelector((state: RootState) => state.subscribe.billing);
+  const plansData = useSelector((state: RootState) => state.subscribe.plans);
+  const addDays = (date: Date, days: number): Date => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
+  const dispatch = useDispatch<AppDispatch>();
+  const fetchBillingData = () => {
+    dispatch(getBilling());
+    dispatch(getSubscribe());
+  }
+  const data = billingData?.data?.map((item: any, i: number) => {
+    const billDate = new Date(item?.created_at);
+    const plan = plansData?.data?.find((plan: any) => plan.id === item.plan_id);
+    const validityDays = plan ? parseInt(plan.validity, 10) : 0;
+    // Calculate due date
+    const dueDate = addDays(billDate, validityDays);
+
+    return {
+      invoice:`PSA-001-${item?.created_at?.split("T")[0]}`,
       product:"Cricket",
-      color:"secondary",
-      bill_date:"June 25, 2024",
-      due_date:"June 25, 2024",
-      price:"495,00",
-      tax:"5,00",
-      amount:"500,00"
-    },
-    {
-      invoice:"PSA-001-07-24",
-      product:"Cricket",
-      color:"secondary",
-      bill_date:"June 25, 2024",
-      due_date:"June 25, 2024",
-      price:"495,00",
-      tax:"5,00",
-      amount:"500,00"
-    },
-    {
-      invoice:"PSA-001-07-24",
-      product:"Cricket",
-      color:"secondary",
-      bill_date:"June 25, 2024",
-      due_date:"June 25, 2024",
-      price:"495,00",
-      tax:"5,00",
-      amount:"500,00"
-    },
-    {
-      invoice:"PSA-001-07-24",
-      product:"Cricket",
-      color:"secondary",
-      bill_date:"June 25, 2024",
-      due_date:"June 25, 2024",
-      price:"495,00",
-      tax:"5,00",
-      amount:"500,00"
-    },
-  ]
+      color:"danger",
+      bill_date:item?.created_at?.split("T")[0],
+      due_date:dueDate.toISOString().split("T")[0],
+      price:item?.amount,
+      tax:"No Tax",
+      amount:item?.amount 
+    }
+  });
+  useEffect(() => {
+    fetchBillingData();
+  }, [dispatch]);
   return (
     <tbody>
-      {data.map((data, i) => (
+      {data?.map((data: any, i: number) => (
         <tr key={i}>
           <td>
             <div className="form-check">

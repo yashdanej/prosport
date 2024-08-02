@@ -11,20 +11,20 @@ const LogoWrapper = () => {
 
     return (
       <>
-        <div className="logo-wrapper" style={{background: "white"}}>
+        <div className="logo-wrapper">
           <Link to={`/dashboard/default`}>
-            <Image className="img-fluid" src={dynamicImage("logo/logo_light.png")} alt="logo" />
+            <Image style={{width: "150px"}} className="img-fluid" src={dynamicImage("logo/prosport.png")} alt="logo" />
           </Link>
           <div className="back-btn" onClick={()=>dispatch(handleResponsiveToggle())}>
             <i className="fa fa-angle-left"></i>
             </div>
-          {/* <div className="toggle-sidebar">
+          <div className="toggle-sidebar">
             <SVG className={`${sidebarIconType}-icon sidebar-toggle status_toggle middle`} iconId={`${sidebarIconType === "fill" ? "fill-" : "" }toggle-icon`} onClick={()=>dispatch(setToggleSidebar(!toggleSidebar))}/>
-          </div> */}
+          </div>
         </div>
         <div className="logo-icon-wrapper">
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-            <Image className="img-fluid" src={dynamicImage("logo/logo-icon.png")} alt="logo" />
+            <Image style={{width: "150px"}} className="img-fluid" src={dynamicImage("logo/prosport.png")} alt="logo" />
           </Link>
         </div>
       </>

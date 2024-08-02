@@ -15,7 +15,7 @@ const RefferContainer = () => {
           {/* <SimplePricingCard /> */}
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <RefferSideBar />
         <Col xl="9" md="12" className="box-col-12">
           <div className="file-content">
@@ -27,7 +27,7 @@ const RefferContainer = () => {
       </Row>
       <Row>
         <RefferOther/>
-      </Row>
+      </Row> */}
       <Row>
         <TopRefferedUsers/>
       </Row>

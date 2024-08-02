@@ -12,7 +12,7 @@ const RefferSideBar = () => {
       setIsOpen(!IsOpen);
     };
     return (
-      <Col xl="3" className="box-col-30 pe-0">
+      <Col xl="3" className="box-col-3">
         <div className="md-sidebar">
           <Btn color="primary" className="md-sidebar-toggle" onClick={OnHandelClick}>
             {FileFilter}

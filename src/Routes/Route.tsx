@@ -129,6 +129,7 @@ import Reffer from "../Pages/Application/Reffer/Reffer";
 import ApiDocs from "../Pages/apidocs/ApiDocs";
 import SupportCompo from "../Pages/support/SupportCompo";
 import LogOut from "../Pages/LogOut";
+import Shop from "../Pages/shop/Shop";
 
 
 const routes = [
@@ -139,7 +140,7 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EcommerceDashborad />},
   { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/shop_widget`, Component: <ApiKeySet />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/shop_widget`, Component: <Shop />},
   { path: `${process.env.PUBLIC_URL}/dashboard/logout`, Component: <LogOut />},
   { path: `${process.env.PUBLIC_URL}/dashboard/setting`, Component: <ApiKeySet />},
   { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, Component: <Reffer />},

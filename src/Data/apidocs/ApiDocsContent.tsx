@@ -6,8 +6,43 @@ import { Btn, H1, H3, H4, P } from '../../AbstractElements'
 import './apidocscontent.css'
 
 const ApiDocsContent = () => {
+  const apiData = [
+    {
+      title: "How to set API",
+      desc: "Use images to enhance your post, improve its flow, add humor and explain complex topics",
+      btn: "Get Started"
+    },
+    {
+      title: "Developer Tools",
+      desc: "Plan your blog post by choosing a topic, creating an outline conduct research, and checking facts",
+      btn: "Create Rule"
+    }
+  ];
+  
   return (
     <Container fluid className="search-page">
+    <Row>
+      <Card>
+          <CommonCardHeader title="Api Overview" />
+          <CardBody className="pricing-block">
+            <Row>
+              {apiData.map((item, index) => (
+                <Col lg="6" sm="6" className="box-col-3" key={index}>
+                  <div className="pricingtable">
+                    <div className="pricingtable-header">
+                      <H4 className="title">{item.title}</H4>
+                    </div>
+                    <p className="duration">{item.desc}</p>
+                    <div className="pricingtable-signup">
+                      <Btn tag="a" size="lg" color="primary" href="#">{item.btn}</Btn>
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </CardBody>
+        </Card>
+    </Row>
     <Row>
         <Col sm="12">
         <Card>

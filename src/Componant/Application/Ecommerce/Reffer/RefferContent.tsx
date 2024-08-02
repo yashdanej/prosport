@@ -7,6 +7,7 @@ import { getRefferer } from '../../../../ReduxToolkit/Reducers/Change/AuthSlice'
 import { getCommission } from '../../../../ReduxToolkit/Reducers/Change/Subscribe';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
 import ContentLoaderReffer from './ContentLoaderReffer';
+import RefferSideBar from './RefferSideBar';
 
 const RefferContent = () => {
   const commissionData = useSelector((state: RootState) => state.subscribe.commission);
@@ -30,7 +31,7 @@ const RefferContent = () => {
             </Col>
           ) : (
             <Col lg="3" sm="6" className="box-col-3">
-              <div className="pricingtable">
+              <div className="pricingtable" style={{height: 'unset'}}>
                 <div className="pricingtable-header">
                   <H4 className="title">Earning</H4>
                 </div>
@@ -44,7 +45,7 @@ const RefferContent = () => {
             </Col>
           ) : (
             <Col lg="3" sm="6" className="box-col-3">
-              <div className="pricingtable">
+              <div className="pricingtable" style={{height: 'unset'}}>
                 <div className="pricingtable-header">
                   <H4 className="title">Reference</H4>
                 </div>
@@ -52,6 +53,7 @@ const RefferContent = () => {
               </div>
             </Col>
           )}
+          <RefferSideBar />
         </Row>
       </CardBody>
     </Card>

@@ -7,8 +7,8 @@ const HeaderLogo = () => {
     <div className="header-logo-wrapper col-auto">
         <div className="logo-wrapper">
             <Link to={"/"}>
-                <Image className="img-fluid for-light" src={dynamicImage("logo/logo.png")} alt="logo"/>
-                <Image className="img-fluid for-dark" src={dynamicImage("logo/logo_light.png")} alt="logo"/>
+                <Image style={{width: "150px"}} className="img-fluid for-light" src={dynamicImage("logo/prosport.png")} alt="logo"/>
+                <Image style={{width: "150px"}} className="img-fluid for-dark" src={dynamicImage("logo/prosport.png")} alt="logo"/>
             </Link>
         </div>
     </div>

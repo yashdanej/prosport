@@ -40,6 +40,7 @@ const EditProfileForm = () => {
     image: profile?.image || "",
     company_name: profile?.company_name || "",
     company_domain: profile?.company_domain || "",
+    operator: profile?.operator || ""
   });
 
   useEffect(() => {
@@ -59,6 +60,7 @@ const EditProfileForm = () => {
             image: profile?.image || "",
             company_name: profile?.company_name || "",
             company_domain: profile?.company_domain || "",
+            operator: profile?.operator || ""
         })
     }
   }, [profileData.data]);
@@ -77,6 +79,7 @@ const EditProfileForm = () => {
       image: profile?.image || "",
       company_name: profile?.company_name || "",
       company_domain: profile?.company_domain || "",
+      operator: profile?.operator || ""
     })
   }
 
@@ -163,10 +166,16 @@ const EditProfileForm = () => {
                   <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='lastname' placeholder="Last Name" value={user?.lastname} />
                 </FormGroup>
               </Col>
-              <Col sm="12" md="12">
+              <Col sm="6" md="6">
                 <FormGroup>
                   <Label>Email</Label>
                   <Input onChange={(e) => changeText(e, setUser, user)} type="email"  name='email' placeholder="Email" value={user?.email} />
+                </FormGroup>
+              </Col>
+              <Col sm="6" md="6">
+                <FormGroup>
+                  <Label>Phone</Label>
+                  <Input onChange={(e) => changeText(e, setUser, user)} type="number"  name='phone' placeholder="Phone" value={user?.phone} />
                 </FormGroup>
               </Col>
               <Col sm="6" md="6">
@@ -181,13 +190,8 @@ const EditProfileForm = () => {
                   <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='company_domain' placeholder="Company Domain" value={user?.company_domain} />
                 </FormGroup>
               </Col>
-              <Col sm="6" md="6">
-                <FormGroup>
-                  <Label>Phone</Label>
-                  <Input onChange={(e) => changeText(e, setUser, user)} type="number"  name='phone' placeholder="Phone" value={user?.phone} />
-                </FormGroup>
-              </Col>
-              <Col sm="6" md="6">
+              
+              {/* <Col sm="6" md="6">
                 <FormGroup>
                   <Label>DOB</Label>
                   <Input 
@@ -198,7 +202,7 @@ const EditProfileForm = () => {
                     value={user?.dob ? moment(user.dob).format('YYYY-MM-DD') : ''} 
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col sm="6" md="6">
                 <FormGroup>
                   <Label>Location</Label>
@@ -206,16 +210,16 @@ const EditProfileForm = () => {
                 </FormGroup>
               </Col>
               <Col sm="6" md="6">
-                <Label>Gender</Label>
+                <Label>Operator</Label>
                 <div className="card-wrapper border rounded-3 checkbox-checked">
                   <div className="radio-form">
                     <FormGroup check>
-                      <Input onChange={(e) => changeText(e, setUser, user)} type="radio" id="flexRadioDefault1" name="gender" value="male" checked={user?.gender === "male"} />
-                      <Label for='flexRadioDefault1' check>Male</Label>
+                      <Input onChange={(e) => changeText(e, setUser, user)} type="radio" id="flexRadioDefault1" name="operator" value="gaming" checked={user?.operator === "gaming"} />
+                      <Label for='flexRadioDefault1' check>Gaming</Label>
                     </FormGroup>
                     <FormGroup check>
-                      <Input onChange={(e) => changeText(e, setUser, user)} type="radio" id="flexRadioDefault2" name="gender" value="female" checked={user?.gender === "female"} />
-                      <Label for='flexRadioDefault2' check>Female</Label>
+                      <Input onChange={(e) => changeText(e, setUser, user)} type="radio" id="flexRadioDefault2" name="operator" value="non-gaming" checked={user?.operator === "non-gaming"} />
+                      <Label for='flexRadioDefault2' check>Non-Gaming</Label>
                     </FormGroup>
                   </div>
                 </div>
@@ -228,14 +232,7 @@ const EditProfileForm = () => {
           </CardFooter>
         </Card>
       </Form>
-      <Form>
-        <Card>
-          <CardHeaderCommon title="Session" tagClass={"card-title mb-0"} />
-          <CardBody>
-            <p>This is a list of devices that have logged into your account. Remove those that you do not recognize.</p>
-          </CardBody>
-        </Card>
-      </Form>
+      
       {showToast && <TopLeftToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </Col>
   );

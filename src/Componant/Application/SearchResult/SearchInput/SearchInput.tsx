@@ -6,7 +6,7 @@ const SearchInput = () => {
     <CardHeader>
       <Form className="theme-form">
         <InputGroup className=" m-0 flex-nowrap">
-          <Input className="form-control-plaintext" type="search" placeholder={Pixelstrap} />
+          <Input className="form-control-plaintext" type="search" placeholder={"Type here..."} />
           <InputGroupText className="btn btn-primary">{Search}</InputGroupText>
         </InputGroup>
       </Form>

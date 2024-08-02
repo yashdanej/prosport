@@ -6,6 +6,8 @@ const path = require('path');
 const PORT = 3000;
 const app = express();
 
+app.set('trust proxy', 1); // Trust the first proxy
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());

@@ -37,19 +37,25 @@ const TopRefferedUsers = () => {
   const apiHistoryDataColumn: TableColumn<ReffererdData>[] = [
     {
       name: "ID",
-      selector: (row, index: any) => index+1,
+      selector: (row, index: any) => `PSA00${index+1}`,
       sortable: true,
       center: true,
     },
     {
       name: "Referred",
-      selector: (row) => usersData?.data?.find((user: any) => user.id === row.referred_id)?.name,
+      selector: (row) => usersData?.data?.find((user: any) => user.id === row.referred_id)?.email,
       sortable: true,
       center: true,
     },
     {
       name: "Commission Earned (₹)",
       selector: (row) => commissionData?.data?.find((user: any) => user.referred_id === row.referred_id)?.commission || 0,
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Commission (%)",
+      selector: (row) => commissionData?.data?.find((user: any) => user.referred_id === row.referred_id)? "5" : 0,
       sortable: true,
       center: true,
     },

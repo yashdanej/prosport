@@ -48,7 +48,7 @@ export const tourProfileData = [
 
 export const addProjectsAndUploadData = [
     {
-      title: "Subscription",
+      title: "New Login",
       subTitle: "Notify when new subscription"
     },
     {
