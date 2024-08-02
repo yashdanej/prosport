@@ -7,13 +7,16 @@ import { AppDispatch, RootState } from "../../../../ReduxToolkit/Store";
 import { useEffect } from "react";
 import { getApiKeys } from "../../../../ReduxToolkit/Reducers/Change/Subscribe";
 import ReactApexChart from "react-apexcharts";
+import { getAnalyticsData } from "../../../../ReduxToolkit/Reducers/Change/AnalyticsSlice";
 
 const TotalStudents = ({ analytics }: any) => {
   const apiKeyData = useSelector((state: RootState) => state.subscribe.api_keys);
+  const analyticsData = useSelector((state: RootState) => state.analytics.analytics);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(getApiKeys());
+    dispatch(getAnalyticsData());
   }, [dispatch]);
 
   const plansData = useSelector((state: RootState) => state.subscribe.plans);
@@ -74,13 +77,24 @@ const TotalStudents = ({ analytics }: any) => {
     },
   ];
 
-  const data = analytics ? anylyticsData : dashboardData;
+  const data = !analytics ? anylyticsData : analyticsData?.data?.map((item: any) => {
+    return {
+      hits: item?.count,
+      title: item?.endpoint,
+      color: "danger",
+      icon: "down",
+      percentage: "- 17.06%",
+      detail: "than last 6 Month",
+      image: "student.png",
+      class: "student",
+    }
+  });
 
   return (
     <>
       <Col xl={!analytics ? "8" : "12"} md="12" className="proorder-md-1">
         <Row>
-          {data.map((data, i) => (
+          {data?.map((data: any, i: number) => (
             <Col xl="4" sm="6" key={i}>
               <Card>
                 <CardBody className={data.class}>

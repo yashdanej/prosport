@@ -22,6 +22,7 @@ import { authReducer } from "./Reducers/Change/AuthSlice";
 import { subscribeReducer } from "./Reducers/Change/Subscribe";
 import { dashboardReducer } from "./Reducers/Change/Dashboard";
 import { profileReducer } from "./Reducers/Change/ProfileSlice";
+import { analyticsReducer } from "./Reducers/Change/AnalyticsSlice";
 
 const Store = configureStore({
   reducer: {
@@ -46,6 +47,7 @@ const Store = configureStore({
     bookmarkHeader:BookmarkHeaderSlice,
 
     // Change
+    analytics:analyticsReducer,
     auth:authReducer,
     subscribe:subscribeReducer,
     dashboard: dashboardReducer,
