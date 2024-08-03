@@ -20,11 +20,13 @@ const authRouter = require("./routes/auth/authRouter");
 const paymentRouter = require("./routes/payment/paymentRouter");
 const dashboardRouter = require("./routes/dashboard/dashboardRouter");
 const profileRouter = require("./routes/profile/profileRouter");
+const sportRouter = require("./routes/sport/sportRouter");
 
 app.use('/api/v1', authRouter);
 app.use('/api/v1/order', paymentRouter);
 app.use('/api/v1/dashboard', dashboardRouter);
 app.use('/api/v1/profile', profileRouter);
+app.use('/api/v1/sport', sportRouter);
 
 app.listen(PORT, () => {
     console.log("Server started");

@@ -11,9 +11,14 @@ exports.getApiLogs = async (req, res, next) => {
         // Verify the token and get the user
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         
-        // Get the user's API logs grouped by endpoint
+        // Get the user's API logs grouped by endpoint, removing leading and trailing slashes
         const logs = await query(
-            "SELECT endpoint, COUNT(*) AS count FROM api_call_logs WHERE userId = ? GROUP BY endpoint",
+            `SELECT 
+                TRIM(BOTH '/' FROM endpoint) AS normalized_endpoint, 
+                COUNT(*) AS count 
+            FROM api_call_logs 
+            WHERE userId = ? 
+            GROUP BY normalized_endpoint`,
             [getUser]
         );
 
@@ -27,6 +32,7 @@ exports.getApiLogs = async (req, res, next) => {
         return res.status(500).json({ status: false, message: "Internal Server Error" });
     }
 };
+
 
 exports.GetApiLogsByUser = async (req, res, next) => {
     try {

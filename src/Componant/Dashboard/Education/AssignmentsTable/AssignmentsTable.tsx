@@ -5,7 +5,7 @@ import AssignmentsTableBody from "./AssignmentsTableBody";
 
 const AssignmentsTable = () => {
   return (
-    <Col xl="8" md="12" className="proorder-md-4">
+    <Col xl="12" md="12" className="proorder-md-4">
       <Card>
         <CommonCardHeader headClass="card-no-border pb-0" title="Log Events" mainTitle={true} firstItem="View All" />
         <CardBody className="pt-0 assignments-table px-0">

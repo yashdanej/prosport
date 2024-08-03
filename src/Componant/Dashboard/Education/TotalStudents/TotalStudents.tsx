@@ -80,7 +80,7 @@ const TotalStudents = ({ analytics }: any) => {
   const data = !analytics ? anylyticsData : analyticsData?.data?.map((item: any) => {
     return {
       hits: item?.count,
-      title: item?.endpoint,
+      title: item?.normalized_endpoint?item?.normalized_endpoint:"/",
       color: "danger",
       icon: "down",
       percentage: "- 17.06%",

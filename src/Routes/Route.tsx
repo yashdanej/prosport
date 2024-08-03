@@ -130,6 +130,7 @@ import ApiDocs from "../Pages/apidocs/ApiDocs";
 import SupportCompo from "../Pages/support/SupportCompo";
 import LogOut from "../Pages/LogOut";
 import Shop from "../Pages/shop/Shop";
+import Cricket from "../Pages/Application/Sports/Cricket";
 
 
 const routes = [
@@ -137,6 +138,7 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/project`, Component:<ProjectDashboard />},
   { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EducationDashboard />},
+  { path: `${process.env.PUBLIC_URL}/sports/cricket`, Component:<Cricket />},
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EcommerceDashborad />},
   { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},

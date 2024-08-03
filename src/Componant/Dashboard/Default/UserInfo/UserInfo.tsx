@@ -13,7 +13,7 @@ const UserInfo = () => {
             <P>
               {"Welcome to the Mofi family! We are delighted that you have visited our dashboard."}
             </P>
-            <Link className="btn" to={`${process.env.PUBLIC_URL}/dashboard/default`}>
+            <Link className="btn" to={`${process.env.PUBLIC_URL}/dashboard/home`}>
               {GoPremium}
             </Link>
           </div>

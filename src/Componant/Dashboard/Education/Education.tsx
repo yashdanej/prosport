@@ -15,6 +15,15 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../ReduxToolkit/Store";
 import { getApiKeys } from "../../../ReduxToolkit/Reducers/Change/Subscribe";
+import UserInfo from "../Default/UserInfo/UserInfo";
+import OpeningOfLeaflets from "../Default/OpeningOfLeaflets/OpeningOfLeaflets";
+import ProjectsTable from "../Default/ProjectsTable/ProjectsTable";
+import CustomerTransaction from "../Default/CustomerTransaction/CustomerTransaction";
+import UserNotifications from "../Default/UserNotifications/UserNotifications";
+import UpcomingAppointments from "../Default/UpcomingAppointments/UpcomingAppointments";
+import ActiveMembers from "../Default/ActiveMembers/ActiveMembers";
+import SalesStatistic from "../Default/SalesStatistic/SalesStatistic";
+import SalesByProduct from "../Default/SalesByProduct/SalesByProduct";
 
 const ContainerEducation = ({analytics}: any) => {
   
@@ -27,15 +36,29 @@ const ContainerEducation = ({analytics}: any) => {
         {
           !analytics&&
           <>
-            {/* <ShiftsOverview /> */}
-            <AssignmentsTable />
-            <LiveMeeting />
-            {/* <ActivelyHours /> */}
-            {/* <EnrolledClasses /> */}
-            {/* <FeaturedCourses /> */}
-            {/* <MonthlyAttendance /> */}
-            {/* <Platform/> */}
-            {/* <Schedule /> */}
+          <Container fluid className="default-dashboard">
+            <Row className="widget-grid">
+              {/* <UserInfo /> */}
+              {/* <OpeningOfLeaflets /> */}
+              {/* <ShiftsOverview /> */}
+              <ProjectsTable />
+              {/* <CustomerTransaction /> */}
+              {/* <UpcomingAppointments /> */}
+              {/* <ActiveMembers /> */}
+              {/* <SalesStatistic /> */}
+              {/* <SalesByProduct  /> */}
+              {/* <ShiftsOverview /> */}
+              <AssignmentsTable />
+              <LiveMeeting />
+              <UserNotifications />
+              {/* <ActivelyHours /> */}
+              {/* <EnrolledClasses /> */}
+              {/* <FeaturedCourses /> */}
+              {/* <MonthlyAttendance /> */}
+              {/* <Platform/> */}
+              {/* <Schedule /> */}
+            </Row>
+          </Container>
           </>
         }
       </Row>

@@ -8,7 +8,7 @@ import CardHeaderDropDown from "../../../../CommonElements/CommonCardHeader/Card
 
 const LiveMeeting = () => {
   return (
-    <Col xl="4" md="6" className="proorder-md-5">
+    <Col xl="6" md="6" className="proorder-md-5">
       <Card>
         {/* <CardHeader className="card-no-border pb-0">
           <div className="header-top">

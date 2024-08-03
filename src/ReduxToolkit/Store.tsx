@@ -23,6 +23,7 @@ import { subscribeReducer } from "./Reducers/Change/Subscribe";
 import { dashboardReducer } from "./Reducers/Change/Dashboard";
 import { profileReducer } from "./Reducers/Change/ProfileSlice";
 import { analyticsReducer } from "./Reducers/Change/AnalyticsSlice";
+import { sportReducer } from "./Reducers/Change/SportSlice";
 
 const Store = configureStore({
   reducer: {
@@ -51,7 +52,8 @@ const Store = configureStore({
     auth:authReducer,
     subscribe:subscribeReducer,
     dashboard: dashboardReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    sport: sportReducer,
   },
 });
 
