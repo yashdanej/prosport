@@ -43,7 +43,7 @@ const TopRefferedUsers = () => {
     },
     {
       name: "Referred",
-      selector: (row) => usersData?.data?.find((user: any) => user.id === row.referred_id)?.email,
+      selector: (row) => usersData?.data?.find((user: any) => user.id === row?.referred_id)?.email,
       sortable: true,
       center: true,
     },
@@ -103,7 +103,7 @@ const TopRefferedUsers = () => {
                 )):
                 reffererData && reffererData.data && reffererData.data.length > 0 &&
                 <DataTable
-                  data={reffererData.data}
+                  data={reffererData?.data}
                   columns={apiHistoryDataColumn}
                   className="dataTables_wrapper theme-scrollbar no-footer"
                   highlightOnHover

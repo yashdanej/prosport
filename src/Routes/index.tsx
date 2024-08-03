@@ -3,6 +3,7 @@ import PrivateRoute from "./PrivateRoute";
 import LayoutRoutes from "./LayoutRoutes";
 import { authRoutes } from "./AuthRoutes";
 import Login from "../Componant/Authentication/Login";
+import RegisterSimple from "../Pages/OtherPages/Authentication/RegisterSimple/RegisterSimple";
 
 const RouterData = () => {
   const login = localStorage.getItem("login");
@@ -28,6 +29,7 @@ const RouterData = () => {
           <Route path={path} element={Component} key={i} />
         ))}
         <Route path={`${process.env.PUBLIC_URL}/login`} element={<Login />} />
+        <Route path={`${process.env.PUBLIC_URL}/authentication/register_simple/:code?`} element={<RegisterSimple />} />
       </Routes>
     </BrowserRouter>
   );

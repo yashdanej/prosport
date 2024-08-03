@@ -3,7 +3,7 @@ import CommonLogo from './CommonLogo';
 import { Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import { Btn, H4, H6, P } from '../../../../AbstractElements';
 import { AgreeWith, CreateAccount, CreateYourAccount, EmailAddress, EmailsPlaceHolder, FacebookHeading, Href, LinkedInHeading, Password, PrivacyPolicy, SignIn, SignUpWith, TwitterHeading, YourName } from '../../../../utils/Constant';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Facebook, Linkedin, Twitter } from 'react-feather';
 import { CommonFormPropsType } from '../../../../Types/OtherPages/OtherPages';
 import { changeText, Loading } from '../../../../Utils';
@@ -13,12 +13,15 @@ import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
 import BottomRightToast from '../../../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast';
 
 const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
+  const location = useLocation();
+  let refferCode = ''
+  refferCode = location.pathname.split("/")[3];
   const [showPassWord, setShowPassWord] = useState(false);
   const [user, setUser] = useState({
     name: '',
     email: '',
     password: '',
-    reffer_code: '',
+    reffer_code: refferCode === '' ? '' : refferCode,
   });
   const userData = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<AppDispatch>();

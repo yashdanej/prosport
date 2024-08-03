@@ -94,7 +94,9 @@ const TotalStudents = ({ analytics }: any) => {
     <>
       <Col xl={!analytics ? "8" : "12"} md="12" className="proorder-md-1">
         <Row>
-          {data?.map((data: any, i: number) => (
+          {
+          data?.length>0 ?
+          data?.map((data: any, i: number) => (
             <Col xl="4" sm="6" key={i}>
               <Card>
                 <CardBody className={data.class}>
@@ -132,7 +134,9 @@ const TotalStudents = ({ analytics }: any) => {
                 </CardBody>
               </Card>
             </Col>
-          ))}
+          ))
+        : <p>No API call yet</p>
+        }
         </Row>
       </Col>
     </>

@@ -52,12 +52,12 @@ const CricketContent = () => {
           </Nav>
           <CardBody>
             <TabContent activeTab={activeTab}>
-                <CricketMatchTable 
-                  cricketData={cricketData} 
-                  currentPage={currentPage} 
-                  totalRows={totalRows} 
-                  handlePageChange={handlePageChange} 
-                />
+              <CricketMatchTable 
+                cricketData={cricketData} 
+                currentPage={currentPage} 
+                totalRows={totalRows} 
+                handlePageChange={handlePageChange} 
+              />
             </TabContent>
           </CardBody>
         </Col>
