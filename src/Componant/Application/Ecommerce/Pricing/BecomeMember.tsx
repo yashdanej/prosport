@@ -63,16 +63,17 @@ const BecomeMember = () => {
     try {
       // Await the dispatch to ensure it completes before proceeding
       const res = await dispatch(createToken(data)).unwrap();
-  
-      // // Check if the response indicates success
-      // if (res?.payload?.status) {
-      //   setTxt(`${user.name} Token Created Successfully`);
-      //   setShowToast(true);
-      // } else {
-      //   setTxt(`${res.payload}`);
-      //   setShowToast(true);
-      //   console.log("Token creation failed:", res.payload);
-      // }
+      console.log("res", res);
+      
+      // Check if the response indicates success
+      if (res?.message) {
+        setTxt(`${user.name} Token Created Successfully`);
+        setShowToast(true);
+      } else {
+        setTxt(`${res.payload}`);
+        setShowToast(true);
+        console.log("Token creation failed:", res.payload);
+      }
     } catch (error: any) {
       console.log("error in subscription", error);
       setTxt(`${user.name} ${error}`);
