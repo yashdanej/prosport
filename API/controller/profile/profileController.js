@@ -20,7 +20,7 @@ exports.updateProfile = async (req, res, next) => {
         console.log("dob", dob);
         const formattedDob = dob ? moment(dob).tz('Asia/Kolkata').toDate() : null;
         console.log("formattedDob", formattedDob);
-        if (!name || !lastname || !email || !gender || !formattedDob) {
+        if (!name || !email ) {
             return res.status(400).json({ success: false, message: 'Required fields are missing or invalid' });
         }
 
@@ -30,7 +30,7 @@ exports.updateProfile = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'Email already in use' });
         }
 
-        let imageFileName = getSelectedUser.image.substring(getSelectedUser.image.lastIndexOf('/') + 1);
+        let imageFileName = getSelectedUser.image && getSelectedUser.image.substring(getSelectedUser.image.lastIndexOf('/') + 1);
         console.log("imageFileName", imageFileName);
         if (req.file) {
             // Handle image upload logic here

@@ -35,8 +35,8 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    let hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
 
     hours = hours % 12;
@@ -188,7 +188,7 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
   return (
     <div className="order-history table-responsive">
       {
-        cricketData?.isLoading ? <p>Loading...</p> :
+        cricketData && cricketData?.isLoading ? <p>Loading...</p> :
           cricketData?.data && cricketData?.data.length > 0 &&
           <DataTable
             data={cricketData?.data}

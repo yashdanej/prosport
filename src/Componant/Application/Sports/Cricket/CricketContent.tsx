@@ -10,6 +10,7 @@ const CricketContent = () => {
   const cricketData = useSelector((state: RootState) => state.sport.cricket);
   const [showToast, setShowToast] = useState(false);
   const [txt, setTxt] = useState("");
+  const [err, setErr] = useState("");
   const [activeTab, setActiveTab] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setlimit] = useState(10);
@@ -24,7 +25,16 @@ const CricketContent = () => {
         if (response.payload) {
           console.log("response.payload", response.payload);
           setTotalRows(response.payload.pagination.totalItems);
+          setErr('');
+        }else{
+          console.log("response", response);
+          console.log("not in payload");
+          setTxt(`Please Subscribe`);
+          setShowToast(true);
+          setErr('Please Subscribe');
         }
+      }).catch((err) => {
+        console.log("errrrr", err);
       });
   }
 
@@ -52,6 +62,9 @@ const CricketContent = () => {
           </Nav>
           <CardBody>
             <TabContent activeTab={activeTab}>
+              {
+                err && err
+              }
               <CricketMatchTable 
                 cricketData={cricketData} 
                 currentPage={currentPage} 

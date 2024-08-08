@@ -48,16 +48,10 @@ const BecomeMember = () => {
   }
 
   const handleTry = async (id: number) => {
-    // Calculate the expiry date as one month from the current date
-    const currentDate = new Date();
-    const expiryDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
-    const formattedExpiryDate = expiryDate.toISOString().slice(0, 19).replace('T', ' '); // Formatting as 'YYYY-MM-DD HH:mm:ss'
-    
     const data = {
       id: id,
       name: user.name,
       email: user.email,
-      expire_date: formattedExpiryDate
     };
     
     try {

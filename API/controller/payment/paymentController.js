@@ -154,18 +154,32 @@ exports.createToken = async (req, res, next) => {
     try {
         const id = req.params.id;
         const selectPlan = await query("SELECT * FROM plans WHERE id = ?", [id]);
-        const { name, email, expire_date } = req.body;
-
+        const getPlans = await query("SELECT * FROM plans");
+        const { name, email } = req.body;
+        console.log("selectPlan", selectPlan);
         // Get user from token or session (assuming verifyToken function handles this)
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
 
         // Validate input
-        if (!name || !email || !expire_date) {
+        if (!name || !email) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+        const date = moment(new Date());
+        const validity = selectPlan[0].validity;
+        // Calculate expiry date based on the validity
+        let expireDate;
+        if (validity.includes('days')) {
+            const days = parseInt(validity);
+            expireDate = date.add(days, 'days');
+        } else if (validity.includes('months')) {
+            const months = parseInt(validity);
+            expireDate = date.add(months, 'months');
         }
 
         // Convert expire_date to Indian Standard Time (IST)
-        const expireDateIST = moment(expire_date).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
+        const expireDateIST = moment(expireDate).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
+
+        console.log('Expiry Date in IST:', expireDateIST);
 
         // Check if user already has an active subscription
         const getSub = await query("SELECT * FROM user_subscriptions WHERE userId = ?", [getUser]);
@@ -174,13 +188,22 @@ exports.createToken = async (req, res, next) => {
         let isNewSubscription = true;
         console.log("getSub", getSub);
         if (getSub.length > 0) {
+            isNewSubscription = false;
             // Check if the current subscription is still active
             const currentSubscription = getSub[0];
             const currentDateIST = moment().tz('Asia/Kolkata');
             const subscriptionEndDate = moment(currentSubscription.expire_date).tz('Asia/Kolkata');
+            const getApiHits = getPlans.find(plan => plan.id === getSub[0].planId).api_call.split(' ')[0] == getSub[0].api_hits;
+            console.log("getPlans[0].api_call.split(' ')[0]", getPlans[0].api_call.split(' ')[0]);
+            console.log("getSub[0].api_hits", getSub[0].api_hits);
+            
             if (currentDateIST.isBefore(subscriptionEndDate)) {
                 // If the subscription is still active, send a response indicating that
-                return res.status(400).json({ success: false, message: "Already subscribed" });
+                console.log("getApiHits", getApiHits);
+                if(getApiHits){
+                }else{
+                    return res.status(400).json({ success: false, message: "Already subscribed" });
+                }
             }
         }
 
@@ -189,15 +212,16 @@ exports.createToken = async (req, res, next) => {
         // Proceed to create a new subscription or renew existing subscription
         const createSubscriptionQuery = isNewSubscription
             ? `INSERT INTO user_subscriptions (userId, planId, start_date, expire_date, token) VALUES (?, ?, ?, ?, ?)`
-            : `UPDATE user_subscriptions SET planId = ?, start_date = ?, expire_date = ?, token = ? WHERE userId = ?`;
+            : `UPDATE user_subscriptions SET planId = ?, api_hits = ?, start_date = ?, expire_date = ?, token = ? WHERE userId = ?`;
 
         const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
+        console.log("isNewSubscription", isNewSubscription);
+        
         if (isNewSubscription) {
             await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token]);
         } else {
-            await query(createSubscriptionQuery, [id, startDate, expireDateIST, token, getUser]);
+            await query(createSubscriptionQuery, [id, 0, startDate, expireDateIST, token, getUser]);
         }
 
         // Log subscription history

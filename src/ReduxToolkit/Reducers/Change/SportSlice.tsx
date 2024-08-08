@@ -34,8 +34,8 @@ const SportSlice = createSlice({
     builder.addCase(getCricketData.fulfilled, (state, action) => {
         state.cricket.isLoading = false;
         console.log("action...pa", action.payload);
-        state.cricket.data = action.payload.data;
-        state.cricket.pagination = action.payload.pagination;
+        state.cricket.data = action.payload?.data;
+        state.cricket.pagination = action.payload?.pagination;
     });
     builder.addCase(getCricketData.rejected, (state, action) => {
         console.log("error in getCricketData", action.payload);

@@ -8,7 +8,7 @@ const InvoiceTwoTotal = () => {
         <tfoot>
           <tr>
             <td style={{ padding: "5px 24px 5px 0", paddingTop: 15 }}>
-              <span style={{ fontSize: 16, fontWeight: 400 }}>{Subtotal} :</span>
+              <span style={{ fontSize: 12, fontWeight: 400 }}>{Subtotal} :</span>
             </td>
             <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 15 }}>
               <span>$26,400.00</span>
@@ -16,7 +16,7 @@ const InvoiceTwoTotal = () => {
           </tr>
           <tr>
             <td style={{ padding: "5px 24px 5px 0" }}>
-              <span style={{ fontSize: 16, fontWeight: 400 }}>{Vat} (0%) :</span>
+              <span style={{ fontSize: 12, fontWeight: 400 }}>{Vat} (0%) :</span>
             </td>
             <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 0}} >
               <span>$0.00</span>
@@ -24,7 +24,7 @@ const InvoiceTwoTotal = () => {
           </tr>
           <tr>
             <td style={{ padding: "5px 24px 5px 0", minWidth: 200 }}>
-              <span style={{ fontSize: 16, fontWeight: 400 }}> {ShippingRate} : </span>
+              <span style={{ fontSize: 12, fontWeight: 400 }}> {ShippingRate} : </span>
             </td>
             <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 0 }} >
               <span>$10.00</span>

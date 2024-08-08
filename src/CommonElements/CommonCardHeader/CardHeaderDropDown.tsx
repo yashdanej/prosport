@@ -13,12 +13,18 @@ const CardHeaderDropDown = ({firstItem , secondItem ,thirdItem ,mainTitle,menuTi
         <DropdownItem>
           {firstItem}
         </DropdownItem>
-        <DropdownItem>
-          {secondItem}
-        </DropdownItem>
-        <DropdownItem>
-          {thirdItem}
-        </DropdownItem>
+        {
+          secondItem &&
+          <DropdownItem>
+            {secondItem}
+          </DropdownItem>
+        }
+        {
+          thirdItem &&
+          <DropdownItem>
+            {thirdItem}
+          </DropdownItem>
+        }
       </DropdownMenu>
     </Dropdown>
   );

@@ -38,7 +38,9 @@ exports.Cricket = async (req, res, next) => {
         });
 
         console.log("response.data", response.data);
-
+        if(response.data.status === 'unauthorized' || response.data.response === 'Your Plan is expired' || response.data.response === 'Your Plan is inactive'){
+            return res.status(400).json({success: false, message: response.data.response});
+        }
         // Extract data and pagination information from the API response
         const { matches, pageData } = response.data.response;
         

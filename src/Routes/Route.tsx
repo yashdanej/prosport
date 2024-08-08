@@ -131,14 +131,16 @@ import SupportCompo from "../Pages/support/SupportCompo";
 import LogOut from "../Pages/LogOut";
 import Shop from "../Pages/shop/Shop";
 import Cricket from "../Pages/Application/Sports/Cricket";
+import InternetBilling from "../Componant/Application/Invoice/InternetBilling";
 
 
 const routes = [
   // dashboard 
-  { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
+  // { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/project`, Component:<ProjectDashboard />},
   { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EducationDashboard />},
   { path: `${process.env.PUBLIC_URL}/sports/cricket`, Component:<Cricket />},
+  { path: `${process.env.PUBLIC_URL}/invoice`, Component:<InternetBilling />},
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EcommerceDashborad />},
   { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
@@ -149,200 +151,201 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/setting/profile`, Component: <EditProfile />},
   { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
   { path: `${process.env.PUBLIC_URL}/api/docs`, Component: <ApiDocs />},
-  
-  // Widgets
-  { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},
-  { path: `${process.env.PUBLIC_URL}/widgets/chart`, Component:<Charts />},
-
-  // Page Layout
-  { path: `${process.env.PUBLIC_URL}/page_layout/hide_nav_scroll`, Component: <HideNavScrollContainer />},
-
-   // Project
-   { path: `${process.env.PUBLIC_URL}/project/project_list`, Component: <ProjectList />},
-   { path: `${process.env.PUBLIC_URL}/project/create_new`, Component: <ProjectCreate />},
-   
-   // File Manager
-  { path: `${process.env.PUBLIC_URL}/app/file_manager`, Component: <FileManager />},
-
-  // Ecommerce
-  { path: `${process.env.PUBLIC_URL}/ecommerce/add_product`, Component: <AddProduct />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/products`, Component: <Products />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/product_page`, Component: <ProductPage />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/product_list`, Component: <ProductList />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/payment_details`, Component: <PaymentDetails />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
-    // Invoices
-    { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice1`, Component: <InvoiceOne />},
-    { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice2`, Component: <InvoiceTwo />},
-    { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice3`, Component: <InvoiceThree />},
-    { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice4`, Component: <InvoiceFour />},
-    { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice5`, Component: <InvoiceFive />},
-    { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice6`, Component: <InvoiceSix />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/cart`, Component: <Cart />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/wishlist`, Component: <WishList />},
-  { path: `${process.env.PUBLIC_URL}/ecommerce/checkout`, Component: <Checkout />},
   { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, Component: <Pricing />},
   { path: `${process.env.PUBLIC_URL}/dashboard/support`, Component: <SupportCompo />},
-
-  // LetterBox
-  { path: `${process.env.PUBLIC_URL}/email/letter_box`, Component: <LetterBox />},
-
-  // Chat
-  { path: `${process.env.PUBLIC_URL}/chat/private_chat`, Component: <PrivateChat />},
-  { path: `${process.env.PUBLIC_URL}/chat/group_chat`, Component: <GroupChat />},
-
-  // Users
-  { path: `${process.env.PUBLIC_URL}/users/user_profile`, Component: <UsersProfile />},
-  { path: `${process.env.PUBLIC_URL}/users/user_edit`, Component: <EditProfile />},
-  { path: `${process.env.PUBLIC_URL}/users/cards`, Component: <UserCards />},
-
-  // Bookmark
-  { path: `${process.env.PUBLIC_URL}/app/bookmark`, Component: <Bookmark />},
-
-  // Contacts
-  { path: `${process.env.PUBLIC_URL}/app/contacts`, Component: <Contacts />},
-
-  // Tasks
-  { path: `${process.env.PUBLIC_URL}/app/task`, Component: <Tasks />},
-
-  // Calender
-  { path: `${process.env.PUBLIC_URL}/app/calendar`, Component: <Calender />},
-
-  // SocialApp
-  { path: `${process.env.PUBLIC_URL}/app/social_app`, Component: <SocialApp />},
-
-  // Todo
-  { path: `${process.env.PUBLIC_URL}/app/todo`, Component: <Todo />},
-
-  // SearchResult 
-  { path: `${process.env.PUBLIC_URL}/app/search_result`, Component: <SearchResult />},
-
-  // Forms Control
-  { path: `${process.env.PUBLIC_URL}/forms/forms_controls/form_validation`, Component: <FormsValidation />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_controls/base_input`, Component: <BaseInput />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_controls/radio_checkbox`, Component: <RadioCheckbox />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_controls/input_groups`, Component: <InputGroup />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_controls/input_mask`, Component: <InputMask />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_controls/mega_option`, Component: <MegaOption />},
-
-  // Forms Widgets
-  { path: `${process.env.PUBLIC_URL}/forms/forms_widget/datepicker`, Component: <DatePicker />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_widget/touchspin`, Component: <TouchSpin />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_widget/switch`, Component: <Switch />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_widget/typeahead`, Component: <Typeahead />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_widget/clipboard`, Component:<ClipBoard />},
-
-  // Forms Layout
-  { path: `${process.env.PUBLIC_URL}/forms/forms_layout/form_wizard_1`, Component: <FormWizardOne />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_layout/form_wizard_2`, Component: <FormWizardTwo />},
-  { path: `${process.env.PUBLIC_URL}/forms/forms_layout/two_factor`, Component: <TwoFactor />},
-
-  // Tables
-  { path: `${process.env.PUBLIC_URL}/table/reactstrap_table/basic_table`, Component: <BasicTable />},
-  { path: `${process.env.PUBLIC_URL}/table/reactstrap_table/table_component`, Component: <TableComponent />},
-
-  // Data Tables
-  { path: `${process.env.PUBLIC_URL}/table/data_table/basic_init`, Component: <BasicInit />},
-  { path: `${process.env.PUBLIC_URL}/table/data_table/advance_init`, Component: <AdvanceInit />},
-  { path: `${process.env.PUBLIC_URL}/table/data_table/api`, Component: <ApiDataTable />},
-  { path: `${process.env.PUBLIC_URL}/table/data_table/data_sources`, Component: <DataSource />},
-
-  // Ui-kits
-  { path: `${process.env.PUBLIC_URL}/uikits/typography`, Component: <Typography />},
-  { path: `${process.env.PUBLIC_URL}/uikits/avatars`, Component:<Avatars />},
-  { path: `${process.env.PUBLIC_URL}/uikits/helperclass`, Component:<HelperClasses />},
-  { path: `${process.env.PUBLIC_URL}/uikits/grid`, Component:<Grid />},
-  { path: `${process.env.PUBLIC_URL}/uikits/tagpills`, Component:<TagAndPills />},
-  { path: `${process.env.PUBLIC_URL}/uikits/progress`, Component:<Progress />},
-  { path: `${process.env.PUBLIC_URL}/uikits/modal`, Component:<Modal />},
-  { path: `${process.env.PUBLIC_URL}/uikits/alert`, Component:<Alert />},
-  { path: `${process.env.PUBLIC_URL}/uikits/popover`, Component:<Popover />},
-  { path: `${process.env.PUBLIC_URL}/uikits/tooltip`, Component:<Tooltip />},
-  { path: `${process.env.PUBLIC_URL}/uikits/dropdown`, Component:<Dropdown />},
-  { path: `${process.env.PUBLIC_URL}/uikits/accordion`, Component:<Accordion />},
-  { path: `${process.env.PUBLIC_URL}/uikits/tabs`, Component:<BootstrapTabs />},
-  { path: `${process.env.PUBLIC_URL}/uikits/list`, Component:<Lists />},
   
-  // Bonus-Ui
-  { path: `${process.env.PUBLIC_URL}/bonusui/scrollable`, Component:<Scrollable />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/tree_view`, Component:<TreeView />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/toasts`, Component:<Toast />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/rating`, Component:<Rating />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/dropzone`, Component: <Dropzone />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/tour`, Component: <Tour />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/sweet_alert2`, Component: <SweetAlert />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/owl_carousel`, Component: <OwlCarousel />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/ribbons`, Component: <Ribbons />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/pagination`, Component: <Paginations />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/breadcrumb`, Component: <Breadcrumb />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/range_slider`, Component: <RangeSlider />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/image_cropper`, Component: <ImageCropper/>}, 
-  { path: `${process.env.PUBLIC_URL}/bonusui/basic_cards`, Component: <BasicCard />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/creative_cards`, Component: <CreativeCard />},
-  { path: `${process.env.PUBLIC_URL}/bonusui/timeline`, Component: <Timeline />},
+  // // Widgets
+  // { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},
+  // { path: `${process.env.PUBLIC_URL}/widgets/chart`, Component:<Charts />},
 
-  // Icons
-  { path: `${process.env.PUBLIC_URL}/icons/flag_icons`, Component: <FlagIcons />},
-  { path: `${process.env.PUBLIC_URL}/icons/fontawesome_icon`, Component: <FontAwesomeIcon />},
-  { path: `${process.env.PUBLIC_URL}/icons/ico_icon`, Component: <ICOIcon />},
-  { path: `${process.env.PUBLIC_URL}/icons/themify_icon`, Component: <ThemifyIcons />},
-  { path: `${process.env.PUBLIC_URL}/icons/feather_icon`, Component: <FeatherIcons />},
-  { path: `${process.env.PUBLIC_URL}/icons/weather_icon`, Component: <WhetherIcon />},
+  // // Page Layout
+  // { path: `${process.env.PUBLIC_URL}/page_layout/hide_nav_scroll`, Component: <HideNavScrollContainer />},
 
-  // Buttons
-  { path: `${process.env.PUBLIC_URL}/buttons/default_style`, Component: <DefaultStyle />},
-  { path: `${process.env.PUBLIC_URL}/buttons/flat_style`, Component: <FlatStyle />},
-  { path: `${process.env.PUBLIC_URL}/buttons/edge_style`, Component: <EdgeStyle />},
-  { path: `${process.env.PUBLIC_URL}/buttons/raised_style`, Component: <RaisedStyle />},
-  { path: `${process.env.PUBLIC_URL}/buttons/button_group`, Component: <ButtonGroup />},
+  //  // Project
+  //  { path: `${process.env.PUBLIC_URL}/project/project_list`, Component: <ProjectList />},
+  //  { path: `${process.env.PUBLIC_URL}/project/create_new`, Component: <ProjectCreate />},
+   
+  //  // File Manager
+  // { path: `${process.env.PUBLIC_URL}/app/file_manager`, Component: <FileManager />},
+
+  // // Ecommerce
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/add_product`, Component: <AddProduct />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/products`, Component: <Products />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/product_page`, Component: <ProductPage />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/product_list`, Component: <ProductList />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/payment_details`, Component: <PaymentDetails />},
+  // { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
+  //   // Invoices
+  //   { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice1`, Component: <InvoiceOne />},
+    // { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice2`, Component: <InvoiceTwo />},
+  //   { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice3`, Component: <InvoiceThree />},
+  //   { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice4`, Component: <InvoiceFour />},
+  //   { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice5`, Component: <InvoiceFive />},
+  //   { path: `${process.env.PUBLIC_URL}/ecommerce/invoice/invoice6`, Component: <InvoiceSix />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/cart`, Component: <Cart />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/wishlist`, Component: <WishList />},
+  // { path: `${process.env.PUBLIC_URL}/ecommerce/checkout`, Component: <Checkout />},
+
+
+  // // LetterBox
+  // { path: `${process.env.PUBLIC_URL}/email/letter_box`, Component: <LetterBox />},
+
+  // // Chat
+  // { path: `${process.env.PUBLIC_URL}/chat/private_chat`, Component: <PrivateChat />},
+  // { path: `${process.env.PUBLIC_URL}/chat/group_chat`, Component: <GroupChat />},
+
+  // // Users
+  // { path: `${process.env.PUBLIC_URL}/users/user_profile`, Component: <UsersProfile />},
+  // { path: `${process.env.PUBLIC_URL}/users/user_edit`, Component: <EditProfile />},
+  // { path: `${process.env.PUBLIC_URL}/users/cards`, Component: <UserCards />},
+
+  // // Bookmark
+  // { path: `${process.env.PUBLIC_URL}/app/bookmark`, Component: <Bookmark />},
+
+  // // Contacts
+  // { path: `${process.env.PUBLIC_URL}/app/contacts`, Component: <Contacts />},
+
+  // // Tasks
+  // { path: `${process.env.PUBLIC_URL}/app/task`, Component: <Tasks />},
+
+  // // Calender
+  // { path: `${process.env.PUBLIC_URL}/app/calendar`, Component: <Calender />},
+
+  // // SocialApp
+  // { path: `${process.env.PUBLIC_URL}/app/social_app`, Component: <SocialApp />},
+
+  // // Todo
+  // { path: `${process.env.PUBLIC_URL}/app/todo`, Component: <Todo />},
+
+  // // SearchResult 
+  // { path: `${process.env.PUBLIC_URL}/app/search_result`, Component: <SearchResult />},
+
+  // // Forms Control
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_controls/form_validation`, Component: <FormsValidation />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_controls/base_input`, Component: <BaseInput />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_controls/radio_checkbox`, Component: <RadioCheckbox />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_controls/input_groups`, Component: <InputGroup />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_controls/input_mask`, Component: <InputMask />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_controls/mega_option`, Component: <MegaOption />},
+
+  // // Forms Widgets
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_widget/datepicker`, Component: <DatePicker />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_widget/touchspin`, Component: <TouchSpin />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_widget/switch`, Component: <Switch />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_widget/typeahead`, Component: <Typeahead />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_widget/clipboard`, Component:<ClipBoard />},
+
+  // // Forms Layout
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_layout/form_wizard_1`, Component: <FormWizardOne />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_layout/form_wizard_2`, Component: <FormWizardTwo />},
+  // { path: `${process.env.PUBLIC_URL}/forms/forms_layout/two_factor`, Component: <TwoFactor />},
+
+  // // Tables
+  // { path: `${process.env.PUBLIC_URL}/table/reactstrap_table/basic_table`, Component: <BasicTable />},
+  // { path: `${process.env.PUBLIC_URL}/table/reactstrap_table/table_component`, Component: <TableComponent />},
+
+  // // Data Tables
+  // { path: `${process.env.PUBLIC_URL}/table/data_table/basic_init`, Component: <BasicInit />},
+  // { path: `${process.env.PUBLIC_URL}/table/data_table/advance_init`, Component: <AdvanceInit />},
+  // { path: `${process.env.PUBLIC_URL}/table/data_table/api`, Component: <ApiDataTable />},
+  // { path: `${process.env.PUBLIC_URL}/table/data_table/data_sources`, Component: <DataSource />},
+
+  // // Ui-kits
+  // { path: `${process.env.PUBLIC_URL}/uikits/typography`, Component: <Typography />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/avatars`, Component:<Avatars />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/helperclass`, Component:<HelperClasses />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/grid`, Component:<Grid />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/tagpills`, Component:<TagAndPills />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/progress`, Component:<Progress />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/modal`, Component:<Modal />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/alert`, Component:<Alert />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/popover`, Component:<Popover />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/tooltip`, Component:<Tooltip />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/dropdown`, Component:<Dropdown />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/accordion`, Component:<Accordion />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/tabs`, Component:<BootstrapTabs />},
+  // { path: `${process.env.PUBLIC_URL}/uikits/list`, Component:<Lists />},
   
-  // Charts
-  { path: `${process.env.PUBLIC_URL}/charts/apex_chart`, Component: <ApexChart />},
-  { path: `${process.env.PUBLIC_URL}/charts/google_chart`, Component: <GoogleChart />},
-  { path: `${process.env.PUBLIC_URL}/charts/chartjs_chart`, Component:<ChartJs />},
+  // // Bonus-Ui
+  // { path: `${process.env.PUBLIC_URL}/bonusui/scrollable`, Component:<Scrollable />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/tree_view`, Component:<TreeView />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/toasts`, Component:<Toast />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/rating`, Component:<Rating />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/dropzone`, Component: <Dropzone />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/tour`, Component: <Tour />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/sweet_alert2`, Component: <SweetAlert />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/owl_carousel`, Component: <OwlCarousel />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/ribbons`, Component: <Ribbons />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/pagination`, Component: <Paginations />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/breadcrumb`, Component: <Breadcrumb />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/range_slider`, Component: <RangeSlider />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/image_cropper`, Component: <ImageCropper/>}, 
+  // { path: `${process.env.PUBLIC_URL}/bonusui/basic_cards`, Component: <BasicCard />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/creative_cards`, Component: <CreativeCard />},
+  // { path: `${process.env.PUBLIC_URL}/bonusui/timeline`, Component: <Timeline />},
 
-  // Pages
-  { path: `${process.env.PUBLIC_URL}/pages/sample_page`, Component: <SamplePage />},
+  // // Icons
+  // { path: `${process.env.PUBLIC_URL}/icons/flag_icons`, Component: <FlagIcons />},
+  // { path: `${process.env.PUBLIC_URL}/icons/fontawesome_icon`, Component: <FontAwesomeIcon />},
+  // { path: `${process.env.PUBLIC_URL}/icons/ico_icon`, Component: <ICOIcon />},
+  // { path: `${process.env.PUBLIC_URL}/icons/themify_icon`, Component: <ThemifyIcons />},
+  // { path: `${process.env.PUBLIC_URL}/icons/feather_icon`, Component: <FeatherIcons />},
+  // { path: `${process.env.PUBLIC_URL}/icons/weather_icon`, Component: <WhetherIcon />},
 
-  // Gallery
-  { path: `${process.env.PUBLIC_URL}/gallery/gallery_grids`, Component: <GalleryGrid />},
-  { path: `${process.env.PUBLIC_URL}/gallery/gallery_grid_desc`, Component: <GalleryGridDesc />},
-  { path: `${process.env.PUBLIC_URL}/gallery/masonry_gallery`, Component: <MasonryGallery />},
-  { path: `${process.env.PUBLIC_URL}/gallery/masonry_with_desc`, Component: <MasonryImageDesc />},
-  { path: `${process.env.PUBLIC_URL}/gallery/hover_effect`, Component: <HoverEffect />},
+  // // Buttons
+  // { path: `${process.env.PUBLIC_URL}/buttons/default_style`, Component: <DefaultStyle />},
+  // { path: `${process.env.PUBLIC_URL}/buttons/flat_style`, Component: <FlatStyle />},
+  // { path: `${process.env.PUBLIC_URL}/buttons/edge_style`, Component: <EdgeStyle />},
+  // { path: `${process.env.PUBLIC_URL}/buttons/raised_style`, Component: <RaisedStyle />},
+  // { path: `${process.env.PUBLIC_URL}/buttons/button_group`, Component: <ButtonGroup />},
+  
+  // // Charts
+  // { path: `${process.env.PUBLIC_URL}/charts/apex_chart`, Component: <ApexChart />},
+  // { path: `${process.env.PUBLIC_URL}/charts/google_chart`, Component: <GoogleChart />},
+  // { path: `${process.env.PUBLIC_URL}/charts/chartjs_chart`, Component:<ChartJs />},
 
-  // Blog
-  { path: `${process.env.PUBLIC_URL}/blog/blog_details`, Component: <BlogDetails />},
-  { path: `${process.env.PUBLIC_URL}/blog/blog_single`, Component: <BlogSingle />},
-  { path: `${process.env.PUBLIC_URL}/blog/add_post`, Component: <AddPost />},
-  
-  // Faq
-  { path: `${process.env.PUBLIC_URL}/fag/faq`, Component: <Faq />},
-  
-  // Job Search
-  { path: `${process.env.PUBLIC_URL}/job_search/card_view`, Component:<CardView />},
-  { path: `${process.env.PUBLIC_URL}/job_search/list_view`, Component: <ListView />},
-  { path: `${process.env.PUBLIC_URL}/job_search/job_detail`, Component: <JobDetails />},
-  { path: `${process.env.PUBLIC_URL}/job_search/apply`, Component: <JobApply />},
+  // // Pages
+  // { path: `${process.env.PUBLIC_URL}/pages/sample_page`, Component: <SamplePage />},
 
-  // Learning
-  { path: `${process.env.PUBLIC_URL}/learning/learning_list`, Component: <LearningList />},
-  { path: `${process.env.PUBLIC_URL}/learning/learning_course`, Component: <DetailsCourse />},
-  
-  // Maps
-  { path: `${process.env.PUBLIC_URL}/map/google_map`, Component: <GoogleMap />},
-  { path: `${process.env.PUBLIC_URL}/map/leaflet_map`, Component: <LeafletMaps />},
-  
-  // Editor
-  { path: `${process.env.PUBLIC_URL}/editor/ck_editor`, Component: <CkEditor />},
-  { path: `${process.env.PUBLIC_URL}/editor/mde_editor`, Component: <MdeEditor />},
-  { path: `${process.env.PUBLIC_URL}/editor/ace_editor`, Component: <AceEditor />},
-  
-  // Knowledgebase
-  { path: `${process.env.PUBLIC_URL}/knowledgebase/knowledgebase`, Component: <Knowledgebase />},
+  // // Gallery
+  // { path: `${process.env.PUBLIC_URL}/gallery/gallery_grids`, Component: <GalleryGrid />},
+  // { path: `${process.env.PUBLIC_URL}/gallery/gallery_grid_desc`, Component: <GalleryGridDesc />},
+  // { path: `${process.env.PUBLIC_URL}/gallery/masonry_gallery`, Component: <MasonryGallery />},
+  // { path: `${process.env.PUBLIC_URL}/gallery/masonry_with_desc`, Component: <MasonryImageDesc />},
+  // { path: `${process.env.PUBLIC_URL}/gallery/hover_effect`, Component: <HoverEffect />},
 
-  // Support Ticket
-  { path: `${process.env.PUBLIC_URL}/support_ticket/support_ticket`, Component: <SupportTicket />},
+  // // Blog
+  // { path: `${process.env.PUBLIC_URL}/blog/blog_details`, Component: <BlogDetails />},
+  // { path: `${process.env.PUBLIC_URL}/blog/blog_single`, Component: <BlogSingle />},
+  // { path: `${process.env.PUBLIC_URL}/blog/add_post`, Component: <AddPost />},
+  
+  // // Faq
+  // { path: `${process.env.PUBLIC_URL}/fag/faq`, Component: <Faq />},
+  
+  // // Job Search
+  // { path: `${process.env.PUBLIC_URL}/job_search/card_view`, Component:<CardView />},
+  // { path: `${process.env.PUBLIC_URL}/job_search/list_view`, Component: <ListView />},
+  // { path: `${process.env.PUBLIC_URL}/job_search/job_detail`, Component: <JobDetails />},
+  // { path: `${process.env.PUBLIC_URL}/job_search/apply`, Component: <JobApply />},
+
+  // // Learning
+  // { path: `${process.env.PUBLIC_URL}/learning/learning_list`, Component: <LearningList />},
+  // { path: `${process.env.PUBLIC_URL}/learning/learning_course`, Component: <DetailsCourse />},
+  
+  // // Maps
+  // { path: `${process.env.PUBLIC_URL}/map/google_map`, Component: <GoogleMap />},
+  // { path: `${process.env.PUBLIC_URL}/map/leaflet_map`, Component: <LeafletMaps />},
+  
+  // // Editor
+  // { path: `${process.env.PUBLIC_URL}/editor/ck_editor`, Component: <CkEditor />},
+  // { path: `${process.env.PUBLIC_URL}/editor/mde_editor`, Component: <MdeEditor />},
+  // { path: `${process.env.PUBLIC_URL}/editor/ace_editor`, Component: <AceEditor />},
+  
+  // // Knowledgebase
+  // { path: `${process.env.PUBLIC_URL}/knowledgebase/knowledgebase`, Component: <Knowledgebase />},
+
+  // // Support Ticket
+  // { path: `${process.env.PUBLIC_URL}/support_ticket/support_ticket`, Component: <SupportTicket />},
   
   
   

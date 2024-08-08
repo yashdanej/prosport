@@ -5,7 +5,7 @@ import { RootState } from "../../Store";
 // Thunk for createToken
 export const createToken = createAsyncThunk(
   "subscribe/token",
-  async (data: { id: number, name: string; email: string; expire_date: any}, { rejectWithValue }) => {
+  async (data: { id: number, name: string; email: string}, { rejectWithValue }) => {
     try {
       console.log("createToken---------", data);
       const res = await api(`/order/create-token/${data.id}`, "post", data, false, true);

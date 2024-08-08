@@ -13,7 +13,8 @@ const TotalStudents = ({ analytics }: any) => {
   const apiKeyData = useSelector((state: RootState) => state.subscribe.api_keys);
   const analyticsData = useSelector((state: RootState) => state.analytics.analytics);
   const dispatch = useDispatch<AppDispatch>();
-
+  console.log("apiKeyData", apiKeyData);
+  
   useEffect(() => {
     dispatch(getApiKeys());
     dispatch(getAnalyticsData());
@@ -54,24 +55,52 @@ const TotalStudents = ({ analytics }: any) => {
     },
   ];
 
+  const Hits = (from: string) => {
+    const plan = plansData?.data?.find((plan: any) => plan?.id === apiKeyData?.data?.[0]?.planId);
+    console.log("plan", plan);
+    if(!plan){
+      return "Not subscribe";
+    }else if(apiKeyData?.data?.[0]?.api_hits == plan.api_call.split(" ")[0]){
+      return "API call limit reached"
+    }else {
+      if(from==="total"){
+        return plan?.api_call.split(" ")[0];
+      }else if(from === "pending"){
+        return plan.api_call.split(" ")[0] - apiKeyData?.data?.[0]?.api_hits;
+      }else{
+        return apiKeyData?.data?.[0]?.api_hits || 0;
+      }
+    }
+  }
+
   const anylyticsData = [
     {
-      hits: plansData?.data?.find((plan: any) => plan?.id === apiKeyData?.data?.[0]?.planId)?.api_calls,
+      hits: Hits('total'),
       title: "Total Hits",
       color: "danger",
       icon: "down",
       percentage: "- 17.06%",
-      detail: "than last 6 Month",
+      detail: "This month details",
       image: "student.png",
       class: "student",
     },
     {
-      hits: plansData?.data?.find((plan: any) => plan?.id === apiKeyData?.data?.[0]?.planId)?.api_calls - apiKeyData?.data?.[0]?.api_hits,
+      hits: Hits('pending'),
       title: "Pending Hits",
       color: "danger",
       icon: "down",
       percentage: "- 17.06%",
-      detail: "than last 6 Month",
+      detail: "This month details",
+      image: "student.png",
+      class: "student",
+    },
+    {
+      hits: Hits('used'),
+      title: "Used Hits",
+      color: "danger",
+      icon: "down",
+      percentage: "- 17.06%",
+      detail: "This month details",
       image: "student.png",
       class: "student",
     },
@@ -97,20 +126,20 @@ const TotalStudents = ({ analytics }: any) => {
           {
           data?.length>0 ?
           data?.map((data: any, i: number) => (
-            <Col xl="4" sm="6" key={i}>
+            <Col xl="3" sm="6" key={i}>
               <Card>
                 <CardBody className={data.class}>
                   <div className="d-flex gap-2 align-items-center">
                     <div className="flex-grow-1">
                       <H2>{data.hits}</H2>
-                      <P className="mb-0 text-truncate"> {data.title}</P>
-                      <div className="d-flex student-arrow text-truncate">
+                      <P className="mb-0 text-truncate"> Matches API</P>
+                      {/* <div className="d-flex student-arrow text-truncate">
                         <P className={`mb-0 up-arrow bg-light-${data.color}`}>
                           <i className={`icon-arrow-${data.icon} font-${data.color}`} />
                         </P>
                         <span className={`f-w-500 font-${data.color}`}>{data.percentage}</span>
                         {data.detail}
-                      </div>
+                      </div> */}
                     </div>
                     <div className="flex-grow-2">
                       {
@@ -120,13 +149,9 @@ const TotalStudents = ({ analytics }: any) => {
                             alt="student"
                           />
                         ) : (
-                          <ReactApexChart
-                            id="growthchart"
-                            options={growthChart}
-                            series={growthChart.series}
-                            height={150}
-                            type="line"
-                          />
+                          <div style={{background: 'rgb(255 73 73)', borderRadius: '50%', padding: '20px'}}>
+                            <Image src={dynamicImage(`dashboard-4/icon/${data.image}`)} alt="student" />
+                          </div>
                         )
                       }
                     </div>

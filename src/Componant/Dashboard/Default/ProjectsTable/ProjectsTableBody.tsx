@@ -1,4 +1,4 @@
-import { Input, Label } from "reactstrap";
+import { Input, Label, Tooltip } from "reactstrap";
 import CardHeaderDropDown from "../../../../CommonElements/CommonCardHeader/CardHeaderDropDown";
 import { projectsTableBodyData } from "../../../../Data/Dashboard/DefaultData";
 import { H6, Image } from "../../../../AbstractElements";
@@ -7,13 +7,26 @@ import { Link } from "react-router-dom";
 import { Href } from "../../../../utils/Constant";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../ReduxToolkit/Store";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getApiKeys, getBilling, getSubscribe } from "../../../../ReduxToolkit/Reducers/Change/Subscribe";
+import InternetBilling from "../../../Application/Invoice/InternetBilling";
+import html2pdf from "html2pdf.js"
+import InvoiceTwo from "../../../../Pages/Application/Ecommerce/Invoices/Invoice-2/Invoice-2";
+import InvoiceFive from "../../../../Pages/Application/Ecommerce/Invoices/Invoice-5/Invoice-5";
 
 const ProjectsTableBody = () => {
   // const apiLogsData = useSelector((state: RootState) => state.dashboard.api_logs);
   const billingData = useSelector((state: RootState) => state.subscribe.billing);
   const plansData = useSelector((state: RootState) => state.subscribe.plans);
+  const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
+  const invoiceContainerRef = useRef(null);
+
+  const toggleTooltip = (id: any) => {
+    setTooltipOpen((prevState: any) => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
+  };
   const addDays = (date: Date, days: number): Date => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -45,7 +58,29 @@ const ProjectsTableBody = () => {
   useEffect(() => {
     fetchBillingData();
   }, [dispatch]);
+
+  const handleDownloadPdf = (invoiceData: any) => {
+    const element = invoiceContainerRef.current;
+
+    const opt = {
+      margin: 0.02,
+      filename: `${invoiceData.invoice}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: 'avoid-all' },
+    };
+
+    html2pdf().from(element).set(opt).save();
+  };
   return (
+    <>
+    <div style={{ display: 'none' }}>
+        <div ref={invoiceContainerRef}>
+          <InvoiceTwo />
+        </div>
+      </div>
     <tbody>
       {data?.map((data: any, i: number) => (
         <tr key={i}>
@@ -73,17 +108,21 @@ const ProjectsTableBody = () => {
           <td>{data.price}</td>
           <td>{data.tax}</td>
           <td>{data.amount}</td>
-          <td className="text-center">
-            <CardHeaderDropDown
-              mainTitle={true}
-              firstItem="Weekly"
-              secondItem="Monthly"
-              thirdItem="Yearly"
-            />
+          <td className="icon-lists">
+            <i onClick={() => handleDownloadPdf(data)} id={`icon-pdf-${i}`} style={{fontSize: '21px', cursor: 'pointer'}} className="fa fa-file-pdf-o"></i>
+            <Tooltip
+              placement="top"
+              isOpen={tooltipOpen[`icon-pdf-${i}`]}
+              target={`icon-pdf-${i}`}
+              toggle={() => toggleTooltip(`icon-pdf-${i}`)}
+            >
+              Download invoice
+            </Tooltip>
           </td>
         </tr>
       ))}
     </tbody>
+    </>
   );
 };
 

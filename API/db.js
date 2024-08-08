@@ -7,10 +7,10 @@ const db = mysql.createPool({
     password: "Yash@1212888",
     database: "pappapi"
     // connectionLimit: 10,
-    // host: "127.0.0.1",
-    // user: "yash_danej",
-    // password: "Yash@1212888",
-    // database: "crmdb"
+    // host: "localhost",
+    // user: "root",
+    // password: "Albatros_Med_@2024hash",
+    // database: "pappapi"
 });
 
 module.exports = db;

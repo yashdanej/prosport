@@ -37,18 +37,12 @@ const InvoiceTwoContainer = () => {
                   <tr>
                     <InvoiceTwoTotal />
                   </tr>
-                  <tr>
-                    <td>
-                      <span style={{ display: "block", background: "rgba(82, 82, 108, 0.3)", height: 1, width: "100%", marginBottom: 30 }} />
-                    </td>
-                  </tr>
                 </tbody>
               </Table>
             </CardBody>
           </Card>
         </Container>
       </div>
-      <InvoiceButtons handlePrint={handlePrint}/>
     </>
   );
 };
