@@ -2,7 +2,7 @@ import { Table } from "reactstrap";
 import { Date, InvoiceNo, PaymentStatus, TotalAmount } from "../../../../../utils/Constant";
 import { H4 } from "../../../../../AbstractElements";
 
-const InvoiceTwoDetails = () => {
+const InvoiceTwoDetails = ({data}: any) => {
   return (
     <td>
       <Table className="table-responsive" style={{ width: "100%" }} borderless>
@@ -13,7 +13,7 @@ const InvoiceTwoDetails = () => {
                 {InvoiceNo}
               </span>
               <H4 style={{ margin: 0, fontWeight: 400, fontSize: 12 }}>
-                #VL25000365
+                {data?.invoice}
               </H4>
             </td>
             <td style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", minWidth: 136}}>
@@ -21,7 +21,7 @@ const InvoiceTwoDetails = () => {
                 {Date} :
               </span>
               <H4 style={{ margin: 0, fontWeight: 400, fontSize: 12 }}>
-                09/03/2024
+                {data?.bill_date}
               </H4>
             </td>
             <td style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", minWidth: 146 }} >
@@ -37,7 +37,7 @@ const InvoiceTwoDetails = () => {
                 {TotalAmount} :
               </span>
               <H4 style={{ margin: 0, fontWeight: 400, fontSize: 12 }}>
-                $26,410.00
+                {data?.amount}
               </H4>
             </td>
           </tr>

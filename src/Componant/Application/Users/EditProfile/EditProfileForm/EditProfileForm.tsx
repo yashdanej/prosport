@@ -36,11 +36,16 @@ const EditProfileForm = () => {
     phone: profile?.phone || "",
     language: profile?.language || "English",
     skills: profile?.skills || "",
-    module: "profile",
+    from: "right",
     image: profile?.image || "",
     company_name: profile?.company_name || "",
     company_domain: profile?.company_domain || "",
-    operator: profile?.operator || ""
+    operator: profile?.operator || "",
+    address: profile?.address || "",
+    city: profile?.city || "",
+    postalcode: profile?.postalcode || "",
+    country: profile?.country || "",
+    gst: profile?.gst || "",
   });
 
   useEffect(() => {
@@ -56,11 +61,16 @@ const EditProfileForm = () => {
             phone: profile?.phone || "",
             language: profile?.language || "English",
             skills: profile?.skills || "",
-            module: "profile",
+            from: "right",
             image: profile?.image || "",
             company_name: profile?.company_name || "",
             company_domain: profile?.company_domain || "",
-            operator: profile?.operator || ""
+            operator: profile?.operator || "",
+            address: profile?.address || "",
+            city: profile?.city || "",
+            postalcode: profile?.postalcode || "",
+            country: profile?.country || "",
+            gst: profile?.gst || "",
         })
     }
   }, [profileData.data]);
@@ -75,11 +85,16 @@ const EditProfileForm = () => {
       phone: profile?.phone || "",
       language: profile?.language || "English",
       skills: profile?.skills || "",
-      module: "profile",
+      from: "right",
       image: profile?.image || "",
       company_name: profile?.company_name || "",
       company_domain: profile?.company_domain || "",
-      operator: profile?.operator || ""
+      operator: profile?.operator || "",
+      address: profile?.address || "",
+      city: profile?.city || "",
+      postalcode: profile?.postalcode || "",
+      country: profile?.country || "",
+      gst: profile?.gst || "",
     })
   }
 
@@ -88,11 +103,11 @@ const EditProfileForm = () => {
     dispatch(updateProfile(user)).then(() => {
       setTxt(`${user?.name} Profile Updated Successfully`);
       setShowToast(true);
-      resetUser()
+      // resetUser()
     }).catch((error) => {
       setTxt("Error updating profile");
       setShowToast(true);
-      resetUser()
+      // resetUser()
       console.error("Error updating profile:", error);
     });
   };
@@ -113,18 +128,9 @@ const EditProfileForm = () => {
       }));
     }
   };
-  const fetchUser = () => {
-    dispatch(getLoggedUserProfile());
-  }
-  useEffect(() => {
-    console.log("user", user);
-  }, [user]);
-    useEffect(() => {
-      fetchUser();
-    }, []);
 
   return (
-    <Col xl="12">
+    <Col xl="8">
       <Form onSubmit={handleUpdateProfile}>
         <Card>
           <CardHeaderCommon title="Edit Profile" tagClass={"card-title mb-0"} />
@@ -134,7 +140,7 @@ const EditProfileForm = () => {
               :
           <CardBody>
             <Row>
-              <div className="profile-title">
+              {/* <div className="profile-title">
                 <div className='d-flex'>
                   <Image className="img-70 rounded-circle" style={{objectFit: "cover", height: "70px"}} alt="edit-user" src={user?.image} />
                   <div className='flex-grow-1'>
@@ -153,7 +159,7 @@ const EditProfileForm = () => {
                     onupdatefiles={handleFileChange}
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col sm="6" md="6">
                 <FormGroup>
                   <Label>First Name</Label>
@@ -177,6 +183,37 @@ const EditProfileForm = () => {
                   <Label>Phone</Label>
                   <Input onChange={(e) => changeText(e, setUser, user)} type="number"  name='phone' placeholder="Phone" value={user?.phone} />
                 </FormGroup>
+              </Col>
+              <Col md="12">
+                  <FormGroup>
+                      <Label >{"Address"}</Label>
+                      <textarea onChange={(e) => changeText(e, setUser, user)} name='address' value={user?.address} rows={3} className="form-control" defaultValue={"Type your address"} />
+                  </FormGroup>
+              </Col>
+              <Col sm="6" md="4" >
+                  <FormGroup>
+                      <Label >{"City"}</Label>
+                      <Input onChange={(e) => changeText(e, setUser, user)} name='city' value={user?.city} type="text" placeholder="City" />
+                  </FormGroup>
+              </Col>
+              <Col sm="6" md="3" >
+                  <FormGroup>
+                      <Label >{"PostalCode"}</Label>
+                      <Input onChange={(e) => changeText(e, setUser, user)} name='postalcode' value={user?.postalcode} type="number" placeholder="ZIP Code" />
+                  </FormGroup>
+              </Col>
+              <Col md="5">
+                  <FormGroup>
+                      <Label>{"Country"}</Label>
+                      {/* <Input type='select' className="btn-square form-select">
+                      <option>{'Select'}</option>
+                      <option>{'Germany'}</option>
+                      <option>{'Canada'}</option>
+                      <option>{'Usa'}</option>
+                      <option>{'Aus'}</option>
+                      </Input> */}
+                      <Input onChange={(e) => changeText(e, setUser, user)} name='country' value={user?.country} type="text" placeholder="Country" />
+                  </FormGroup>
               </Col>
               <Col sm="6" md="6">
                 <FormGroup>

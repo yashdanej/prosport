@@ -1,7 +1,7 @@
 import { Table } from "reactstrap";
 import { ShippingRate, Subtotal, TotalAmount, Vat } from "../../../../../utils/Constant";
 
-const InvoiceTwoTotal = () => {
+const InvoiceTwoTotal = ({data}: any) => {
   return (
     <td>
       <Table className="table-responsive" borderless>
@@ -11,23 +11,15 @@ const InvoiceTwoTotal = () => {
               <span style={{ fontSize: 12, fontWeight: 400 }}>{Subtotal} :</span>
             </td>
             <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 15 }}>
-              <span>$26,400.00</span>
+              <span>₹{data?.amount}</span>
             </td>
           </tr>
           <tr>
             <td style={{ padding: "5px 24px 5px 0" }}>
-              <span style={{ fontSize: 12, fontWeight: 400 }}>{Vat} (0%) :</span>
+              <span style={{ fontSize: 12, fontWeight: 400 }}>{"GST"} (18%) :</span>
             </td>
             <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 0}} >
-              <span>$0.00</span>
-            </td>
-          </tr>
-          <tr>
-            <td style={{ padding: "5px 24px 5px 0", minWidth: 200 }}>
-              <span style={{ fontSize: 12, fontWeight: 400 }}> {ShippingRate} : </span>
-            </td>
-            <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 0 }} >
-              <span>$10.00</span>
+              <span>₹{data?.amount * (18 / 100)}</span>
             </td>
           </tr>
           <tr>
@@ -36,10 +28,8 @@ const InvoiceTwoTotal = () => {
                 {TotalAmount} :
               </span>
             </td>
-            <td style={{ padding: "12px 24px 5px 0", textAlign: "right" }} >
-              <span style={{ fontWeight: 500, fontSize: 20, color: "rgba(122, 112, 186, 1)" }} >
-                $26,410.00
-              </span>
+            <td style={{ padding: "5px 0", textAlign: "left", paddingTop: 0}} >
+              <span style={{color: 'rgba(122, 112, 186, 1)', fontSize: '24px'}}>₹{data?.amount + data?.amount * (18 / 100)}</span>
             </td>
           </tr>
         </tfoot>

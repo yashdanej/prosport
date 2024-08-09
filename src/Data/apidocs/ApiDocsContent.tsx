@@ -43,7 +43,7 @@ const ApiDocsContent = () => {
           </CardBody>
         </Card>
     </Row>
-    <Row>
+    {/* <Row>
         <Col sm="12">
         <Card>
             <CommonCardHeader title="API Doc" />
@@ -71,7 +71,7 @@ const ApiDocsContent = () => {
             </CardBody>
         </Card>
         </Col>
-    </Row>
+    </Row> */}
     </Container>
   )
 }

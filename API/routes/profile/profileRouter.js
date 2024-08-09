@@ -5,7 +5,8 @@ const { verifyToken } = require('../../middleware/verifyToken');
 const { upload } = require('../../middleware/upload');
 
 router
-    .patch("/update_profile", verifyToken, upload.single("file"), profileController.updateProfile)
+    .patch("/update_profile", verifyToken, profileController.updateProfile)
+    .patch("/update_profile/image", verifyToken, upload.single("file"), profileController.updateProfileImage)
     .get("/get_logged_user", verifyToken, profileController.getLoggedUser)
 
 module.exports = router;

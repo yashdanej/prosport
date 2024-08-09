@@ -7,23 +7,16 @@ import StoragePlan from '../../FileManager/FileSideBar/StoragePlan';
 import PricingPlans from '../../FileManager/FileSideBar/PricingPlans';
 
 const RefferSideBar = () => {
-    const [IsOpen, setIsOpen] = useState(false);
-    const OnHandelClick = () => {
-      setIsOpen(!IsOpen);
-    };
     return (
-      <Col xl="3" className="box-col-3">
+      <Col xl="4" className="box-col-3">
         <div className="md-sidebar">
-          <Btn color="primary" className="md-sidebar-toggle" onClick={OnHandelClick}>
-            {FileFilter}
-          </Btn>
-          <div className={`md-sidebar-aside job-left-aside custom-scrollbar ${IsOpen ? "open" : ""}`}>
+          <div className={``}>
             <div className="file-sidebar">
-              <Card>
-                <CardBody>
+              {/* <Card> */}
+                {/* <CardBody> */}
                   <PricingPlans />
-                </CardBody>
-              </Card>
+                {/* </CardBody> */}
+              {/* </Card> */}
             </div>
           </div>
         </div>

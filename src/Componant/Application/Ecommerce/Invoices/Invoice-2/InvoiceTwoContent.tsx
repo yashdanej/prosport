@@ -2,7 +2,7 @@ import { Table } from "reactstrap";
 import TableHeader from "./TableHeader";
 import InvoiceTwoData from "./InvoiceTwoData";
 
-const InvoiceTwoContent = () => {
+const InvoiceTwoContent = ({data}: any) => {
   return (
     <td>
       <Table className="table-responsive" style={{ width: "100%", borderCollapse: "separate", borderSpacing: 0, border: "1px dashed rgba(82, 82, 108, 0.1)"}}>
@@ -12,7 +12,7 @@ const InvoiceTwoContent = () => {
           </tr>
         </thead>
         <tbody>
-            <InvoiceTwoData />
+            <InvoiceTwoData data={data} />
         </tbody>
       </Table>
     </td>

@@ -1,11 +1,14 @@
+import { useSelector } from "react-redux";
 import { H4, Image, LI, UL } from "../../../../../AbstractElements";
 import { invoiceTwoDatas } from "../../../../../Data/Application/Ecommerce/Invoice";
 import { dynamicImage } from "../../../../../Service";
+import { RootState } from "../../../../../ReduxToolkit/Store";
 
-const InvoiceTwoData = () => {
+const InvoiceTwoData = ({data}: any) => {
+  
   return (
   <>
-    {invoiceTwoDatas.map((data,i)=>(
+    {/* {invoiceTwoDatas.map((data,i)=>(
       <tr className="invoice-dark" style={{ backgroundColor: "rgba(123, 111, 183, 0.1)", boxShadow: "0px 1px 0px 0px rgba(82, 82, 108, 0.15)" }} key={i}>
         <td style={{ padding: "14px 11px", display: "flex", alignItems: "center", gap: 10 }} >
           <span style={{ width: 54, height: 51, backgroundColor: "#F5F6F9", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 5 }} >
@@ -36,7 +39,37 @@ const InvoiceTwoData = () => {
           <span>${data.total}</span>
         </td>
       </tr>
-    ))}
+    ))} */}
+    <tr className="invoice-dark" style={{ backgroundColor: "rgba(123, 111, 183, 0.1)", boxShadow: "0px 1px 0px 0px rgba(82, 82, 108, 0.15)" }}>
+      <td style={{ padding: "14px 11px" }}>
+        <span>{data?.invoice}</span>
+      </td>
+      <td style={{ padding: "14px 11px", display: "flex", alignItems: "center", gap: 10 }} >
+        <UL className="simple-list" style={{ padding: 0, margin: 0, listStyle: "none" }}>
+          <LI>
+            <H4 style={{ fontWeight: 400, margin: "4px 0px", fontSize: 12 }} >
+              {data?.plan?.name}
+            </H4>
+            <span style={{ opacity: "0.8", fontSize: 14 }}>{data?.product}</span>
+          </LI>
+        </UL>
+      </td>
+      <td style={{ padding: "14px 11px" }}>
+        <span>{"1"}</span>
+      </td>
+      <td style={{ padding: "14px 11px", width: "12%" }}>
+        <span>₹{data?.amount}</span>
+      </td>
+      <td style={{ padding: "14px 11px", width: "12%" }}>
+        <span>{data?.amount * (18 / 100)}</span>
+      </td>
+      <td style={{ padding: "14px 11px", width: "10%" }}>
+        <span>{data?.amount + data?.amount * (18 / 100)}</span>
+      </td>
+      {/* <td style={{ padding: "14px 11px" }}>
+        <span>${data?.total}</span>
+      </td> */}
+    </tr>
   </>
   );
 };

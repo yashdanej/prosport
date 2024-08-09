@@ -9,6 +9,7 @@ import { RootState } from "../../../../ReduxToolkit/Store";
 import { useState } from "react";
 import BottomRightToast from "../../../BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast";
 import { BACKEND_URL, FRONTEND_URL } from "../../../../Utils";
+import UserInfo from "../../../Dashboard/Default/UserInfo/UserInfo";
 
 const PricingPlans = () => {
   const userData = localStorage.getItem("login-user");
@@ -27,19 +28,20 @@ const PricingPlans = () => {
     }
   }
   return (
-    <Card>
-      <CommonCardHeader title="How To Use" />
-      <div className="pricing-plan">
-        <H6>You cannot generate codes.</H6>
-        <H5>CODE: <b>{parsedUserData?.user?.reffer_code}</b></H5>
-        <P>Contact us to generate more referrals link.</P>
-        <P>Or signup using link</P>
-        <Btn onClick={() => handleCopyCode('code')} size="xs" color="primary" outline>Copy Code</Btn>
-        <Btn onClick={() => handleCopyCode("link")} className="mx-2" size="xs" color="primary" outline>Copy Link</Btn>
-        <Image className="bg-img" src={dynamicImage('dashboard/folder.png')} alt="dashboard"/>
+    <>
+      <div style={{background: `url(${dynamicImage('dashboard/bg.png')})`}}>
+        <div className="pricing-plan">
+          <H6>You can generate codes.</H6>
+          <H5>CODE: <b>{parsedUserData?.user?.reffer_code}</b></H5>
+          <P>Contact us to generate more referrals link.</P>
+          <P>Or signup using link</P>
+          <Btn onClick={() => handleCopyCode('code')} size="xs" color="primary" outline>Copy Code</Btn>
+          <Btn onClick={() => handleCopyCode("link")} className="mx-2" size="xs" color="primary" outline>Copy Link</Btn>
+          <Image className="bg-img" src={dynamicImage('dashboard/folder.png')} alt="dashboard"/>
+        </div>
       </div>
       {showToast && <BottomRightToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
-    </Card>
+    </>
   )
 }
 

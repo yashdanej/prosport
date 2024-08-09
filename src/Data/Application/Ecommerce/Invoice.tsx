@@ -1,4 +1,4 @@
-export const invoiceHeaderData = ["Products", "Quantity", "Price", "Unit", "Vat", "Total"];
+export const invoiceHeaderData = ["Invoice No.", "Description", "Quantity", "Price", "GST(18%)", "Total"];
 
 export const invoiceThreeHeader = ["Description", "Qty", "Price", "Sub total"];
 

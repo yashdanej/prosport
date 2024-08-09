@@ -8,6 +8,7 @@ interface ProfileState {
   data: any | null;
   isError: boolean;
   errorMessage: string;
+  image: string;
 }
 
 // Initial state
@@ -17,6 +18,7 @@ const initialState: { profile: ProfileState } = {
     data: null,
     isError: false,
     errorMessage: "",
+    image: ""
   }
 };
 
@@ -36,13 +38,28 @@ export const getLoggedUserProfile = createAsyncThunk('getLoggedUserProfile', asy
 export const updateProfile = createAsyncThunk('updateProfile', async (data: any, { rejectWithValue }) => {
     try {
         console.log("updateProfile---------", data);
-        const res = await api(`/profile/update_profile`, "patch", data, true, true);
+        const res = await api(`/profile/update_profile`, "patch", data, false, true);
         console.log("res---", res);
         if (!res?.data?.success) {
             return rejectWithValue(res?.data?.message);
         }
         console.log("return wdwd");
         
+        return res?.data;
+    } catch (err: any) {
+        console.log("err", err);
+        return rejectWithValue(err.message);
+    }
+});
+
+export const updateProfileImage = createAsyncThunk('updateProfileImage', async (data: any, { rejectWithValue }) => {
+    try {
+        console.log("updateProfileImage---------", data);
+        const res = await api(`/profile/update_profile/image`, "patch", data, true, true);
+        console.log("res---", res);
+        if (!res?.data?.success) {
+            return rejectWithValue(res?.data?.message);
+        }
         return res?.data;
     } catch (err: any) {
         console.log("err", err);
@@ -93,6 +110,22 @@ const profileSlice = createSlice({
     builder.addCase(updateProfile.rejected, (state, action) => {
         state.profile.isLoading = false;
         console.log("updateProfile.rejected", action);
+        state.profile.isError = true;
+        state.profile.errorMessage = action.payload as string;
+    });
+
+    builder.addCase(updateProfileImage.pending, (state) => {
+        state.profile.isLoading = true;
+        console.log("state.profile.isLoading", state);
+    });
+    builder.addCase(updateProfileImage.fulfilled, (state, action) => {
+        state.profile.isLoading = false;
+        console.log("wwdwdwdAction", action.payload);
+        state.profile.image = action.payload.data;
+    });
+    builder.addCase(updateProfileImage.rejected, (state, action) => {
+        state.profile.isLoading = false;
+        console.log("updateProfileImage.rejected", action);
         state.profile.isError = true;
         state.profile.errorMessage = action.payload as string;
     });

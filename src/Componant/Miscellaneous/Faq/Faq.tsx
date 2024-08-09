@@ -20,7 +20,7 @@ const FaqContainer = () => {
               <H4>How can we help?</H4>
               <P>You can search for anything you need help with.</P>
             </div>
-            <SearchInput />
+            {/* <SearchInput /> */}
           </Card>
           <Questions />
           <Questions />

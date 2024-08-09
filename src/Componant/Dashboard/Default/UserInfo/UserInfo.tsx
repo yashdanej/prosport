@@ -1,7 +1,6 @@
 import { Card, CardBody, Col } from "reactstrap";
 import { H1, P } from "../../../../AbstractElements";
 import { Link } from "react-router-dom";
-import { GoPremium } from "../../../../utils/Constant";
 
 const UserInfo = () => {
   return (
@@ -14,7 +13,7 @@ const UserInfo = () => {
               {"Welcome to the Mofi family! We are delighted that you have visited our dashboard."}
             </P>
             <Link className="btn" to={`${process.env.PUBLIC_URL}/dashboard/home`}>
-              {GoPremium}
+              {'GoPremium'}
             </Link>
           </div>
         </CardBody>

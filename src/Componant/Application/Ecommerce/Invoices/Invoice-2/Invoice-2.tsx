@@ -5,15 +5,29 @@ import InvoiceTwoBilling from "./InvoiceTwoBilling";
 import InvoiceTwoContent from "./InvoiceTwoContent";
 import InvoiceTwoTotal from "./InvoiceTwoTotal";
 import { InvoiceButtons } from "../Common/InvoiceButtons";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../ReduxToolkit/Store";
+import { getLoggedUserProfile } from "../../../../../ReduxToolkit/Reducers/Change/ProfileSlice";
 
-const InvoiceTwoContainer = () => {
+const InvoiceTwoContainer = ({data}: any) => {
+  console.log("ddata", data);
+  
   const componentRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const dispatch = useDispatch<AppDispatch>();
+
+  const fetchUser = () => {
+    dispatch(getLoggedUserProfile());
+  }
+  
+  useEffect(() => {
+    fetchUser();
+  }, []);
   return (
     <>
       <div ref={componentRef}>
@@ -26,16 +40,16 @@ const InvoiceTwoContainer = () => {
                     <InvoiceTwoHeader />
                   </tr>
                   <tr>
-                    <InvoiceTwoDetails />
+                    <InvoiceTwoDetails data={data} />
                   </tr>
                   <tr>
                     <InvoiceTwoBilling />
                   </tr>
                   <tr>
-                    <InvoiceTwoContent />
+                    <InvoiceTwoContent data={data} />
                   </tr>
                   <tr>
-                    <InvoiceTwoTotal />
+                    <InvoiceTwoTotal data={data} />
                   </tr>
                 </tbody>
               </Table>

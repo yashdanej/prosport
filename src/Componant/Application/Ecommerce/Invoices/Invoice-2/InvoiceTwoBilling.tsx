@@ -1,8 +1,11 @@
 import { Table } from "reactstrap";
 import { BillingAddress, Phone, ShippingAddress } from "../../../../../utils/Constant";
 import { H4 } from "../../../../../AbstractElements";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../ReduxToolkit/Store";
 
 const InvoiceTwoBilling = () => {
+  const profileData = useSelector((state: RootState) => state.profile.profile);
   return (
     <td>
       <Table className="table-responsive" style={{ width: "100%" }} borderless>
@@ -27,13 +30,13 @@ const InvoiceTwoBilling = () => {
                 {ShippingAddress}
               </span>
               <H4 style={{ fontWeight: 400, margin: "6px 0 3px 0", fontSize: 12,}} >
-                Cameron Williamson
+                {profileData?.data?.name} {profileData?.data?.lastname}
               </H4>
               <span style={{ width: "95%", display: "block", lineHeight: "1.5", opacity: "0.8", fontSize: 12, fontWeight: 400 }}>
-                2972 Westheimer Rd. Santa Ana, Illinois 85486
+                {profileData?.data?.address}
               </span>
               <span style={{ lineHeight: "2.6", opacity: "0.8", fontSize: 12, fontWeight: 400 }}>
-                {Phone} : (219) 555-0114
+                {Phone} : {profileData?.data?.phone}
               </span>
             </td>
           </tr>

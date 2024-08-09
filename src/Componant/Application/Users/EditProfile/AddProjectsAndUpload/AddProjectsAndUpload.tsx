@@ -8,7 +8,7 @@ const AddProjectsAndUpload = () => {
   return (
     <>
     <Col md="12">
-      <Form>
+      {/* <Form>
         <Card>
             <CardHeaderCommon title="Change Password" tagClass={"card-title mb-0"} />
             <CardBody>
@@ -37,7 +37,7 @@ const AddProjectsAndUpload = () => {
                 <Btn color="primary" type="submit">Save</Btn>
             </CardFooter>
         </Card>
-      </Form>
+      </Form> */}
       <Card>
         <CardHeaderCommon title="Notification" tagClass="card-title mb-0" />
         <div className="table-responsive add-project theme-scrollbar">
