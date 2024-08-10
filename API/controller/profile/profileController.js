@@ -7,6 +7,7 @@ const { verifyToken } = require('../../middleware/verifyToken');
 const query = util.promisify(db.query).bind(db);
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcrypt');
 
 // UpdateProfile
 exports.updateProfile = async (req, res, next) => {
@@ -144,6 +145,51 @@ exports.getLoggedUser = async (req, res, next) => {
         });
     } catch (error) {
         console.error("Error fetching user:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+
+// ChangePassword
+exports.ChangePassword = async (req, res, next) => {
+    try {
+        // Verify the token and get the user
+        const getUser = await verifyToken(req, res, next, { verifyUser: true });
+        
+        // Get the user's details
+        const users = await query("SELECT * FROM users WHERE id = ?", [getUser]);
+        
+        // Check if user exists
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // Get the user
+        const user = users[0];
+
+        // Get the current and new passwords from request body
+        const { currentPassword, newPassword } = req.body;
+        
+        // Check if the current password is correct
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        console.log("isMatch", isMatch);
+        
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: "Current password is incorrect" });
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the password in the database
+        await query("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, user.id]);
+
+        // Send the response
+        return res.status(200).json({
+            success: true,
+            message: "Password updated successfully"
+        });
+    } catch (error) {
+        console.error("Error changing password:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };

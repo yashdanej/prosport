@@ -10,6 +10,7 @@ router
     .get("/log_events", verifyToken, authController.Log_Events)
     .get("/refferal", authController.Refferal)
     .get("/all_users", authController.AllUsers)
+    .get("/verify-domain", authController.VerifyDomain)
     // .patch("/updaterole/:id", verifyToken, authController.UpdateRole) // activity
 
 module.exports = router;

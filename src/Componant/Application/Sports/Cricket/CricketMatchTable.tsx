@@ -35,8 +35,8 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
+    let hours = date?.getHours();
+    const minutes = date?.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
 
     hours = hours % 12;
@@ -56,14 +56,14 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
       name: "Match",
       cell: (row) => (
         <>
-          <p id={`match-key-${row.id}`}>{truncatedName(row.short_title)}</p>
+          <p id={`match-key-${row?.id}`}>{truncatedName(row?.short_title)}</p>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`match-key-${row.id}`]}
-            target={`match-key-${row.id}`}
-            toggle={() => toggleTooltip(`match-key-${row.id}`)}
+            isOpen={tooltipOpen[`match-key-${row?.id}`]}
+            target={`match-key-${row?.id}`}
+            toggle={() => toggleTooltip(`match-key-${row?.id}`)}
           >
-            {row.title}
+            {row?.title}
           </Tooltip>
         </>
       ),
@@ -72,14 +72,14 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
     },
     {
       name: "Venue",
-      cell: (row) => (
+      cell: (row?) => (
         <>
-          <span id={`venue-key-${row.id}`} className='text-center'>{truncatedName(row?.venue?.name)}</span>
+          <span id={`venue-key-${row?.id}`} className='text-center'>{truncatedName(row?.venue?.name)}</span>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`venue-key-${row.id}`]}
-            target={`venue-key-${row.id}`}
-            toggle={() => toggleTooltip(`venue-key-${row.id}`)}
+            isOpen={tooltipOpen[`venue-key-${row?.id}`]}
+            target={`venue-key-${row?.id}`}
+            toggle={() => toggleTooltip(`venue-key-${row?.id}`)}
           >
             {row?.venue?.name}
           </Tooltip>
@@ -92,14 +92,14 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
       name: "Location",
       cell: (row) => (
         <>
-          <span id={`location-key-${row.id}`} className='text-center'>{truncatedName(row.venue.location)}</span>
+          <span id={`location-key-${row?.id}`} className='text-center'>{truncatedName(row?.venue.location)}</span>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`location-key-${row.id}`]}
-            target={`location-key-${row.id}`}
-            toggle={() => toggleTooltip(`location-key-${row.id}`)}
+            isOpen={tooltipOpen[`location-key-${row?.id}`]}
+            target={`location-key-${row?.id}`}
+            toggle={() => toggleTooltip(`location-key-${row?.id}`)}
           >
-            {row.venue.location}
+            {row?.venue.location}
           </Tooltip>
         </>
       ),
@@ -108,17 +108,17 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
     },
     {
       name: "Start Date(IST)",
-      selector: (row) => row.date_start_ist.split("T")[0],
+      selector: (row) => row?.date_start_ist.split("T")[0],
       cell: (row) => (
         <>
-          <span id={`start_date-key-${row.id}`} className='text-center'>{truncatedName(row.date_start_ist.split("T")[0])}</span>
+          <span id={`start_date-key-${row?.id}`} className='text-center'>{truncatedName(row?.date_start_ist.split("T")[0])}</span>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`start_date-key-${row.id}`]}
-            target={`start_date-key-${row.id}`}
-            toggle={() => toggleTooltip(`start_date-key-${row.id}`)}
+            isOpen={tooltipOpen[`start_date-key-${row?.id}`]}
+            target={`start_date-key-${row?.id}`}
+            toggle={() => toggleTooltip(`start_date-key-${row?.id}`)}
           >
-            {row.date_start_ist.split("T")[0]}
+            {row?.date_start_ist.split("T")[0]}
           </Tooltip>
         </>
       ),
@@ -129,14 +129,14 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
       name: "End Date(IST)",
       cell: (row) => (
         <>
-          <span id={`end_date-key-${row.id}`} className='text-center'>{truncatedName(row.date_end_ist.split("T")[0])}</span>
+          <span id={`end_date-key-${row?.id}`} className='text-center'>{truncatedName(row?.date_end_ist.split("T")[0])}</span>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`end_date-key-${row.id}`]}
-            target={`end_date-key-${row.id}`}
-            toggle={() => toggleTooltip(`end_date-key-${row.id}`)}
+            isOpen={tooltipOpen[`end_date-key-${row?.id}`]}
+            target={`end_date-key-${row?.id}`}
+            toggle={() => toggleTooltip(`end_date-key-${row?.id}`)}
           >
-            {row.date_end_ist.split("T")[0]}
+            {row?.date_end_ist.split("T")[0]}
           </Tooltip>
         </>
       ),
@@ -145,17 +145,17 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
     },
     {
       name: "Start Time(IST)",
-      selector: (row) => formatTime(row.date_start_ist),
+      selector: (row) => formatTime(row?.date_start_ist),
       cell: (row) => (
         <>
-          <span id={`start_time-key-${row.id}`} className='text-center'>{formatTime(row.date_start_ist)}</span>
+          <span id={`start_time-key-${row?.id}`} className='text-center'>{formatTime(row?.date_start_ist)}</span>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`start_time-key-${row.id}`]}
-            target={`start_time-key-${row.id}`}
-            toggle={() => toggleTooltip(`start_time-key-${row.id}`)}
+            isOpen={tooltipOpen[`start_time-key-${row?.id}`]}
+            target={`start_time-key-${row?.id}`}
+            toggle={() => toggleTooltip(`start_time-key-${row?.id}`)}
           >
-            {formatTime(row.date_start_ist)}
+            {formatTime(row?.date_start_ist)}
           </Tooltip>
         </>
       ),
@@ -164,17 +164,17 @@ const CricketMatchTable = ({ cricketData, currentPage, totalRows, handlePageChan
     },
     {
       name: "End Time(IST)",
-      selector: (row) => formatTime(row.date_end_ist),
+      selector: (row) => formatTime(row?.date_end_ist),
       cell: (row) => (
         <>
-          <span id={`end_time-key-${row.id}`} className='text-center'>{formatTime(row.date_end_ist)}</span>
+          <span id={`end_time-key-${row?.id}`} className='text-center'>{formatTime(row?.date_end_ist)}</span>
           <Tooltip
             placement="top"
-            isOpen={tooltipOpen[`end_time-key-${row.id}`]}
-            target={`end_time-key-${row.id}`}
-            toggle={() => toggleTooltip(`end_time-key-${row.id}`)}
+            isOpen={tooltipOpen[`end_time-key-${row?.id}`]}
+            target={`end_time-key-${row?.id}`}
+            toggle={() => toggleTooltip(`end_time-key-${row?.id}`)}
           >
-            {formatTime(row.date_end_ist)}
+            {formatTime(row?.date_end_ist)}
           </Tooltip>
         </>
       ),

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Card, CardBody, CardFooter, Col, Form, FormGroup, FormText, Input, Label, Row } from 'reactstrap';
 import { Btn, H4, P, Image } from '../../../../../AbstractElements';
 import CardHeaderCommon from '../../../../../CommonElements/CardHeaderCommon/CardHeaderCommon';
 import { dynamicImage } from '../../../../../Service';
@@ -7,7 +7,7 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { changeText, Loading } from '../../../../../Utils';
+import { api, changeText, Loading } from '../../../../../Utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../ReduxToolkit/Store';
 import { getLoggedUserProfile, updateProfile } from '../../../../../ReduxToolkit/Reducers/Change/ProfileSlice';
@@ -74,6 +74,39 @@ const EditProfileForm = () => {
         })
     }
   }, [profileData.data]);
+  const [domainError, setDomainError] = useState('');
+
+    const validateDomainFormat = (domain: any) => {
+        // Regular expression to validate domain format
+        const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+(?:[a-zA-Z]{2,})$/;
+        return domainRegex.test(domain);
+    };
+
+    const checkDomainExistence = async (domain: any) => {
+        try {
+            const response = await api(`/verify-domain?domain=${domain}`, 'get', false);
+            return response.data.exists;
+        } catch (error) {
+            console.error('Error checking domain existence:', error);
+            return false;
+        }
+    };
+    const handleDomainChange = async (e: any) => {
+      const domain = e.target.value;
+      setUser((prev) => ({ ...prev, company_domain: domain }));
+
+      if (!validateDomainFormat(domain)) {
+          setDomainError('Invalid domain format');
+          return;
+      }
+
+      const exists = await checkDomainExistence(domain);
+      if (!exists) {
+          setDomainError('Domain does not exist');
+      } else {
+          setDomainError('');
+      }
+  };
   const resetUser = () => {
     setUser({
       name: profile?.name || "",
@@ -224,7 +257,14 @@ const EditProfileForm = () => {
               <Col sm="6" md="6">
                 <FormGroup>
                   <Label>Company Domain</Label>
-                  <Input onChange={(e) => changeText(e, setUser, user)} type="text"  name='company_domain' placeholder="Company Domain" value={user?.company_domain} />
+                  <Input
+                    onChange={handleDomainChange}
+                    type="text"
+                    name='company_domain'
+                    placeholder="Company Domain"
+                    value={user.company_domain}
+                  />
+                  {domainError && <FormText color="danger">{domainError}</FormText>}
                 </FormGroup>
               </Col>
               

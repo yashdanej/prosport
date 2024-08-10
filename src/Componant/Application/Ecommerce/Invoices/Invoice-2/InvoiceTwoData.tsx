@@ -58,13 +58,13 @@ const InvoiceTwoData = ({data}: any) => {
         <span>{"1"}</span>
       </td>
       <td style={{ padding: "14px 11px", width: "12%" }}>
-        <span>₹{data?.amount}</span>
+        <span>₹{data?.price}</span>
       </td>
       <td style={{ padding: "14px 11px", width: "12%" }}>
-        <span>{data?.amount * (18 / 100)}</span>
+        <span>{data?.tax}</span>
       </td>
       <td style={{ padding: "14px 11px", width: "10%" }}>
-        <span>{data?.amount + data?.amount * (18 / 100)}</span>
+        <span>{data?.amount}</span>
       </td>
       {/* <td style={{ padding: "14px 11px" }}>
         <span>${data?.total}</span>

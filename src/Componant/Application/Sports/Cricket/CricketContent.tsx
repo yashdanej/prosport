@@ -52,7 +52,7 @@ const CricketContent = () => {
       <Card>
         <Col sm="12">
           <Nav tabs className="border-tab mb-0 nav-primary">
-            {CricketDetailsData.map((data, index) => (
+            {CricketDetailsData?.map((data, index) => (
               <NavItem key={index}>
                 <NavLink className={activeTab === index + 1 ? "active" : ""} onClick={() => { setActiveTab(index + 1); setCurrentPage(1); }}>
                   {data}

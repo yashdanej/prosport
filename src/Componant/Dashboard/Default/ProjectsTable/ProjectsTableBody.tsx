@@ -51,8 +51,8 @@ const ProjectsTableBody = () => {
       bill_date: item?.created_at?.split("T")[0],
       due_date: dueDate.toISOString().split("T")[0],
       price: item?.amount,
-      tax: "No Tax",
-      amount: item?.amount,
+      tax: item?.amount * (18 / 100),
+      amount: item?.amount + item?.amount * (18 / 100),
       plan: plan
     };
   });

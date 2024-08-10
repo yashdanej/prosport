@@ -1,13 +1,13 @@
 import { Card, CardBody, CardFooter, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap'
 import { Btn, H4, H6, Image, P } from '../../../../../AbstractElements'
 import { dynamicImage } from '../../../../../Service'
-import { Bio, Emailaddress, MyProfile, Password, Save, Website } from '../../../../../utils/Constant'
+import { Bio, Emailaddress, MyProfile, NewPassword, Password, Save, Website } from '../../../../../utils/Constant'
 import CardHeaderCommon from '../../../../../CommonElements/CardHeaderCommon/CardHeaderCommon'
 import { FilePond } from 'react-filepond'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../ReduxToolkit/Store'
-import { updateProfile, updateProfileImage } from '../../../../../ReduxToolkit/Reducers/Change/ProfileSlice'
+import { changePassoword, updateProfile, updateProfileImage } from '../../../../../ReduxToolkit/Reducers/Change/ProfileSlice'
 import { changeText } from '../../../../../Utils'
 import TopLeftToast from '../../../../BonusUi/Toast/LiveToast/TopLeftToast/TopLeftToast'
 
@@ -21,6 +21,11 @@ const EditMyProfile = () => {
   const profileData = useSelector((state: RootState) => state.profile.profile);
   const parsedUserData = userData ? JSON.parse(userData) : null;
   const [file, setFile] = useState([]);
+  const [changePassword, setChangePassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
   const handleFileChange = (fileItems: any) => {
     // Set the file state
     
@@ -69,6 +74,33 @@ const EditMyProfile = () => {
     });
   };
 
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if(!changePassword.currentPassword || !changePassword.newPassword){
+      setTxt(`Password field is empty`);
+      setShowToast(true);
+    }else if(changePassword.newPassword !== changePassword.confirmPassword){
+      setTxt(`Password mismatch`);
+      setShowToast(true);
+    } else{
+      try {
+        const res = await dispatch(changePassoword(changePassword)).unwrap();
+        console.log("res on dis", res);
+        setTxt(`${res.message}`);
+        setShowToast(true);
+        setChangePassword({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: ""
+        })
+      } catch (error) {
+        console.log("res on dis err", error);
+        setTxt(`${error}`);
+        setShowToast(true);
+      }
+    }
+  }
+
 useEffect(() => {
   console.log("usrs", user);
   console.log("file", file);
@@ -115,8 +147,14 @@ useEffect(() => {
               </div>
             </Row> */}
             <FormGroup>
-              <H6 className="form-label">{"About Company"}</H6>
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <H6 className="form-label">{"About Company"}</H6>
+                <div className='text-end'>
+                  <Btn className='text-end' onClick={handleUpdateProfile} color="primary" style={{padding: "3px 7px", margin: "5px 0"}} type="submit">Save About</Btn>
+                </div>
+              </div>
               <textarea onChange={(e) => setAboutcompany(e.target.value)} name='aboutcompany' value={aboutcompany} rows={5} className="form-control" defaultValue={"On the other hand, we denounce with righteous indignation"} />
+              
             </FormGroup>
             {/* <FormGroup>
               <Label>{Emailaddress}</Label>
@@ -132,25 +170,25 @@ useEffect(() => {
                   <Row>
                       <Col sm="12" md="12" >
                           <FormGroup>
-                              <Label >Old Password</Label>
-                              <Input type="text" placeholder="Old Password" />
+                              <Label >Current Password</Label>
+                              <Input onChange={(e) => changeText(e, setChangePassword, changePassword)} name='currentPassword' value={changePassword.currentPassword} type="text" placeholder="Current Password" />
                           </FormGroup>
                       </Col>
                       <Col sm="12" md="12" >
                           <FormGroup>
                               <Label >New Password</Label>
-                              <Input type="text" placeholder="New Password" />
+                              <Input onChange={(e) => changeText(e, setChangePassword, changePassword)} name='newPassword' value={changePassword.newPassword} type="text" placeholder="New Password" />
                           </FormGroup>
                       </Col>
                       <Col sm="12" md="12" >
                           <FormGroup>
                               <Label >Confirm Password</Label>
-                              <Input type="email" placeholder="Confirm Password" />
+                              <Input onChange={(e) => changeText(e, setChangePassword, changePassword)} name='confirmPassword' value={changePassword.confirmPassword} type="email" placeholder="Confirm Password" />
                           </FormGroup>
                       </Col>
                   </Row>
               <CardFooter className="text-end">
-                  <Btn onClick={handleUpdateProfile} color="primary" type="submit">Save</Btn>
+                  <Btn onClick={handleChangePassword} color="primary" type="submit">Change Password</Btn>
               </CardFooter>
           </Form>
         </CardBody>

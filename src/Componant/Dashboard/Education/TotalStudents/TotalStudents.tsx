@@ -109,7 +109,7 @@ const TotalStudents = ({ analytics }: any) => {
   const data = !analytics ? anylyticsData : analyticsData?.data?.map((item: any) => {
     return {
       hits: item?.count,
-      title: item?.normalized_endpoint?item?.normalized_endpoint:"/",
+      title: item?.name,
       color: "danger",
       icon: "down",
       percentage: "- 17.06%",
@@ -118,7 +118,6 @@ const TotalStudents = ({ analytics }: any) => {
       class: "student",
     }
   });
-
   return (
     <>
       <Col xl={!analytics ? "8" : "12"} md="12" className="proorder-md-1">
@@ -132,7 +131,7 @@ const TotalStudents = ({ analytics }: any) => {
                   <div className="d-flex gap-2 align-items-center">
                     <div className="flex-grow-1">
                       <H2>{data.hits}</H2>
-                      <P className="mb-0 text-truncate"> Matches API</P>
+                      <P className="mb-0 text-truncate">{!analytics?data?.title:data?.title}</P>
                       {/* <div className="d-flex student-arrow text-truncate">
                         <P className={`mb-0 up-arrow bg-light-${data.color}`}>
                           <i className={`icon-arrow-${data.icon} font-${data.color}`} />

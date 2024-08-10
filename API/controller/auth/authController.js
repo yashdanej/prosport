@@ -4,6 +4,7 @@ const util = require('util');
 const db = require("../../db");
 const jwt = require("jsonwebtoken");
 const { verifyToken } = require('../../middleware/verifyToken');
+const dns = require('dns');
 
 const query = util.promisify(db.query).bind(db);
 
@@ -170,3 +171,18 @@ exports.Log_Events = async (req, res, next) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.VerifyDomain = (req, res) => {
+  const domain = req.query.domain;
+
+    if (!domain) {
+        return res.status(400).json({ exists: false, message: 'Domain is required' });
+    }
+
+    dns.resolve(domain, (err) => {
+        if (err) {
+            return res.json({ exists: false });
+        }
+        res.json({ exists: true });
+    });
+}
