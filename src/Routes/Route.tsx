@@ -133,7 +133,6 @@ import Shop from "../Pages/shop/Shop";
 import Cricket from "../Pages/Application/Sports/Cricket";
 import InternetBilling from "../Componant/Application/Invoice/InternetBilling";
 
-
 const routes = [
   // dashboard 
   // { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
@@ -153,6 +152,8 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/api/docs`, Component: <ApiDocs />},
   { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, Component: <Pricing />},
   { path: `${process.env.PUBLIC_URL}/dashboard/support`, Component: <SupportCompo />},
+  // master admin
+  { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
   
   // // Widgets
   // { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},

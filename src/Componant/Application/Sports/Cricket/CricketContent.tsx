@@ -24,8 +24,14 @@ const CricketContent = () => {
       .then((response: any) => {
         if (response.payload) {
           console.log("response.payload", response.payload);
-          setTotalRows(response.payload.pagination.totalItems);
-          setErr('');
+          if(typeof response.payload == "string"){
+            setTxt(response.payload);
+            setShowToast(true);
+            setErr(response.payload);
+          }else{
+            setTotalRows(response.payload.pagination.totalItems);
+            setErr('');
+          }
         }else{
           console.log("response", response);
           console.log("not in payload");

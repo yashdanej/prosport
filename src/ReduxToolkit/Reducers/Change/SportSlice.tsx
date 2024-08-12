@@ -6,7 +6,11 @@ export const getCricketData = createAsyncThunk('getCricketData', async ({ status
     try {
       const res = await api(`/sport/cricket?status=${status}&page=${page}&limit=${limit}`, "get", false, false, true);
       console.log("res--------", res);
-      return res.data;
+      if(!res.data){
+        return res?.response?.data?.message
+      }else{
+        return res.data;
+      }
     } catch (err) {
       console.log("err", err);
       throw err;

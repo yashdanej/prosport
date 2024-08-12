@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react'
 import { useAppSelector } from '../../ReduxToolkit/Hooks';
-import { MenuList } from '../../Data/LayoutData/SidebarData';
+import { MasterMenuList, MenuList } from '../../Data/LayoutData/SidebarData';
 import Menulist from './Menulist';
 import { MenuItem } from '../../Types/Layout/SidebarType';
 import { H6, LI } from '../../AbstractElements';
@@ -11,11 +11,13 @@ const SidebarMenuList = () => {
     const { pinedMenu } = useAppSelector((state) => state.layout);
     const { t } = useTranslation();
     const shouldHideMenu = (mainMenu: MenuItem) => {return mainMenu?.Items?.map((data) => data.title).every((titles) =>pinedMenu.includes(titles || ""));};
-  
+    const user = JSON.parse(localStorage.getItem("login-user")!)?.user;
+    console.log("user isAdmin", user);
+    const data = user?.isAdmin?MasterMenuList:MenuList
     return (
       <>
-        {MenuList &&
-          MenuList.map((mainMenu: MenuItem, index) => (
+        {data &&
+          data?.map((mainMenu: MenuItem, index) => (
             <Fragment key={index}>
               <LI className={`sidebar-main-title ${shouldHideMenu(mainMenu) ? "d-none" : ""}`}>
                 {/* <div>

@@ -9,7 +9,7 @@ const query = util.promisify(db.query).bind(db);
 
 // -------------------- For live url
 exports.Cricket = async (req, res, next) => {
-    try {
+    try {        
         // Verify the token and get the user
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         

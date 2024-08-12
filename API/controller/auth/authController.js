@@ -139,7 +139,7 @@ exports.Login = async (req, res) => {
     const insertIpQuery = 'INSERT INTO stored_ip (user_id, ip_address, device) VALUES (?, ?, ?)';
     await query(insertIpQuery, [user.id, ipAddress, userAgent]);
 
-    return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, reffer_code: user.reffer_code, secretKey: user.secret_key } });
+    return res.status(200).json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, reffer_code: user.reffer_code, secretKey: user.secret_key, isAdmin: user.isAdmin } });
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ error: 'Internal server error' });
