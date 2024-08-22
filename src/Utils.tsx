@@ -1,9 +1,9 @@
 import axios from "axios";
 
-// export const BACKEND_URL = "http://localhost:3000/api/v1";
-// export const FRONTEND_URL = "http://localhost:3001";
-export const BACKEND_URL = "/api/v1";
-export const FRONTEND_URL = "https://console.prosportsapi.com";
+export const BACKEND_URL = "http://localhost:3000/api/v1";
+export const FRONTEND_URL = "http://localhost:3001";
+// export const BACKEND_URL = "/api/v1";
+// export const FRONTEND_URL = "https://console.prosportsapi.com";
 
 interface axiosConf {
     url: any,

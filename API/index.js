@@ -22,11 +22,17 @@ const dashboardRouter = require("./routes/dashboard/dashboardRouter");
 const profileRouter = require("./routes/profile/profileRouter");
 const sportRouter = require("./routes/sport/sportRouter");
 
+// master-admin
+const masterDashboardRouter = require("./routes/master-admin/dashboardRouter");
+
 app.use('/api/v1', authRouter);
 app.use('/api/v1/order', paymentRouter);
 app.use('/api/v1/dashboard', dashboardRouter);
 app.use('/api/v1/profile', profileRouter);
 app.use('/api/v1/sport', sportRouter);
+
+// master-admin
+app.use('/api/v1/master-admin', masterDashboardRouter);
 
 app.listen(PORT, () => {
     console.log("Server started");

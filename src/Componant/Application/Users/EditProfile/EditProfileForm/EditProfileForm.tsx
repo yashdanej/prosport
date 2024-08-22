@@ -43,7 +43,7 @@ const EditProfileForm = () => {
     operator: profile?.operator || "",
     address: profile?.address || "",
     city: profile?.city || "",
-    postalcode: profile?.postalcode || "",
+    postalcode: profile?.postalcode || null,
     country: profile?.country || "",
     gst: profile?.gst || "",
   });
@@ -68,7 +68,7 @@ const EditProfileForm = () => {
             operator: profile?.operator || "",
             address: profile?.address || "",
             city: profile?.city || "",
-            postalcode: profile?.postalcode || "",
+            postalcode: profile?.postalcode || null,
             country: profile?.country || "",
             gst: profile?.gst || "",
         })
@@ -125,7 +125,7 @@ const EditProfileForm = () => {
       operator: profile?.operator || "",
       address: profile?.address || "",
       city: profile?.city || "",
-      postalcode: profile?.postalcode || "",
+      postalcode: profile?.postalcode || null,
       country: profile?.country || "",
       gst: profile?.gst || "",
     })

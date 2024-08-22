@@ -154,6 +154,7 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/support`, Component: <SupportCompo />},
   // master admin
   { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
+  // { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
   
   // // Widgets
   // { path: `${process.env.PUBLIC_URL}/widgets/general`, Component:<General />},
