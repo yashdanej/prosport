@@ -22,7 +22,7 @@ const DatesPicker = () => {
               <MinMaxValueDatePicker />
               <DisabledDatePickerComponent />
               <MultiplesDates />
-              <MyDatePicker />
+              {/* <MyDatePicker /> */}
               <DatePickerComponentLast />
             </Form>
           </div>

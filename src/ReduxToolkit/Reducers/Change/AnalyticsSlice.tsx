@@ -2,14 +2,14 @@ import { createSlice, createAsyncThunk, AnyAction, ThunkDispatch } from "@reduxj
 import { api } from "../../../Utils";
 import { RootState } from "../../Store";
 
-export const getAnalyticsData = createAsyncThunk('getAnalyticsData', async (id) => {
+export const getAnalyticsData = createAsyncThunk('getAnalyticsData', async (id, {rejectWithValue}) => {
   try {
       const res = await api(`/dashboard/api_key`, "get", false, false, true);
       console.log("res--------", res);
       return res.data.data;
   } catch (err) {
       console.log("err", err);
-      throw err;
+      rejectWithValue(err)
   }
 });
 

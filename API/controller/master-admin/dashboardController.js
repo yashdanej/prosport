@@ -50,17 +50,25 @@ exports.Dashboard = async (req, res, next) => {
         
         const { from, to } = req.query;
 
-        // Set default values for from and to dates if not provided
         const today = new Date().toISOString().split('T')[0]; // Gets today's date in 'YYYY-MM-DD' format
-        const startDate = from || today;
+
+        // Calculate the date 7 days before today
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        const sevenDaysAgoDate = sevenDaysAgo.toISOString().split('T')[0];
+        
+        // If 'from' and 'to' are not provided, default to the last 7 days
+        const startDate = from || sevenDaysAgoDate;
         const endDate = to || today;
 
         // Fetch all users with their API hits within the date range
         const usersWithApiHits = await query(`
             SELECT 
-                userId, COUNT(*) as apiHits
+                a.userId, u.name, u.lastname, u.image, COUNT(*) as apiHits
             FROM 
-                api_call_logs
+                api_call_logs a
+            left join users u
+                on a.userId = u.id
             GROUP BY 
                 userId
             ORDER BY 
@@ -153,6 +161,26 @@ exports.Dashboard = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
+
+// Helper function to categorize devices based on user agent
+function categorizeDevice(userAgent) {
+    if (userAgent.includes("Windows")) {
+        return "Windows,#F05A7E";
+    }
+    if (userAgent.includes("Linux")) {
+        return "Linux,#7A1CAC";
+    }
+    if (userAgent.includes("Macintosh")) {
+        return "Mac,#1E2A5E";
+    }
+    if (userAgent.includes("Android") || userAgent.includes("Mobile")) {
+        return "Mobile,#41B3A2";
+    }
+    if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
+        return "Mobile,#FFEAC5";
+    }
+    return "Other,#FF8A8A";
+}
 
 exports.ApiLogs = async (req, res, next) => {
     try {

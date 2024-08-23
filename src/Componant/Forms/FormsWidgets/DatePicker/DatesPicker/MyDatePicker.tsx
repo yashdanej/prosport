@@ -1,23 +1,35 @@
 import { useState } from 'react';
-import { Col, InputGroup, Label, Row } from 'reactstrap';
+import { Col, InputGroup, Row } from 'reactstrap';
 import DatePicker, { DateObject } from 'react-multi-date-picker';
-import { RangeDatePicker } from '../../../../../utils/Constant';
 
-const MyDatePicker = () => {
+interface MyDatePickerProps {
+  onDateChange: (from: string, to: string) => void;
+}
+
+const MyDatePicker = ({ onDateChange }: MyDatePickerProps) => {
   const [value, setValue] = useState<DateObject[]>([new DateObject(), new DateObject()]);
+
+  const handleDateChange = (dates: DateObject[]) => {
+    console.log("Received dates:", dates);
+    if (dates.length === 2) {
+      setValue(dates);
+      const from = dates[0]?.format('YYYY-MM-DD');
+      const to = dates[1]?.format('YYYY-MM-DD');
+      onDateChange(from, to);
+    } else {
+      console.error("Invalid dates array", dates);
+    }
+  }
 
   return (
     <Row>
-      <Col xxl="3">
-        <Label className="box-col-12 text-start" check>{RangeDatePicker}</Label>
-      </Col>
       <Col xxl="9" className="box-col-12">
         <InputGroup className="flatpicker-calender">
           <DatePicker 
             inputClass="form-control" 
             range 
             value={value} 
-            onChange={setValue} 
+            onChange={handleDateChange} 
           />
         </InputGroup>
       </Col>

@@ -15,6 +15,12 @@ export const MasterMenuList: MenuItem[] = [{
       type: "link", 
       icon: "home",
     },
+    { 
+      path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, 
+      title: "Dashboard", 
+      type: "link", 
+      icon: "home",
+    },
   ]
   },
 ]
