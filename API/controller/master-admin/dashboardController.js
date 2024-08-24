@@ -92,11 +92,18 @@ exports.Dashboard = async (req, res, next) => {
          // Fetch API hits by sportId within the date range
          const apiHitsBySport = await query(`
             SELECT 
-                sportId, COUNT(*) as hits
+                s.id as sportId, 
+                s.name, 
+                COUNT(a.sportId) as hits,
+                ROUND((COUNT(a.sportId) / totalHits.total) * 100, 2) as percentage
             FROM 
-                api_call_logs
+                sports s
+            LEFT JOIN 
+                api_call_logs a ON s.id = a.sportId
+            CROSS JOIN 
+                (SELECT COUNT(*) as total FROM api_call_logs) as totalHits
             GROUP BY 
-                sportId
+                s.id, s.name, totalHits.total
             ORDER BY 
                 hits DESC
         `);
@@ -132,17 +139,23 @@ exports.Dashboard = async (req, res, next) => {
         }));
 
         // fetch most api endpoint hits
-        const mostApiEndpointHits = await query(
-            `SELECT 
-                TRIM(BOTH '/' FROM all_live_api_endpoint.endpoint) AS normalized_endpoint,
-                all_live_api_endpoint.name,
-                COUNT(api_call_logs.endpoint) AS count
-            FROM all_live_api_endpoint
-            LEFT JOIN api_call_logs
-                ON TRIM(BOTH '/' FROM api_call_logs.endpoint) = TRIM(BOTH '/' FROM all_live_api_endpoint.endpoint)
-            GROUP BY normalized_endpoint, all_live_api_endpoint.name
-            ORDER BY count DESC;` // Added ORDER BY clause to sort in descending order
-        );
+        const mostApiEndpointHits = await query(`
+            SELECT 
+                TRIM(BOTH '/' FROM ale.endpoint) AS normalized_endpoint,
+                ale.name,
+                COUNT(acl.endpoint) AS count,
+                ROUND((COUNT(acl.endpoint) / totalHits.total) * 100, 2) AS percentage
+            FROM 
+                all_live_api_endpoint ale
+            LEFT JOIN 
+                api_call_logs acl ON TRIM(BOTH '/' FROM acl.endpoint) = TRIM(BOTH '/' FROM ale.endpoint)
+            CROSS JOIN 
+                (SELECT COUNT(*) as total FROM api_call_logs) AS totalHits
+            GROUP BY 
+                normalized_endpoint, ale.name, totalHits.total
+            ORDER BY 
+                count DESC;
+        `);
 
         // Return the users with API hits and day-wise API hits in the response
         return res.status(200).json({
@@ -164,21 +177,33 @@ exports.Dashboard = async (req, res, next) => {
 
 // Helper function to categorize devices based on user agent
 function categorizeDevice(userAgent) {
+    console.log("userAgent", userAgent);
+    
     if (userAgent.includes("Windows")) {
-        return "Windows,#F05A7E";
+        console.log("Windows");
+        return "Windows,#C7253E";
     }
     if (userAgent.includes("Linux")) {
-        return "Linux,#7A1CAC";
+        console.log("Linux");
+
+        return "Linux,#125B9A";
     }
     if (userAgent.includes("Macintosh")) {
-        return "Mac,#1E2A5E";
+        console.log("Macintosh");
+
+        return "Mac,#7C00FE";
     }
     if (userAgent.includes("Android") || userAgent.includes("Mobile")) {
-        return "Mobile,#41B3A2";
+        console.log("Android Mobile");
+
+        return "Mobile,#F9E400";
     }
     if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
-        return "Mobile,#FFEAC5";
-    }
+        console.log("iPhone iPad");
+
+        return "Mobile,#0D7C66";
+    }       
+    console.log("Other");
     return "Other,#FF8A8A";
 }
 
@@ -199,7 +224,46 @@ exports.ApiLogs = async (req, res, next) => {
             ORDER BY 
                 api_call_logs.created_at DESC;`
         )
-        return res.status(200).json({success: true, message: "Api logs fetched successfully", data: getLogs})
+        const weeklyData = await query(`
+            SELECT 
+                WEEK(created_at, 1) AS week_number,
+                SUM(CASE WHEN failed = 0 THEN 1 ELSE 0 END) AS successful_count,
+                SUM(CASE WHEN failed = 1 THEN 1 ELSE 0 END) AS failed_count
+            FROM 
+                api_call_logs
+            WHERE 
+                created_at >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+            GROUP BY 
+                WEEK(created_at, 1)
+            ORDER BY 
+                WEEK(created_at, 1) DESC;
+        `);
+
+        // Destructure the result to get current and previous week data
+        const [currentWeek, lastWeek] = weeklyData;
+
+        // Function to calculate percentage change
+        const calculatePercentageChange = (current, previous) => {
+            if (!previous || previous === 0) return 0;
+            return ((current - previous) / previous) * 100;
+        };
+
+        // Calculate percentage changes
+        const successPercentageChange = calculatePercentageChange(currentWeek.successful_count, lastWeek?.successful_count);
+        const failedPercentageChange = calculatePercentageChange(currentWeek.failed_count, lastWeek?.failed_count);
+
+       // Structure the response
+       return res.status(200).json({
+            success: true,
+            message: "API logs fetched successfully",
+            data: {
+                getLogs,
+                successfulCount: currentWeek.successful_count,
+                failedCount: currentWeek.failed_count,
+                successPercentageChange: successPercentageChange.toFixed(2),
+                failedPercentageChange: failedPercentageChange.toFixed(2)
+            }
+        });
     } catch (error) {
         console.error("Error fetching api logs data:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });

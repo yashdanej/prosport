@@ -18,6 +18,7 @@ import { getMasterDashboardData } from "../../../ReduxToolkit/Reducers/Change/Ma
 import ActiveMembers from "../Default/ActiveMembers/ActiveMembers";
 import TopSports from "../MasterAdmin/TopSports";
 import DeviceUsage from "../MasterAdmin/DeviceUsage";
+import TopApis from "../MasterAdmin/TopApis";
 
 const ContainerProject = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,7 +50,9 @@ const ContainerProject = () => {
         <TotalSaleWidgets />
         <ActiveMembers />
         <TopSports/>
+        <TopSports/>
         <DeviceUsage/>
+        <TopApis/>
         {/* <ProjectStatus />
         <RecentProjects />
         <TotalProject />

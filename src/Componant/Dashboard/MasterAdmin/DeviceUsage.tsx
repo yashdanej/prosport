@@ -24,20 +24,32 @@ const DeviceUsage = () => {
           secondItem="Monthly"
           thirdItem="Yearly"
         />
-            <CardBody className={`d-flex active-members px-0 pb-0`}>
+            <CardBody className={`d-flex active-members`}>
             {
                 dashData?.data?.deviceUsage.length > 0 ? (
                 dashData?.data?.deviceUsage?.map((item: any, i: number) => {
                     return (
                         <>
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: `${item?.percentage}vw`, background: item?.device.split(",")[1], height: '200px'}}>
+                            <div key={i} className='mx-1' style={{ borderRadius: '5px',display: 'flex', alignItems: 'center', justifyContent: 'center', width: `${item?.percentage<10?'10':item?.percentage}vw`, background: item?.device.split(",")[1], height: '200px'}}>
                                 {item?.percentage}
                             </div>
                         </>
                     )
                 })
-                ):"No Operator"
+                ):"No Device"
             }
+            <div>
+              {
+                dashData?.data?.deviceUsage?.map((item: any, i: number) => {
+                  return (
+                    <div className='my-2' style={{display: 'flex', alignItems: 'center'}} key={i}>
+                      <div className='mx-1' style={{borderRadius: '50%', width: '30px', height: '30px', background: item?.device.split(",")[1]}}></div>
+                      <p>{item?.device.split(",")[0]}</p>
+                    </div>
+                  )
+                })
+              }
+            </div>
             </CardBody>
       </Card>
     </Col>
