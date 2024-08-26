@@ -25,6 +25,7 @@ import { profileReducer } from "./Reducers/Change/ProfileSlice";
 import { analyticsReducer } from "./Reducers/Change/AnalyticsSlice";
 import { sportReducer } from "./Reducers/Change/SportSlice";
 import { masterDashboardReducer } from "./Reducers/Change/MasterDashboard";
+import { ApiLogsReducer } from "./Reducers/Change/ApiLogsSlice";
 
 const Store = configureStore({
   reducer: {
@@ -56,6 +57,7 @@ const Store = configureStore({
     profile: profileReducer,
     sport: sportReducer,
     masterDashboard: masterDashboardReducer,
+    ApiLogs: ApiLogsReducer
   },
 });
 

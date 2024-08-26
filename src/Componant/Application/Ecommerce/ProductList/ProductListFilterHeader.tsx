@@ -17,8 +17,8 @@ const ProductListFilterHeader = () => {
           </Link>
         </div>
         <Link className="btn btn-primary" to={Href}>
-          <i className="fa fa-plus" />
-          {AddProduct}
+          {/* <i className="fa fa-plus" /> */}
+          {"Re-Fetch"}
         </Link>
       </div>
     );

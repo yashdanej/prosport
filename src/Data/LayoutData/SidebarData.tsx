@@ -15,11 +15,19 @@ export const MasterMenuList: MenuItem[] = [{
       type: "link", 
       icon: "home",
     },
-    { 
-      path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, 
-      title: "Dashboard", 
-      type: "link", 
-      icon: "home",
+    {
+      title: "Sports",
+      id: 2,
+      icon: "widget",
+      type: "sub",
+      lanClass: "lan-6",
+      active: false,
+      children: [
+        { path: `${process.env.PUBLIC_URL}/masteradmin/cricket-api`, title: "Cricket API", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/football-api`, title: "Football API", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/basketball-api`, title: "Basketball API", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/user-api-key-manager-api`, title: "Users API Key Manager API", type: "link"},
+      ],
     },
   ]
   },
