@@ -4,18 +4,46 @@ import { RootState } from "../../Store";
 
   // Update the thunk to accept the parameters
 export const getMasterDashboardApiLogData = createAsyncThunk(
-    'getMasterDashboardApiLogData',
-    async () => {
-      try {
-        const res = await api(`/master-admin/api-logs`, "get", false, false, true);
-        console.log("res--------", res);
-        return res.data.data;
-      } catch (err) {
-        console.log("err", err);
-        throw err;
-      }
+  'getMasterDashboardApiLogData',
+  async () => {
+    try {
+      const res = await api(`/master-admin/api-logs`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+    } catch (err) {
+      console.log("err", err);
+      throw err;
     }
-  );
+  }
+);
+
+export const getMasterDashboardAllUsersData = createAsyncThunk(
+  'getMasterDashboardAllUsersData',
+  async () => {
+    try {
+      const res = await api(`/master-admin/users-token`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+    } catch (err) {
+      console.log("err", err);
+      throw err;
+    }
+  }
+);
+
+export const getMasterDashboardUsersInvoicesData = createAsyncThunk(
+  'getMasterDashboardUsersInvoicesData',
+  async () => {
+    try {
+      const res = await api(`/master-admin/invoice-paid-unpaid`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+    } catch (err) {
+      console.log("err", err);
+      throw err;
+    }
+  }
+);
 
 // ApiLogs slice
 const ApiLogsSlice = createSlice({
@@ -28,6 +56,18 @@ const ApiLogsSlice = createSlice({
             isError: false,
             errorMessage: "",
         },
+        allUsers: {
+          isLoading: false,
+          data: null as any | null,
+          isError: false,
+          errorMessage: "",
+        },
+        usersInvoice: {
+          isLoading: false,
+          data: null as any | null,
+          isError: false,
+          errorMessage: "",
+        }
     }
   },
   reducers: {},
@@ -45,6 +85,36 @@ const ApiLogsSlice = createSlice({
         console.log("error in getMasterDashboardApiLogData", action.payload);
         state.masterAdmin.apiLog.isLoading = false;
         state.masterAdmin.apiLog.isError = true;
+    });
+
+    // getMasterDashboardAllUsersData
+    builder.addCase(getMasterDashboardAllUsersData.pending, (state, action) => {
+      state.masterAdmin.allUsers.isLoading = true;
+    });
+    builder.addCase(getMasterDashboardAllUsersData.fulfilled, (state, action) => {
+        state.masterAdmin.allUsers.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.allUsers.data = action.payload;
+    });
+    builder.addCase(getMasterDashboardAllUsersData.rejected, (state, action) => {
+        console.log("error in getMasterDashboardAllUsersData", action.payload);
+        state.masterAdmin.allUsers.isLoading = false;
+        state.masterAdmin.allUsers.isError = true;
+    });
+
+    // getMasterDashboardUsersInvoicesData
+    builder.addCase(getMasterDashboardUsersInvoicesData.pending, (state, action) => {
+      state.masterAdmin.usersInvoice.isLoading = true;
+    });
+    builder.addCase(getMasterDashboardUsersInvoicesData.fulfilled, (state, action) => {
+        state.masterAdmin.usersInvoice.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.usersInvoice.data = action.payload;
+    });
+    builder.addCase(getMasterDashboardUsersInvoicesData.rejected, (state, action) => {
+        console.log("error in getMasterDashboardUsersInvoicesData", action.payload);
+        state.masterAdmin.usersInvoice.isLoading = false;
+        state.masterAdmin.usersInvoice.isError = true;
     });
   }
 });

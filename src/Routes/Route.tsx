@@ -133,6 +133,8 @@ import Shop from "../Pages/shop/Shop";
 import Cricket from "../Pages/Application/Sports/Cricket";
 import InternetBilling from "../Componant/Application/Invoice/InternetBilling";
 import Status from "../Pages/Dashboard/Status/Status";
+import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
+import UsersInvoice from "../Pages/Dashboard/UsersInvoices/UsersInvoice";
 
 const routes = [
   // dashboard 
@@ -159,6 +161,8 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/masteradmin/football-api`, Component: <Status />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/basketball-api`, Component: <Status />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/user-api-key-manager-api`, Component: <Status />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/allusers`, Component: <AllUsers />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/users-invoices`, Component: <UsersInvoice />},
 
   // { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
   

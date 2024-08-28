@@ -6,36 +6,36 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../ReduxToolkit/Store";
 import { useEffect, useState } from "react";
 
-const StatusTopBar = () => {
-  const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.apiLog);
-  console.log("maApiLogsData", maApiLogsData);
+const AllUsersTopBar = () => {
+  const maAllUsersData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.allUsers);
+  console.log("maAllUsersData", maAllUsersData);
   const [topCards, setTopCards]: any = useState([]);
   useEffect(() => {
     setTopCards(
       [
       {
-        student: maApiLogsData?.data?.successfulCount,
+        student: maAllUsersData?.data?.count?.active_count,
         color:"success",
-        status: "Success",
+        status: "Active",
         icon:"up",
-        percentage: maApiLogsData?.data?.successPercentageChange,
+        percentage: maAllUsersData?.data?.count?.active_percentage,
         detail:"this week",
         image:"teacher.png",
         class:"student-2"
       },
       {
-        student: maApiLogsData?.data?.failedCount,
+        student: maAllUsersData?.data?.count?.inactive_count,
         color:"danger",
-        status: "Failure",
+        status: "De-Active",
         icon:"down",
-        percentage: maApiLogsData?.data?.failedPercentageChange,
+        percentage: maAllUsersData?.data?.count?.inactive_percentage,
         detail:"this week",
         image:"teacher.png",
         class:"student-2"
       }
     ]
   )
-  }, [maApiLogsData]);
+  }, [maAllUsersData]);
   return (
     <>
       <Col xl="12" md="12" className="proorder-md-1">
@@ -75,4 +75,4 @@ const StatusTopBar = () => {
   );
 };
 
-export default StatusTopBar;
+export default AllUsersTopBar;

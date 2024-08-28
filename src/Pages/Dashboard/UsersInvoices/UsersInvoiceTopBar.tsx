@@ -6,42 +6,62 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../ReduxToolkit/Store";
 import { useEffect, useState } from "react";
 
-const StatusTopBar = () => {
-  const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.apiLog);
-  console.log("maApiLogsData", maApiLogsData);
+const UsersInvoiceTopBar = () => {
+  const maAllUsersData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.usersInvoice);
+  console.log("maAllUsersData", maAllUsersData);
   const [topCards, setTopCards]: any = useState([]);
   useEffect(() => {
     setTopCards(
       [
       {
-        student: maApiLogsData?.data?.successfulCount,
+        student: maAllUsersData?.data?.summary?.total_invoices,
         color:"success",
-        status: "Success",
+        status: "Invoice Gen.",
         icon:"up",
-        percentage: maApiLogsData?.data?.successPercentageChange,
+        percentage: maAllUsersData?.data?.summary?.total_invoices,
         detail:"this week",
         image:"teacher.png",
         class:"student-2"
       },
       {
-        student: maApiLogsData?.data?.failedCount,
+        student: maAllUsersData?.data?.summary?.paid_invoices,
         color:"danger",
-        status: "Failure",
+        status: "Paid Invoice",
         icon:"down",
-        percentage: maApiLogsData?.data?.failedPercentageChange,
+        percentage: maAllUsersData?.data?.summary?.paid_amount,
         detail:"this week",
         image:"teacher.png",
         class:"student-2"
-      }
+      },
+      {
+        student: maAllUsersData?.data?.summary?.free_invoices,
+        color:"success",
+        status: "Free Invoice",
+        icon:"up",
+        percentage: maAllUsersData?.data?.summary?.free_amount,
+        detail:"this week",
+        image:"teacher.png",
+        class:"student-2"
+      },
+      {
+        student: maAllUsersData?.data?.summary?.cancel_invoices,
+        color:"success",
+        status: "Cancel Invoice",
+        icon:"up",
+        percentage: maAllUsersData?.data?.summary?.cancel_amount,
+        detail:"this week",
+        image:"teacher.png",
+        class:"student-2"
+      },
     ]
   )
-  }, [maApiLogsData]);
+  }, [maAllUsersData]);
   return (
     <>
       <Col xl="12" md="12" className="proorder-md-1">
         <Row>
           {topCards.map((data: any, i: number) => (
-            <Col xl="6" sm="6" key={i}>
+            <Col xl="3" sm="6" key={i}>
               <Card>
                 <CardBody>
                   <div className="d-flex py-2 gap-2 align-items-center" style={{justifyContent: 'space-between'}}>
@@ -57,7 +77,7 @@ const StatusTopBar = () => {
                             <P className={`mb-0 up-arrow bg-light-${data.color}`}>
                             <i className={`icon-arrow-${data.icon} font-${data.color}`} />
                             </P>&nbsp;&nbsp;&nbsp;
-                            <span className={`f-w-500 font-${data.color}`}>{data.percentage}% &nbsp;&nbsp;</span>
+                            <span className={`f-w-500 font-${data.color}`}>₹ {data.percentage}&nbsp;&nbsp;</span>
                             {data.detail}
                         </div>
                     </div>
@@ -75,4 +95,4 @@ const StatusTopBar = () => {
   );
 };
 
-export default StatusTopBar;
+export default UsersInvoiceTopBar;

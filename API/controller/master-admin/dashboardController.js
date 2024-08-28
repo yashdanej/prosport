@@ -272,21 +272,96 @@ exports.ApiLogs = async (req, res, next) => {
 
 exports.UsersToken = async (req, res, next) => {
     try {
-        const getUserTokens = await query("select * from user_subscriptions");
-        return res.status(200).json({success: true, message: "Users token fetched successfully", data: getUserTokens});
+        // Query for active/inactive counts and percentages
+        const countQuery = `
+            SELECT 
+                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS active_count,
+                SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS inactive_count,
+                ROUND(
+                    (SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 
+                    2
+                ) AS active_percentage,
+                ROUND(
+                    (SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 
+                    2
+                ) AS inactive_percentage
+            FROM user_subscriptions
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        `;
+
+        // Query to fetch all data for the last 7 days
+        const dataQuery = `
+            SELECT * 
+            FROM user_subscriptions`;
+
+        // Execute both queries
+        const [countResult] = await query(countQuery);
+        const dataResult = await query(dataQuery);
+
+        // Return combined response
+        return res.status(200).json({
+            success: true,
+            message: "Users token fetched successfully",
+            data: {
+                count: countResult,  // Active/inactive count and percentage
+                records: dataResult  // List of user subscription records
+            }
+        });
     } catch (error) {
-        console.error("Error fetching api users token data:", error);
+        console.error("Error fetching API users token data:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-}
+};
+
 
 exports.InvoicePaidUnpaid = async (req, res, next) => {
     try {
-        const [getUserTokens] = await query("select * from user_subscriptions");
-        
-        return res.status(200).json({success: true, message: "Users token fetched successfully", data: getUserTokens});
+        // Query to fetch table records with necessary columns
+        const recordsQuery = `
+            SELECT 
+                ush.id,
+                u.name,
+                u.company_name AS company,
+                ush.subscribe_date AS date,
+                CASE 
+                    WHEN ush.amount = 0 THEN 'Free'
+                    WHEN ush.amount IS NOT NULL THEN 'Paid'
+                    ELSE 'Cancel'
+                END AS status,
+                ush.amount
+            FROM user_subscription_histories ush
+            JOIN users u ON u.id = ush.user_id
+            JOIN plans p ON p.id = ush.plan_id;
+        `;
+
+        // Query to fetch invoice summary
+        const summaryQuery = `
+            SELECT 
+                COUNT(*) AS total_invoices,
+                SUM(CASE WHEN ush.amount > 0 THEN 1 ELSE 0 END) AS paid_invoices,
+                SUM(CASE WHEN ush.amount > 0 THEN ush.amount ELSE 0 END) AS paid_amount,
+                SUM(CASE WHEN ush.amount = 0 THEN 1 ELSE 0 END) AS free_invoices,
+                SUM(CASE WHEN ush.amount = 0 THEN ush.amount ELSE 0 END) AS free_amount,
+                SUM(CASE WHEN ush.amount IS NULL THEN 1 ELSE 0 END) AS cancel_invoices,
+                SUM(CASE WHEN ush.amount IS NULL THEN 0 ELSE 0 END) AS cancel_amount
+            FROM user_subscription_histories ush;
+        `;
+
+        // Execute both queries
+        const recordsResult = await query(recordsQuery);
+        const [summaryResult] = await query(summaryQuery);
+
+        // Return combined response
+        return res.status(200).json({
+            success: true,
+            message: "Invoice data fetched successfully",
+            data: {
+                records: recordsResult,  // List of subscription records
+                summary: summaryResult   // Summary of invoices
+            }
+        });
     } catch (error) {
         console.error("Error fetching invoice paid unpaid data:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-}
+};
