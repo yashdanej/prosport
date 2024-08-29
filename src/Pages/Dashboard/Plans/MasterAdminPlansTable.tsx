@@ -26,6 +26,10 @@ const MasterAdminPlansTable = () => {
 
   return (
     <Container className='my-5' fluid>
+      <div className='mb-2' style={{display: 'flex', justifyContent: 'end'}}>
+        <Btn className='mx-2' tag="a" size="lg" color="primary">Edit Plan</Btn>
+        <Btn tag="a" size="lg" color="primary">Add/Delete</Btn>
+      </div>
       <Row>
         <Col sm="12">
             <Card>
@@ -57,7 +61,7 @@ const MasterAdminPlansTable = () => {
                           </UL>
                           <div className="pricingtable-signup">
                             {/* <Btn className='mx-2' onClick={HandleSubscribe} tag="a" size="lg" color="primary">Subscribe</Btn> */}
-                            <Btn tag="a" size="lg" color="primary">Subscribe</Btn>
+                            <Btn tag="a" size="lg" color="primary">Active</Btn>
                           </div>
                         </div>
                       </Col>
