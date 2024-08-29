@@ -45,6 +45,20 @@ export const getMasterDashboardUsersInvoicesData = createAsyncThunk(
   }
 );
 
+export const getMasterDashboardPlansData = createAsyncThunk(
+  'getMasterDashboardPlansData',
+  async () => {
+    try {
+      const res = await api(`/master-admin/get-plans`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+    } catch (err) {
+      console.log("err", err);
+      throw err;
+    }
+  }
+);
+
 // ApiLogs slice
 const ApiLogsSlice = createSlice({
   name: "ma_api_logd",
@@ -63,6 +77,12 @@ const ApiLogsSlice = createSlice({
           errorMessage: "",
         },
         usersInvoice: {
+          isLoading: false,
+          data: null as any | null,
+          isError: false,
+          errorMessage: "",
+        },
+        plans: {
           isLoading: false,
           data: null as any | null,
           isError: false,
@@ -115,6 +135,21 @@ const ApiLogsSlice = createSlice({
         console.log("error in getMasterDashboardUsersInvoicesData", action.payload);
         state.masterAdmin.usersInvoice.isLoading = false;
         state.masterAdmin.usersInvoice.isError = true;
+    });
+
+     // getMasterDashboardPlansData
+     builder.addCase(getMasterDashboardPlansData.pending, (state, action) => {
+      state.masterAdmin.plans.isLoading = true;
+    });
+    builder.addCase(getMasterDashboardPlansData.fulfilled, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.plans.data = action.payload;
+    });
+    builder.addCase(getMasterDashboardPlansData.rejected, (state, action) => {
+        console.log("error in getMasterDashboardPlansData", action.payload);
+        state.masterAdmin.plans.isLoading = false;
+        state.masterAdmin.plans.isError = true;
     });
   }
 });

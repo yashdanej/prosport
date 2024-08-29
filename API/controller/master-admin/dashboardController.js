@@ -365,3 +365,86 @@ exports.InvoicePaidUnpaid = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
+
+
+exports.GetPlans = async (req, res) => {
+    try {
+        const getPlans = await query("select * from plans");
+        return res.status(200).json({success: true, message: "Plans fetched successfully", data: getPlans});
+    } catch (error) {
+        console.error("Error fetching GetPlans data:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+exports.AddPlan = async (req, res) => {
+    const {name, api_call_count, amount, validity_number, validity_time} = req.body;
+    const api_call = `${api_call_count} per month`;
+    const api_calls = 100000;
+    const validity = `${validity_number} ${validity_time}`;
+    console.log("validity", validity);
+    const addPlan = await query("insert into plans set ?", {name, api_call, api_calls, amount, validity});
+    const SelectInsertedData = await query("select * from plans where id = ?", [addPlan.insertId]);
+    return res.status(201).json({success: true, message: "Plan added successfully", data: SelectInsertedData});
+}
+
+exports.GetPlanById = async (req, res) => {
+    try {
+        const {planid} = req.params;
+        const getPlans = await query("select * from plans where id = ?", [planid]);
+        return res.status(200).json({success: true, message: "Plan fetched successfully", data: getPlans});
+    } catch (error) {
+        console.error("Error fetching GetPlans data:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+exports.DeactivatePlan = async (req, res) => {
+    try {
+        const {planid} = req.params;
+        await query("update plans set status = 0 where id = ?", [planid]);
+        return res.status(200).json({success: true, message: "Plan deactivated successfully", data: getPlans});
+    } catch (error) {
+        console.error("Error fetching GetPlans data:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+exports.DeletePlan = async (req, res) => {
+    try {
+        const {planid} = req.params;
+        await query("delete from plans where id = ?", [planid]);
+        return res.status(200).json({success: true, message: "Plan deleted successfully"});
+    } catch (error) {
+        console.error("Error fetching GetPlans data:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+
+exports.UpdatePlan = async (req, res) => {
+    try {
+        const { planid } = req.params;
+        const { name, api_call_count, amount, validity_number, validity_time } = req.body;
+
+        // Input validation
+        if (!name || !api_call_count || !amount || !validity_number || !validity_time) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
+        }
+
+        const api_call = `${api_call_count} per month`;
+        const api_calls = 100000;  // Update this if it needs to be dynamic
+        const validity = `${validity_number} ${validity_time}`;
+
+        // Update the plan in the database
+        await query("UPDATE plans SET ? WHERE id = ?", [{ name, api_call, api_calls, amount, validity }, planid]);
+
+        // Fetch the updated plan to return in response
+        const updatedPlan = await query("SELECT * FROM plans WHERE id = ?", [planid]);
+
+        return res.status(200).json({ success: true, message: "Plan updated successfully", data: updatedPlan });
+    } catch (error) {
+        console.error("Error updating plan:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};

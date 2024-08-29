@@ -337,7 +337,7 @@ exports.Billing = async (req, res, next) => {
 exports.Subscription = async (req, res, next) => {
     try {
         // Get the user's subscriptions
-        const plans = await query("SELECT * FROM plans");
+        const plans = await query("SELECT * FROM plans where status != 0");
 
         // Send the response
         return res.status(200).json({

@@ -97,7 +97,7 @@ const BecomeMember = () => {
             ))
           ):
           plansData && plansData?.data?.map((item:any, index: number) => (
-            <Col lg="4" sm="6" className="box-col-3" key={index}>
+            <Col lg="4" sm="6" className="box-col-3 mb-4" key={index}>
               <div className="pricingtable">
                 <div className="pricingtable-header">
                   <H4 className="title">{item.name}</H4>
