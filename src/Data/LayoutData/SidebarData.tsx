@@ -47,6 +47,20 @@ export const MasterMenuList: MenuItem[] = [{
       type: "link", 
       icon: "home",
     },
+    {
+      title: "Pages",
+      id: 2,
+      icon: "widget",
+      type: "sub",
+      lanClass: "lan-6",
+      active: false,
+      children: [
+        { path: `${process.env.PUBLIC_URL}/masteradmin/account-user`, title: "Account & User", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/authentication`, title: "Authentication", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/faqs`, title: "FAQs Update", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/pricing`, title: "Pricing", type: "link"},
+      ],
+    },
   ]
   },
 ]

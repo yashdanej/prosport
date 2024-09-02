@@ -4,6 +4,7 @@ import MarkProfile from './MarkProfile/MarkProfile'
 import Profile2 from './Profile2/Profile2'
 import ProfileDetails from './ProfileDetails/ProfileDetails'
 import DetailImage from './DetailImage/DetailImage'
+import RecentDevice from '../../../../Pages/Dashboard/Account/RecentDevice'
 
 const UsersProfileContainer = () => {
   return (
@@ -11,10 +12,11 @@ const UsersProfileContainer = () => {
       <div className="user-profile">
         <Row>
           <Profile />
-          <MarkProfile />
+          <RecentDevice/>
+          {/* <MarkProfile />
           <Profile2 />
           <ProfileDetails />
-          <DetailImage />
+          <DetailImage /> */}
         </Row>
       </div>
     </Container>

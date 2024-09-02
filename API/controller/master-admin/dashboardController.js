@@ -5,6 +5,10 @@ const util = require('util');
 const db = require('../../db');
 const { verifyToken } = require('../../middleware/verifyToken');
 const query = util.promisify(db.query).bind(db);
+const UAParser = require('ua-parser-js');
+const ipinfo = require('ipinfo');
+var geoip = require('geoip-lite');
+var useragent = require('useragent');
 
 exports.Dashboard = async (req, res, next) => {
     try {
@@ -448,3 +452,87 @@ exports.UpdatePlan = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
+
+const getLocationFromIP = async (ip) => {
+    try {
+        // Replace with your IP Geolocation API endpoint and key
+        const response = await fetch(`https://ipinfo.io/${ip}?token=6a55251e104cac`);
+        const locationData = await response.json();
+        return {
+            city: locationData.city || 'Unknown',
+            state: locationData.region || 'Unknown',
+            country: locationData.country || 'Unknown'
+        };
+    } catch (error) {
+        console.error('Error fetching location:', error);
+        return { city: 'Unknown', state: 'Unknown', country: 'Unknown' };
+    }
+};
+
+exports.GetUser = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const getUser = await query("select * from users where id = ?", [id]);
+        return res.status(200).json({ success: true, message: "User fetched successfully", data: getUser });
+        
+    } catch (error) {
+        console.error("Error updating plan:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+exports.GetUsers = async (req, res) => {
+    const {path, id = null} = req.params;
+    try {
+        if(path === "users"){
+            const getAllUsers = await query("select name, lastname, company_name, id, status, created_at from users");
+            return res.status(200).json({ success: true, message: "Users fetched successfully", data: getAllUsers });
+        }else if(path === "security"){
+           // Fetch IP and device details from the database
+           const storedIPs = await query("SELECT ip_address, device FROM stored_ip WHERE user_id = ?", [id]);
+
+           // Process each entry to get location and user agent details
+           const processedData = await Promise.all(
+               storedIPs.map(async (entry) => {
+                   const { ip_address, device } = entry;
+                    
+                   // Get location details from IP address
+                //    const location = await getLocationFromIP(ip_address);
+                   var ip = "207.97.227.239";
+                   var geo = geoip.lookup(ip_address);
+                    let city = geo?.city || 'Unknown';
+                    let state = geo?.region || 'Unknown';
+                    let country = geo?.country || 'Unknown';
+                   // Parse user agent to get device and browser details
+                   const agent = useragent.parse(device);
+                   console.log("agent", agent);
+                   
+                   const browser = agent.toAgent(); // e.g., "Chrome 127.0.0.0"
+                   const os = agent.os.toString(); // e.g., "Windows 10.0"
+                   const deviceType = agent.device.toString(); // e.g., "Nexus 5"
+
+                   return {
+                       ip: ip_address,
+                       city: city,
+                       state: state,
+                       country: country,
+                       browser: browser,
+                       os: os,
+                       device: deviceType,
+                   };
+               })
+           );
+
+           return res.status(200).json({
+               success: true,
+               message: "Security data fetched successfully",
+               data: processedData,
+           });
+        }else{
+            return res.status(200).json({ success: true, message: "No path found"});
+        }
+    } catch (error) {
+        console.error("Error updating plan:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}

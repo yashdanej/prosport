@@ -7,7 +7,10 @@ const Profile = () => {
   return (
     <Col sm="12">
       <Card className="hovercard text-center">
-        <div className="cardheader" />
+        <div style={{ 
+          height: '100px', 
+          background: 'linear-gradient(to bottom right, black, red)' 
+        }} />
         <div className="user-image">
           <div className="avatar">
             <Image src={dynamicImage("user/7.jpg")} className="step1" alt="profile"/>
