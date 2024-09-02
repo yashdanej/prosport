@@ -59,7 +59,68 @@ export const getMasterDashboardPlansData = createAsyncThunk(
   }
 );
 
-// ApiLogs slice
+export const postMasterAdminPlanData = createAsyncThunk('postMasterAdminPlanData', async (data: any, { rejectWithValue }) => {
+  try {
+      console.log("postMasterAdminPlanData---------", data);
+      const res = await api(`/master-admin/add-plan`, "post", data, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+
+export const deleteMasterAdminPlanData = createAsyncThunk('deleteMasterAdminPlanData', async (id: any, { rejectWithValue }) => {
+  try {
+    console.log("deleteMasterAdminPlanData---------", id);
+      const res = await api(`/master-admin/delete-plan/${id}`, "delete", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+        return rejectWithValue(res?.response?.data?.message);
+      }
+      return {id: id, data: res?.data};
+    } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+    }
+});
+
+export const editMasterAdminPlanData = createAsyncThunk('editMasterAdminPlanData', async (id: any, { rejectWithValue }) => {
+  try {
+      console.log("editMasterAdminPlanData---------", id);
+      const res = await api(`/master-admin/get-plan-by-id/${id}`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return {id: id, data: res?.data};
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+export const patchMasterAdminPlanData = createAsyncThunk('patchMasterAdminPlanData', async (data: {data: any, id: number}, { rejectWithValue }) => {
+  try {
+      console.log("patchMasterAdminPlanData---------", data);
+      const res = await api(`/master-admin/update-plan/${data.id}`, "patch", data.data, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+  
+  // ApiLogs slice
 const ApiLogsSlice = createSlice({
   name: "ma_api_logd",
   initialState: {
@@ -84,13 +145,24 @@ const ApiLogsSlice = createSlice({
         },
         plans: {
           isLoading: false,
-          data: null as any | null,
+          data: [] as any | null,
+          plan: {
+            isLoading: false,
+            data: null as any | null,
+            isError: false,
+            errorMessage: "",
+          },
           isError: false,
           errorMessage: "",
         }
     }
   },
-  reducers: {},
+  reducers: {
+    // Add any reducers if needed
+    emptyPlanGetById: (state) => {
+      state.masterAdmin.plans.plan.data = null;
+    }
+  },
   extraReducers: (builder) => {
     // getMasterDashboardApiLogData
     builder.addCase(getMasterDashboardApiLogData.pending, (state, action) => {
@@ -151,8 +223,73 @@ const ApiLogsSlice = createSlice({
         state.masterAdmin.plans.isLoading = false;
         state.masterAdmin.plans.isError = true;
     });
-  }
+
+    // postMasterAdminPlanData
+    builder.addCase(postMasterAdminPlanData.pending, (state) => {
+      state.masterAdmin.plans.isLoading = true;
+      console.log("state.profile.isLoading", state);
+    });
+    builder.addCase(postMasterAdminPlanData.fulfilled, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("postMasterAdminPlanData action.payload", action.payload);
+        state.masterAdmin.plans.data.push(action.payload.data[0]);
+    });
+    builder.addCase(postMasterAdminPlanData.rejected, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("postMasterAdminPlanData.rejected", action);
+        state.masterAdmin.plans.isError = true;
+        state.masterAdmin.plans.errorMessage = action.payload as string;
+    });
+
+    // deleteMasterAdminPlanData
+    builder.addCase(deleteMasterAdminPlanData.pending, (state) => {
+      state.masterAdmin.plans.isLoading = true;
+    });
+    builder.addCase(deleteMasterAdminPlanData.fulfilled, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("deleteMasterAdminPlanData action.payload", action.payload);
+        state.masterAdmin.plans.data = state.masterAdmin.plans.data.filter((plan: any) => plan.id !== action.payload.id);
+    });
+    builder.addCase(deleteMasterAdminPlanData.rejected, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("deleteMasterAdminPlanData.rejected", action);
+        state.masterAdmin.plans.isError = true;
+        state.masterAdmin.plans.errorMessage = action.payload as string;
+    });
+
+    // editMasterAdminPlanData
+    builder.addCase(editMasterAdminPlanData.pending, (state) => {
+      state.masterAdmin.plans.plan.isLoading = true;
+    });
+    builder.addCase(editMasterAdminPlanData.fulfilled, (state, action) => {
+        state.masterAdmin.plans.plan.isLoading = false;
+        console.log("editMasterAdminPlanData action.payload", action.payload);
+        state.masterAdmin.plans.plan.data = action.payload.data.data;
+    });
+    builder.addCase(editMasterAdminPlanData.rejected, (state, action) => {
+        state.masterAdmin.plans.plan.isLoading = false;
+        console.log("editMasterAdminPlanData.rejected", action);
+        state.masterAdmin.plans.plan.isError = true;
+        state.masterAdmin.plans.plan.errorMessage = action.payload as string;
+    });
+
+    // patchMasterAdminPlanData
+    builder.addCase(patchMasterAdminPlanData.pending, (state) => {
+      state.masterAdmin.plans.isLoading = true;
+    });
+    builder.addCase(patchMasterAdminPlanData.fulfilled, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("patchMasterAdminPlanData action.payload", action.payload);
+        state.masterAdmin.plans.data = state.masterAdmin.plans.data.filter((plan: any) => plan.id !== action.payload.id);
+    });
+    builder.addCase(patchMasterAdminPlanData.rejected, (state, action) => {
+        state.masterAdmin.plans.isLoading = false;
+        console.log("patchMasterAdminPlanData.rejected", action);
+        state.masterAdmin.plans.isError = true;
+        state.masterAdmin.plans.errorMessage = action.payload as string;
+    });
+  },
 });
 
-export const {  } = ApiLogsSlice.actions;
+export const { emptyPlanGetById } = ApiLogsSlice.actions;
 export const ApiLogsReducer = ApiLogsSlice.reducer;
