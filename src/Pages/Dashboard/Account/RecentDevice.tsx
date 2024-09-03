@@ -2,8 +2,27 @@ import { Card, CardBody, Col, Input, Label, Table } from "reactstrap";
 import CommonCardHeader from "../../../CommonElements/CommonCardHeader/CommonCardHeader";
 import ProjectsTableBody from "../../../Componant/Dashboard/Default/ProjectsTable/ProjectsTableBody";
 import RecentTable from "./RecentTable";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../ReduxToolkit/Store";
+import { getMasterAdminRecentDeviceData } from "../../../ReduxToolkit/Reducers/Change/ApiLogsSlice";
+import { useEffect } from "react";
 
 const RecentDevice = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[3];
+  const dispatch = useDispatch<AppDispatch>();
+  const fetchAccountUsersRecentDeviceData = async () => {
+    try {
+      console.log("fetchAccountUsersRecentDeviceData in");
+      await dispatch(getMasterAdminRecentDeviceData(+id)).unwrap();
+    } catch (error) {
+      console.log("error from fetchAccountUsersRecentDeviceData", error);
+    }
+  }
+  useEffect(() => {
+    fetchAccountUsersRecentDeviceData();
+  }, [dispatch]);
   return (
     <Col xl="12" className="proorder-xl-5 box-col-7 proorder-md-5">
       <Card>
@@ -19,7 +38,6 @@ const RecentDevice = () => {
                     <th>{"Device"}</th>
                     <th>{"Location"}</th>
                     <th>{"Recent Activity"}</th>
-                    <th>{"Status"}</th>
                     <th>{'IP Address'}</th>
                     <th>{'Action'}</th>
                   </tr>

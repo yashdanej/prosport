@@ -138,6 +138,7 @@ import UsersInvoice from "../Pages/Dashboard/UsersInvoices/UsersInvoice";
 import MasterAdminPlans from "../Pages/Dashboard/Plans/MasterAdminPlans";
 import MasterAdminPlanAdd from "../Pages/Dashboard/Plans/MasterAdminPlanAdd";
 import AccountUser from "../Pages/Dashboard/Account/AccountUser";
+import AccountAllUsers from "../Pages/Dashboard/Account/Users/AccountAllUsers";
 
 const routes = [
   // dashboard 
@@ -168,7 +169,8 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/masteradmin/users-invoices`, Component: <UsersInvoice />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/plans`, Component: <MasterAdminPlans />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/plan/:path`, Component: <MasterAdminPlanAdd />},
-  { path: `${process.env.PUBLIC_URL}/masteradmin/account-user`, Component: <AccountUser />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/account-user`, Component: <AccountAllUsers />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/account-user-view/:id`, Component: <AccountUser />},
 
   // { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
   

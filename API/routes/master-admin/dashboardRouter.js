@@ -16,6 +16,6 @@ router
     router.get('/get-plan-by-id/:planid', verifyToken, dashboardController.GetPlanById);
     router.patch('/update-plan/:planid', verifyToken, dashboardController.UpdatePlan);
     router.get('/user/:id', verifyToken, dashboardController.GetUser);
-    router.get('/user/:path/:id?', verifyToken, dashboardController.GetUsers);
+    router.get('/user/details/:path/:id?', verifyToken, dashboardController.GetUsers);
 
 module.exports = router;

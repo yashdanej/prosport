@@ -1,16 +1,15 @@
 import { Link } from 'react-router-dom'
-import { LI, UL } from '../../../../../AbstractElements'
+import { LI, P, UL } from '../../../../../AbstractElements'
 import { tourProfileData } from '../../../../../Data/Application/Users/UsersProfile/UsersProfile'
 
-const SocialMedia = () => {
+const SocialMedia = ({active, setActive}: any) => {
+  const tabs = ['overview', 'security', 'billing-statements', 'referrals', 'documents', 'api keys', 'logs'];
   return (
     <div className="social-media" >
-      <UL className="list-inline simple-list flex-row">
-        {tourProfileData.map((item, index) => (
-          <LI className="list-inline-item" key={index}>
-            <Link to={item.link} target="_blank" rel="noreferrer">
-              <i className={`fa fa-${item.icon}`} />
-            </Link>
+      <UL className="list-inline simple-list flex-row flex-wrap">
+        {tabs.map((item, index) => (
+          <LI onClick={() => setActive(item)} className="list-inline-item flex-wrap" key={index}>
+              <p style={{color: active===item?'red':''}} className='mx-3 pointer'>{item.charAt(0).toUpperCase() + item.slice(1)}</p>
           </LI>
         ))}
       </UL>

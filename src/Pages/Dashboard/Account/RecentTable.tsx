@@ -5,7 +5,8 @@ import { AppDispatch, RootState } from "../../../ReduxToolkit/Store";
 import { H6 } from "../../../AbstractElements";
 
 const RecentTable = () => {
-    const data: any = [];
+    const maRecentDeviceData = useSelector((state: RootState) => state.ApiLogs.masterAdmin?.accountUsers.recentDevice);
+    const data: any = maRecentDeviceData?.data;
     const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
     const toggleTooltip = (id: any) => {
         setTooltipOpen((prevState: any) => ({
@@ -19,30 +20,13 @@ const RecentTable = () => {
       <tbody>
         {data?.map((data: any, i: number) => (
           <tr key={i}>
-            <td>
-              <div className="form-check">
-                <Input className="form-check-input" type="checkbox" />
-                <Label className="form-check-label" />
-              </div>
-            </td>
-            <td>
-              <td> {data.invoice}</td>
-            </td>
-            <td className="project-dot">
-              <div className="d-flex">
-                <div className="flex-shrink-0">
-                  <span className={`bg-${data.color}`} />
-                </div>
-                <div className="flex-grow-1">
-                  <H6>{data.product}</H6>
-                </div>
-              </div>
-            </td>
-            <td> {data.bill_date}</td>
-            <td> {data.due_date}</td>
-            <td>{data.price}</td>
-            <td>{data.tax}</td>
-            <td>{data.amount}</td>
+            <td></td>
+            <td>{data.browser}</td>
+            <td>{data.device}, ({data.os})</td>
+            <td>{data.city}, {data.state}, {data.country}</td>
+            <td>{data.created_at.split('T')[0]}</td>
+            <td>{data.ip}</td>
+            <td>Action</td>
           </tr>
         ))}
       </tbody>

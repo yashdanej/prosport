@@ -119,6 +119,51 @@ export const patchMasterAdminPlanData = createAsyncThunk('patchMasterAdminPlanDa
       return rejectWithValue(err.message);
   }
 });
+
+export const getMasterAdminUsersTableData = createAsyncThunk('getMasterAdminUsersTableData', async (_, { rejectWithValue }) => {
+  try {
+      // console.log("getMasterAdminUsersTableData---------", data);
+      const res = await api(`/master-admin/user/details/users/`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+export const getMasterAdminUsersData = createAsyncThunk('getMasterAdminUsersData', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("getMasterAdminUsersData---------", data);
+      const res = await api(`/master-admin/user/${id}`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+export const getMasterAdminRecentDeviceData = createAsyncThunk('getMasterAdminRecentDeviceData', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("getMasterAdminRecentDeviceData---------", data);
+      const res = await api(`/master-admin/user/details/security/${id}`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
   
   // ApiLogs slice
 const ApiLogsSlice = createSlice({
@@ -154,7 +199,25 @@ const ApiLogsSlice = createSlice({
           },
           isError: false,
           errorMessage: "",
-        }
+        },
+        accountUsers: {
+          isLoading: false,
+          data: null as any | null,
+          view: {
+            isLoading: false,
+            data: null as any | null,
+            isError: false,
+            errorMessage: "",
+          },
+          recentDevice: {
+            isLoading: false,
+            data: null as any | null,
+            isError: false,
+            errorMessage: "",
+          },
+          isError: false,
+          errorMessage: "",
+        },
     }
   },
   reducers: {
@@ -287,6 +350,51 @@ const ApiLogsSlice = createSlice({
         console.log("patchMasterAdminPlanData.rejected", action);
         state.masterAdmin.plans.isError = true;
         state.masterAdmin.plans.errorMessage = action.payload as string;
+    });
+
+    // getMasterAdminUsersTableData
+    builder.addCase(getMasterAdminUsersTableData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.isLoading = true;
+    });
+    builder.addCase(getMasterAdminUsersTableData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.accountUsers.data = action.payload.data;
+    });
+    builder.addCase(getMasterAdminUsersTableData.rejected, (state, action) => {
+        console.log("error in getMasterAdminUsersTableData", action.payload);
+        state.masterAdmin.accountUsers.isLoading = false;
+        state.masterAdmin.accountUsers.isError = true;
+    });
+    
+    // getMasterAdminUsersData
+    builder.addCase(getMasterAdminUsersData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.view.isLoading = true;
+    });
+    builder.addCase(getMasterAdminUsersData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.view.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.accountUsers.view.data = action.payload.data;
+    });
+    builder.addCase(getMasterAdminUsersData.rejected, (state, action) => {
+        console.log("error in getMasterAdminUsersData", action.payload);
+        state.masterAdmin.accountUsers.view.isLoading = false;
+        state.masterAdmin.accountUsers.view.isError = true;
+    });
+    
+    // getMasterAdminRecentDeviceData
+    builder.addCase(getMasterAdminRecentDeviceData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.recentDevice.isLoading = true;
+    });
+    builder.addCase(getMasterAdminRecentDeviceData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.recentDevice.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.accountUsers.recentDevice.data = action.payload.data;
+    });
+    builder.addCase(getMasterAdminRecentDeviceData.rejected, (state, action) => {
+        console.log("error in getMasterAdminRecentDeviceData", action.payload);
+        state.masterAdmin.accountUsers.recentDevice.isLoading = false;
+        state.masterAdmin.accountUsers.recentDevice.isError = true;
     });
   },
 });

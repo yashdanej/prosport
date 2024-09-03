@@ -469,32 +469,61 @@ const getLocationFromIP = async (ip) => {
     }
 };
 
+const requiredFields = [
+    'name',
+    'lastname',
+    'email',
+    'image',
+    'location',
+    'phone',
+    'address',
+    'city',
+    'country',
+    'company_name',
+    'aboutcompany',
+];
+
 exports.GetUser = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
-        const getUser = await query("select * from users where id = ?", [id]);
-        return res.status(200).json({ success: true, message: "User fetched successfully", data: getUser });
-        
+        const getUser = await query('SELECT * FROM users WHERE id = ?', [id]);
+
+        if (!getUser) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Calculate profile completeness percentage
+        const filledFields = requiredFields.filter((field) => getUser[0][field] !== null && getUser[0][field] !== '');
+        const profileCompletion = Math.round((filledFields.length / requiredFields.length) * 100);
+        getUser.push({'profileCompletion': profileCompletion});
+        return res.status(200).json({
+            success: true,
+            message: 'User fetched successfully',
+            data: getUser,
+        });
     } catch (error) {
-        console.error("Error updating plan:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.error('Error fetching user:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
-}
+};
 
 exports.GetUsers = async (req, res) => {
     const {path, id = null} = req.params;
+    console.log("path", path);
+    console.log("in");
     try {
         if(path === "users"){
+            
             const getAllUsers = await query("select name, lastname, company_name, id, status, created_at from users");
             return res.status(200).json({ success: true, message: "Users fetched successfully", data: getAllUsers });
         }else if(path === "security"){
            // Fetch IP and device details from the database
-           const storedIPs = await query("SELECT ip_address, device FROM stored_ip WHERE user_id = ?", [id]);
+           const storedIPs = await query("SELECT ip_address, device, created_at FROM stored_ip WHERE user_id = ?", [id]);
 
            // Process each entry to get location and user agent details
            const processedData = await Promise.all(
                storedIPs.map(async (entry) => {
-                   const { ip_address, device } = entry;
+                   const { ip_address, device, created_at } = entry;
                     
                    // Get location details from IP address
                 //    const location = await getLocationFromIP(ip_address);
@@ -519,6 +548,7 @@ exports.GetUsers = async (req, res) => {
                        browser: browser,
                        os: os,
                        device: deviceType,
+                       created_at: created_at
                    };
                })
            );
