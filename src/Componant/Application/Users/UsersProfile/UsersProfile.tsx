@@ -11,6 +11,9 @@ import { AppDispatch } from '../../../../ReduxToolkit/Store'
 import { getMasterAdminUsersData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice'
 import { useLocation } from 'react-router-dom'
 import { P } from '../../../../AbstractElements'
+import BillingStatement from '../../../../Pages/Dashboard/Account/Billing/BillingStatement'
+import Referrals from '../../../../Pages/Dashboard/Account/Referrals/Referrals'
+import ApiKeyMA from '../../../../Pages/Dashboard/Account/ApiKeys/ApiKeyMA'
 
 const UsersProfileContainer = () => {
   const [active, setActive] = useState('security');
@@ -18,7 +21,11 @@ const UsersProfileContainer = () => {
     if(active === 'security'){
       return <RecentDevice/>
     }else if(active === 'billing-statements'){
-      // return
+      return <BillingStatement/>
+    }else if (active === 'referrals'){
+      return <Referrals/>
+    }else if(active === 'api keys'){
+      return <ApiKeyMA/>
     }else{
       return <P>No content found</P>
     }

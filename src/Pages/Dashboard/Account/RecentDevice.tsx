@@ -27,10 +27,10 @@ const RecentDevice = () => {
     <Col xl="12" className="proorder-xl-5 box-col-7 proorder-md-5">
       <Card>
         <CommonCardHeader headClass="card-no-border pb-0" title="Recent Devices"/>
-        <CardBody className="pt-0 projects px-0">
+        <CardBody style={{height: '30%', overflow: 'auto'}} className="pt-0 projects px-0">
           <div className="dataTables_wrapper">
             <div className="table-responsive theme-scrollbar">
-              <Table className="table display dataTable no-footer" id="selling-product">
+              <Table className="table display dataTable no-footer"  id="selling-product">
                 <thead>
                   <tr>
                     <th></th>
