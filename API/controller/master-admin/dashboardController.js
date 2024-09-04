@@ -558,6 +558,31 @@ exports.GetUsers = async (req, res) => {
                message: "Security data fetched successfully",
                data: processedData,
            });
+        }else if(path === 'billing-statements'){
+            let data = [];
+            const getCurrentPlan = await query(
+                `SELECT s.*, p.*, 
+                        DATEDIFF(s.expire_date, CURDATE()) AS days_left, 
+                        DATEDIFF(s.expire_date, s.start_date) AS total_days,
+                        DATEDIFF(CURDATE(), s.start_date) AS days_used,
+                        ROUND((DATEDIFF(CURDATE(), s.start_date) / DATEDIFF(s.expire_date, s.start_date)) * 100, 2) AS days_used_percentage
+                 FROM user_subscriptions s 
+                 INNER JOIN plans p ON s.planId = p.id 
+                 WHERE s.userId = ?`, 
+                [id]
+            );
+
+            data.push({'current_plan': getCurrentPlan})
+
+            const getAllInvoicesAndBillingHistory = await query(`
+                select u.*, p.* from user_subscription_histories u
+                inner join plans p on u.plan_id = p.id
+                where user_id = ? order by u.subscribe_date desc;
+            `, [id])
+            data.push({'invoices_and_billing_history': getAllInvoicesAndBillingHistory});
+            return res.status(200).json({ success: true, message: "Data fetched successfully", data: data});
+        }else if(path === 'billing-statements'){
+            
         }else{
             return res.status(200).json({ success: true, message: "No path found"});
         }
