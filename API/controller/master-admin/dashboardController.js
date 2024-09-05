@@ -575,14 +575,48 @@ exports.GetUsers = async (req, res) => {
             data.push({'current_plan': getCurrentPlan})
 
             const getAllInvoicesAndBillingHistory = await query(`
-                select u.*, p.* from user_subscription_histories u
+                select u.*, user.name as firstname, user.lastname, user.email, user.address, user.phone, p.* from user_subscription_histories u
                 inner join plans p on u.plan_id = p.id
+                INNER JOIN users user ON u.user_id = user.id 
                 where user_id = ? order by u.subscribe_date desc;
             `, [id])
             data.push({'invoices_and_billing_history': getAllInvoicesAndBillingHistory});
             return res.status(200).json({ success: true, message: "Data fetched successfully", data: data});
-        }else if(path === 'billing-statements'){
-            
+        }else if(path === 'referrals'){
+            let data = [];
+            const user = await query("select reffer_code from users where id = ?", [id]);
+            const refferers = await query(`
+                SELECT 
+                  u.name,
+                  u.lastname, 
+                  u.email,
+                  MAX(w.commission) AS commission,  -- Use MAX() to avoid grouping errors
+                  r.id, 
+                  r.created_at 
+                FROM 
+                  referrals r
+                INNER JOIN 
+                  users u ON u.id = r.referred_id  -- Get referred users
+                LEFT JOIN 
+                  wallet w ON w.referrer_id = r.referrer_id  -- Avoid duplicate rows with LEFT JOIN
+                WHERE 
+                  r.referrer_id = ?  -- Get records referred by the provided id
+                GROUP BY 
+                  r.id, u.name, u.lastname, r.created_at  -- Include all non-aggregated fields
+                ORDER BY 
+                  r.id DESC
+              `, [id]);
+              data.push({refferers: refferers, user})
+            return res.status(200).json({ success: true, message: "Data fetched successfully", data: data});
+        }else if(path === 'api_keys'){
+            const getApiKey = await query(`
+                select u.id as userid, u.company_domain, u.secret_key, s.id as subscriptionid, s.token, s.status, s.start_date, s.expire_date
+                from users u
+                inner join user_subscriptions s
+                on s.userId = u.id
+                where u.id = ?
+            `, [id]);
+            return res.status(200).json({ success: true, message: "Data fetched successfully", data: getApiKey});
         }else{
             return res.status(200).json({ success: true, message: "No path found"});
         }

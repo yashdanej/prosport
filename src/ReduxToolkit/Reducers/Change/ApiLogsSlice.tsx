@@ -164,6 +164,51 @@ export const getMasterAdminRecentDeviceData = createAsyncThunk('getMasterAdminRe
       return rejectWithValue(err.message);
   }
 });
+
+export const getMasterAdminBillingDetailsData = createAsyncThunk('getMasterAdminBillingDetailsData', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("getMasterAdminBillingDetailsData---------", data);
+      const res = await api(`/master-admin/user/details/billing-statements/${id}`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+export const getMasterAdminApiKeyData = createAsyncThunk('getMasterAdminApiKeyData', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("getMasterAdminApiKeyData---------", data);
+      const res = await api(`/master-admin/user/details/api_keys/${id}`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+export const getMasterAdminRefferalsData = createAsyncThunk('getMasterAdminRefferalsData', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("getMasterAdminRefferalsData---------", data);
+      const res = await api(`/master-admin/user/details/referrals/${id}`, "get", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
   
   // ApiLogs slice
 const ApiLogsSlice = createSlice({
@@ -214,6 +259,24 @@ const ApiLogsSlice = createSlice({
             data: null as any | null,
             isError: false,
             errorMessage: "",
+          },
+          billing_statement: {
+            isLoading: false,
+            data: null as any | null,
+            isError: false,
+            errorMessage: "",
+          },
+          api_key: {
+            isLoading: false,
+            data: null as any | null,
+            isError: false,
+            errorMessage: "", 
+          },
+          refferals: {
+            isLoading: false,
+            data: null as any | null,
+            isError: false,
+            errorMessage: "", 
           },
           isError: false,
           errorMessage: "",
@@ -395,6 +458,51 @@ const ApiLogsSlice = createSlice({
         console.log("error in getMasterAdminRecentDeviceData", action.payload);
         state.masterAdmin.accountUsers.recentDevice.isLoading = false;
         state.masterAdmin.accountUsers.recentDevice.isError = true;
+    });
+
+    // getMasterAdminBillingDetailsData
+    builder.addCase(getMasterAdminBillingDetailsData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.billing_statement.isLoading = true;
+    });
+    builder.addCase(getMasterAdminBillingDetailsData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.billing_statement.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.accountUsers.billing_statement.data = action.payload.data;
+    });
+    builder.addCase(getMasterAdminBillingDetailsData.rejected, (state, action) => {
+        console.log("error in getMasterAdminBillingDetailsData", action.payload);
+        state.masterAdmin.accountUsers.billing_statement.isLoading = false;
+        state.masterAdmin.accountUsers.billing_statement.isError = true;
+    });
+
+    // getMasterAdminApiKeyData
+    builder.addCase(getMasterAdminApiKeyData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.api_key.isLoading = true;
+    });
+    builder.addCase(getMasterAdminApiKeyData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.api_key.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.accountUsers.api_key.data = action.payload.data;
+    });
+    builder.addCase(getMasterAdminApiKeyData.rejected, (state, action) => {
+        console.log("error in getMasterAdminApiKeyData", action.payload);
+        state.masterAdmin.accountUsers.api_key.isLoading = false;
+        state.masterAdmin.accountUsers.api_key.isError = true;
+    });
+
+    // getMasterAdminRefferalsData
+    builder.addCase(getMasterAdminRefferalsData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.refferals.isLoading = true;
+    });
+    builder.addCase(getMasterAdminRefferalsData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.refferals.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.masterAdmin.accountUsers.refferals.data = action.payload.data;
+    });
+    builder.addCase(getMasterAdminRefferalsData.rejected, (state, action) => {
+        console.log("error in getMasterAdminRefferalsData", action.payload);
+        state.masterAdmin.accountUsers.refferals.isLoading = false;
+        state.masterAdmin.accountUsers.refferals.isError = true;
     });
   },
 });

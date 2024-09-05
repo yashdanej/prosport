@@ -1,87 +1,90 @@
-import React, { useEffect } from 'react'
-import { Card, CardBody, Col, Container, FormGroup, Input, Label, Row } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Card, CardBody, Col, Container, FormGroup, Input, InputGroup, InputGroupText, Label, Row } from 'reactstrap'
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader'
 import { Btn, H1, H3, H6, P, Progressbar } from '../../../../AbstractElements'
 import './referralCss.css';
-import { getMasterAdminUsersTableData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
+import { getMasterAdminRefferalsData, getMasterAdminUsersTableData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
 import { useDispatch, useSelector } from 'react-redux';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { Link } from 'react-router-dom';
-
+import { Link, useLocation } from 'react-router-dom';
+import { Field } from 'formik';
+import { FRONTEND_URL } from '../../../../Utils';
+import BottomRightToast from '../../../../Componant/BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast';
 
 export interface ProductListTableDataColumnType {
+    id: string;
+    created_at: string;
     name: string;
     lastname: string;
-    company_name: string;
-    id: boolean;
-    status: string;
-    created_at: string;
+    bonus: string;
+    commission: string;
 }
 
-
 const Referrals = () => {
-    const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin?.accountUsers);
+    const maRefferalsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin?.accountUsers.refferals);
+    const [showToast, setShowToast] = useState(false);
+    const [txt, setTxt] = useState("");
       const productListTableDataColumn: TableColumn<ProductListTableDataColumnType>[] = [
         {
-          name: "Name",
-          selector: (row) => `${row?.name} ${row?.lastname?row?.lastname:""}`,
-          sortable: true,
-          grow: 2,
-        },
-        {
-          name: "Company",
-          selector: (row) => row?.company_name || "Not Found",
-          sortable: true,
-        },
-        {
-          name: "Id",
+          name: "ID",
           selector: (row) => row?.id,
           sortable: true,
         },
         {
-          name: "Status",
-          cell: (row) => (
-            <div className="status-box">
-                <Btn className={`background-light-${!row.status ? 'danger' : 'success'} font-${!row.status ? 'danger' : 'success'} f-w-500`} color="">
-                    {!row.status ? 'De-Active' : 'Active'}
-                </Btn>
-            </div>
-          ),
+          name: "DATE",
+          selector: (row) =>
+            new Date(row?.created_at).toLocaleDateString('en-IN', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata',
+            }),
           sortable: true,
         },
         {
-          name: "Registered",
-          selector: (row) => row?.created_at,
+          name: "USER",
+          selector: (row) => `${row?.name} ${row?.lastname?row?.lastname:""}`,
           sortable: true,
         },
         {
-          name: "Action",
-          cell: (row) => (
-            <>
-              <Link to={`/masteradmin/account-user-view/${row?.id}`}>
-                <Btn className={`background-light-info font-info f-w-500`}>
-                    View
-                </Btn>
-              </Link>
-            </>
-          ),
+          name: "BONNUS",
+          selector: (row) => "5%",
+          sortable: true,
+        },
+        {
+          name: "PROFIT",
+          selector: (row) => `₹${row?.commission}`,
+          sortable: true,
         },
       ];
-    
+
+      const location = useLocation();
+      const id = location.pathname.split("/")[3];
+
       const dispatch = useDispatch<AppDispatch>();
-      const fetchAccountUsersTable = async () => {
+      const fetchRefferalTable = async () => {
         try {
-          console.log("fetchAccountUsersTable in");
+          console.log("fetchRefferalTable in");
           
-          await dispatch(getMasterAdminUsersTableData()).unwrap();
+          await dispatch(getMasterAdminRefferalsData(+id)).unwrap();
         } catch (error) {
-          console.log("error from fetchAccountUsersTable", error);
+          console.log("error from fetchRefferalTable", error);
         }
       }
+
+      const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+          setTxt('Copied to clipboard');
+          setShowToast(true);
+        }).catch(err => {
+          setTxt(`Failed to copy ${err}`);
+          setShowToast(true);
+        });
+      };
     
       useEffect(() => {
-        fetchAccountUsersTable();
+        fetchRefferalTable();
       }, [dispatch]);
 
       const data = [
@@ -158,21 +161,57 @@ const Referrals = () => {
                     <p style={{fontWeight: 'bold', fontSize: '18px', color: '#3D475C'}}>Share The Referral Link</p>
                     <H6>You can also share your referral link by copying and sending it to your friends or sharing it on social media.</H6>
                     <Row style={{alignItems: 'center'}}>
-                        <Col className='my-3' sm="6" md="6">
-                            <div className="group">
-                                <svg stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="icon">
-                                    <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linejoin="round" stroke-linecap="round"></path>
-                                </svg>
-                                <input className="input" type="password" placeholder="password"/>
-                            </div>
-                        </Col>
-                        <Col className='my-3' sm="6" md="6">
-                            <div className="group">
-                                <svg stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="icon">
-                                    <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linejoin="round" stroke-linecap="round"></path>
-                                </svg>
-                                <input className="input" type="password" placeholder="password"/>
-                            </div>
+                    <Col className="my-3" sm="6" md="8">
+                      <InputGroup className="has-validation">
+                        <InputGroupText className='pointer' onClick={() => handleCopy(`${FRONTEND_URL}/authentication/register_simple/${maRefferalsData?.data?.[0]?.user?.[0]?.reffer_code}`)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="feather feather-copy"
+                          >
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                          </svg>
+                        </InputGroupText>
+                        <Input
+                          disabled
+                          type="text"
+                          name="username"
+                          value={`${FRONTEND_URL}/authentication/register_simple/${maRefferalsData?.data?.[0]?.user?.[0]?.reffer_code}`}
+                          className="form-control"
+                        />
+                        <div className="invalid-tooltip">UsernameFeedback</div>
+                      </InputGroup>
+                    </Col>
+                        <Col className='my-3' sm="4" md="4">
+                          <InputGroup className="has-validation">
+                            <InputGroupText className='pointer' onClick={() => handleCopy(`${maRefferalsData?.data?.[0]?.user?.[0]?.reffer_code}`)}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="feather feather-copy"
+                              >
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                              </svg>
+                            </InputGroupText>
+                            <Input disabled={true} type="text" name="username" value={maRefferalsData?.data?.[0]?.user?.[0]?.reffer_code} className={`form-control`} />
+                            <div className="invalid-tooltip">{"UsernameFeedback"}</div>
+                          </InputGroup>
                         </Col>
                     </Row>
                   </div>
@@ -206,7 +245,7 @@ const Referrals = () => {
       <Col xl="12" md="12" className="proorder-md-1 my-5">
         <Container fluid>
         {
-            maApiLogsData?.data &&
+          maRefferalsData?.data?.[0]?.refferers &&
         <Row>
             <Col sm="12">
             <Card>
@@ -215,7 +254,7 @@ const Referrals = () => {
                 <div className="list-product">
                     <div className="table-responsive">
                     <DataTable
-                        data={maApiLogsData?.data} 
+                        data={maRefferalsData?.data?.[0]?.refferers} 
                         columns={productListTableDataColumn} 
                         striped 
                         highlightOnHover 
@@ -232,6 +271,7 @@ const Referrals = () => {
         }
         </Container>
       </Col>
+      {showToast && <BottomRightToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </>
   )
 }

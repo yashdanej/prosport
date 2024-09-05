@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../ReduxToolkit/Store";
 import { getLoggedUserProfile } from "../../../../../ReduxToolkit/Reducers/Change/ProfileSlice";
 
-const InvoiceTwoContainer = ({data}: any) => {
+const InvoiceTwoContainer = ({data, from}: any) => {
   console.log("ddata", data);
   
   const componentRef = useRef<HTMLDivElement | null>(null);
@@ -43,7 +43,7 @@ const InvoiceTwoContainer = ({data}: any) => {
                     <InvoiceTwoDetails data={data} />
                   </tr>
                   <tr>
-                    <InvoiceTwoBilling />
+                    <InvoiceTwoBilling data={data} from={from} />
                   </tr>
                   <tr>
                     <InvoiceTwoContent data={data} />

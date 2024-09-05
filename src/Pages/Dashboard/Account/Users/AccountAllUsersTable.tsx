@@ -50,7 +50,14 @@ const AccountAllUsersTable = () => {
     },
     {
       name: "Registered",
-      selector: (row) => row?.created_at,
+      selector: (row) =>
+        row?.created_at &&
+        new Date(row?.created_at).toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          timeZone: 'Asia/Kolkata',
+        }),
       sortable: true,
     },
     {

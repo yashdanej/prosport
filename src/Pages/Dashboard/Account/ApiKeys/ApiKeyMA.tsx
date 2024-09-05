@@ -1,21 +1,23 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { getMasterAdminUsersTableData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
+import { getMasterAdminApiKeyData, getMasterAdminUsersTableData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
-import { Link } from 'react-router-dom';
-import { Btn } from '../../../../AbstractElements';
+import { Link, useLocation } from 'react-router-dom';
+import { Btn, P } from '../../../../AbstractElements';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { Card, CardBody, Col, Container, Input, Label, Row } from 'reactstrap';
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader';
 
 
 export interface ProductListTableDataColumnType {
-    name: string;
-    lastname: string;
-    company_name: string;
-    id: boolean;
-    status: string;
-    created_at: string;
+    userid: number;
+    company_domain: string;
+    secret_key: string;
+    subscriptionid: string;
+    token: string;
+    status: boolean;
+    start_date: string;
+    expire_date: string;
 }
 
 
@@ -27,22 +29,22 @@ const ApiKeyMA = () => {
         status: ""
       });
       const [filterText, setFilterText] = useState("");
-    const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin?.accountUsers);
+      const maApiKeyData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.accountUsers.api_key);
+
       const productListTableDataColumn: TableColumn<ProductListTableDataColumnType>[] = [
         {
-          name: "Name",
-          selector: (row) => `${row?.name} ${row?.lastname?row?.lastname:""}`,
-          sortable: true,
-          grow: 2,
-        },
-        {
-          name: "Company",
-          selector: (row) => row?.company_name || "Not Found",
+          name: "DOMAIN",
+          selector: (row) => `${row?.company_domain || "No domain"}`,
           sortable: true,
         },
         {
-          name: "Id",
-          selector: (row) => row?.id,
+          name: "ACCESS KEY",
+          selector: (row) => row?.token || "Not Found",
+          sortable: true,
+        },
+        {
+          name: "SECRET KEY",
+          selector: (row) => row?.secret_key,
           sortable: true,
         },
         {
@@ -57,70 +59,86 @@ const ApiKeyMA = () => {
           sortable: true,
         },
         {
-          name: "Registered",
-          selector: (row) => row?.created_at,
+          name: "SUBSCRIBED DATE",
+          selector: (row) =>
+            new Date(row?.start_date).toLocaleDateString('en-IN', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata',
+            }),
+          sortable: true,
+        },
+        {
+          name: "EXPIRE DATE",
+          selector: (row) =>
+            new Date(row?.expire_date).toLocaleDateString('en-IN', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata',
+            }),
           sortable: true,
         },
         {
           name: "Action",
           cell: (row) => (
             <>
-              <Link to={`/masteradmin/account-user-view/${row?.id}`}>
-                <Btn className={`background-light-info font-info f-w-500`}>
-                    View
-                </Btn>
-              </Link>
+              <span className='badge bg-primary'>Action</span>
             </>
           ),
         },
       ];
-    
+
+      const location = useLocation();
+      const id = location.pathname.split("/")[3];
+
       const dispatch = useDispatch<AppDispatch>();
-      const fetchAccountUsersTable = async () => {
+      const fetchApiKeyTable = async () => {
         try {
-          console.log("fetchAccountUsersTable in");
+          console.log("fetchApiKeyTable in");
           
-          await dispatch(getMasterAdminUsersTableData()).unwrap();
+          await dispatch(getMasterAdminApiKeyData(+id)).unwrap();
         } catch (error) {
-          console.log("error from fetchAccountUsersTable", error);
+          console.log("error from fetchApiKeyTable", error);
         }
       }
 
-      const filteredItems = maApiLogsData?.data?.records?.filter((item: ProductListTableDataColumnType) => {
-        console.log("filters", filters);
-        console.log("item", item);
+      // const filteredItems = maApiKeyData?.data?.records?.filter((item: ProductListTableDataColumnType) => {
+      //   console.log("filters", filters);
+      //   console.log("item", item);
         
-        const matchesApiName = filters?.name ? item?.name?.includes(filters.name) : true;
-        const matchesApiLastName = filters?.lastname ? item?.lastname?.includes(filters.lastname) : true;
-        const matchesApiCompanyName = filters?.company_name ? item?.company_name?.includes(filters.company_name) : true;
-        const matchesStatus = filters?.status ? (filters.status !== 'Active' ? !item.status : item.status) : true;
+      //   const matchesApiName = filters?.name ? item?.name?.includes(filters.name) : true;
+      //   const matchesApiLastName = filters?.lastname ? item?.lastname?.includes(filters.lastname) : true;
+      //   const matchesApiCompanyName = filters?.company_name ? item?.company_name?.includes(filters.company_name) : true;
+      //   const matchesStatus = filters?.status ? (filters.status !== 'Active' ? !item.status : item.status) : true;
     
-        return matchesApiName && matchesApiLastName && matchesApiCompanyName && matchesStatus;
-      });
+      //   return matchesApiName && matchesApiLastName && matchesApiCompanyName && matchesStatus;
+      // });
     
-      const subHeaderComponentMemo = useMemo(() => {
-        return (
-          <div className="dataTables_filter d-flex align-items-center">
-            <Label className="me-2">Search:</Label>
-            <Input
-              placeholder='Search by API URL' 
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilterText(e.target.value)} 
-              type="search" 
-              value={filterText}
-            />
-          </div>
-        );
-      }, [filterText]);
+      // const subHeaderComponentMemo = useMemo(() => {
+      //   return (
+      //     <div className="dataTables_filter d-flex align-items-center">
+      //       <Label className="me-2">Search:</Label>
+      //       <Input
+      //         placeholder='Search by API URL' 
+      //         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilterText(e.target.value)} 
+      //         type="search" 
+      //         value={filterText}
+      //       />
+      //     </div>
+      //   );
+      // }, [filterText]);
     
       useEffect(() => {
-        fetchAccountUsersTable();
+        fetchApiKeyTable();
       }, [dispatch]);
   return (
     <>
         <Col xl="12" md="12" className="proorder-md-1">
         <Container fluid>
         {
-            maApiLogsData?.data &&
+            maApiKeyData?.data &&
         <Row>
             <Col sm="12">
             <Card>
@@ -129,14 +147,14 @@ const ApiKeyMA = () => {
                 <div className="list-product">
                     <div className="table-responsive">
                     <DataTable
-                        data={filteredItems} 
+                        data={maApiKeyData?.data} 
                         columns={productListTableDataColumn}
                         striped 
                         highlightOnHover 
                         pagination 
                         selectableRows 
                         subHeader 
-                        subHeaderComponent={subHeaderComponentMemo} 
+                        // subHeaderComponent={subHeaderComponentMemo} 
                     />
                     </div>
                 </div>

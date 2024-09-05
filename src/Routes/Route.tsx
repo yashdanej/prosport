@@ -139,6 +139,7 @@ import MasterAdminPlans from "../Pages/Dashboard/Plans/MasterAdminPlans";
 import MasterAdminPlanAdd from "../Pages/Dashboard/Plans/MasterAdminPlanAdd";
 import AccountUser from "../Pages/Dashboard/Account/AccountUser";
 import AccountAllUsers from "../Pages/Dashboard/Account/Users/AccountAllUsers";
+import Commingsoon from "../Pages/Dashboard/Commingsoon/Commingsoon";
 
 const routes = [
   // dashboard 
@@ -171,6 +172,18 @@ const routes = [
   { path: `${process.env.PUBLIC_URL}/masteradmin/plan/:path`, Component: <MasterAdminPlanAdd />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/account-user`, Component: <AccountAllUsers />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/account-user-view/:id`, Component: <AccountUser />},
+
+  { path: `${process.env.PUBLIC_URL}/masteradmin/tournament-calendar`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/inbox`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/invoice-manager`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/file-manager`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/documentation`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/changelog`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/chat-supports`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/authentication`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/faqs`, Component: <Commingsoon />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/pricing`, Component: <Commingsoon />},
+
 
   // { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
   

@@ -4,7 +4,7 @@ import { H4 } from "../../../../../AbstractElements";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../ReduxToolkit/Store";
 
-const InvoiceTwoBilling = () => {
+const InvoiceTwoBilling = ({data, from}: any) => {
   const profileData = useSelector((state: RootState) => state.profile.profile);
   return (
     <td>
@@ -30,16 +30,32 @@ const InvoiceTwoBilling = () => {
                 {"Shipping"}
               </span>
               <H4 style={{ fontWeight: 400, margin: "6px 0 3px 0", fontSize: 12}} >
-                To: {profileData?.data?.email}
+              To: 
+                {
+                  from === "ma"?data?.email:
+                  profileData?.data?.email
+                }
               </H4>
                <span style={{ width: "95%", display: "block", lineHeight: "1.5", opacity: "0.8", fontSize: 12, fontWeight: 400 }}>
-                Name: {profileData?.data?.name} {profileData?.data?.lastname}
+                Name: 
+                {
+                  from === "ma"?`${data?.firstname} ${data?.lastname}`:
+                  `${profileData?.data?.name} ${profileData?.data?.lastname}` 
+                }
               </span>
               <span style={{ width: "95%", display: "block", lineHeight: "1.5", opacity: "0.8", fontSize: 12, fontWeight: 400 }}>
-                Address: {profileData?.data?.address}
+                Address: 
+                {
+                  from === "ma"?`${data?.address}`:
+                  `${profileData?.data?.address}` 
+                }
               </span>
               <span style={{ lineHeight: "2.6", opacity: "0.8", fontSize: 12, fontWeight: 400 }}>
-                {Phone} : {profileData?.data?.phone}
+                {Phone} : 
+                {
+                  from === "ma"?`${data?.phone}`:
+                  `${profileData?.data?.phone}` 
+                }
               </span>
             </td>
           </tr>

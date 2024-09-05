@@ -16,7 +16,7 @@ import Referrals from '../../../../Pages/Dashboard/Account/Referrals/Referrals'
 import ApiKeyMA from '../../../../Pages/Dashboard/Account/ApiKeys/ApiKeyMA'
 
 const UsersProfileContainer = () => {
-  const [active, setActive] = useState('security');
+  const [active, setActive] = useState('billing-statements');
   const activeTab = () => {
     if(active === 'security'){
       return <RecentDevice/>
@@ -24,7 +24,7 @@ const UsersProfileContainer = () => {
       return <BillingStatement/>
     }else if (active === 'referrals'){
       return <Referrals/>
-    }else if(active === 'api keys'){
+    }else if(active === 'api_keys'){
       return <ApiKeyMA/>
     }else{
       return <P>No content found</P>
@@ -50,11 +50,6 @@ const UsersProfileContainer = () => {
         <Row>
           <Profile active={active} setActive={setActive} />
           {activeTab()}
-          {/* <RecentDevice/> */}
-          {/* <MarkProfile />
-          <Profile2 />
-          <ProfileDetails />
-          <DetailImage /> */}
         </Row>
       </div>
     </Container>

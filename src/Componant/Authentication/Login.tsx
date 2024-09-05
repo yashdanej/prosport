@@ -14,8 +14,8 @@ import BottomRightToast from "../BonusUi/Toast/LiveToast/BottomRightToast/Bottom
 
 const Login = () => {
     const [show, setShow] = useState(false);
-    const [email, setEmail] = useState("test123@gmail.com");
-    const [password, setPassword] = useState("Test@123");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [txt, setTxt] = useState("");
     const userData = useSelector((state: RootState) => state.auth.user);
@@ -69,7 +69,7 @@ const Login = () => {
                   <P>{"Enter your email & password to login"}</P>
                   <FormGroup>
                     <Label className="col-form-label">{EmailAddress}</Label>
-                    <Input autoComplete="off" type="email" required placeholder="Test@gmail.com" value={email} name="email" onChange={(event) => setEmail(event.target.value)}  />
+                    <Input autoComplete="off" type="email" required placeholder="Your email" value={email} name="email" onChange={(event) => setEmail(event.target.value)}  />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">{Password}</Label>

@@ -3,7 +3,7 @@ import { LI, P, UL } from '../../../../../AbstractElements'
 import { tourProfileData } from '../../../../../Data/Application/Users/UsersProfile/UsersProfile'
 
 const SocialMedia = ({active, setActive}: any) => {
-  const tabs = ['overview', 'security', 'billing-statements', 'referrals', 'documents', 'api keys', 'logs'];
+  const tabs = ['overview', 'security', 'billing-statements', 'referrals', 'documents', 'api_keys', 'logs'];
   return (
     <div className="social-media" >
       <UL className="list-inline simple-list flex-row flex-wrap">

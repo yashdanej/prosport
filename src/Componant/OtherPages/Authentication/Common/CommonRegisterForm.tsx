@@ -83,7 +83,7 @@ const CommonRegisterForm = ({ alignLogo }: CommonFormPropsType) => {
             </FormGroup>
             <FormGroup>
               <Label className="col-form-label">{EmailAddress}*</Label>
-              <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.email} name="email" autoComplete="off" required placeholder={EmailsPlaceHolder} />
+              <Input type="email" onChange={(e) => changeText(e, setUser, user)} value={user.email} name="email" autoComplete="off" required placeholder={"Your email"} />
             </FormGroup>
             <FormGroup>
               <Label className="col-form-label">{Password}*</Label>
