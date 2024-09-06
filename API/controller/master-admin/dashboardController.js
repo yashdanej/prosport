@@ -432,7 +432,7 @@ exports.UpdatePlan = async (req, res) => {
         const { name, api_call_count, amount, validity_number, validity_time } = req.body;
 
         // Input validation
-        if (!name || !api_call_count || !amount || !validity_number || !validity_time) {
+        if (!name || !api_call_count || !validity_number || !validity_time) {
             return res.status(400).json({ success: false, message: "All fields are required" });
         }
 

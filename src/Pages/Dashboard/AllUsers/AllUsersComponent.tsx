@@ -22,7 +22,7 @@ const AllUsersComponent = () => {
   return (
     <div>
       <AllUsersTopBar/>
-      <AllUsersTable/>
+      <AllUsersTable fetchMasterDashboardAllUsersData={fetchMasterDashboardAllUsersData} />
     </div>
   )
 }

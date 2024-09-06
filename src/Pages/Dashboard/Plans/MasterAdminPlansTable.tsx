@@ -79,21 +79,21 @@ const MasterAdminPlansTable = () => {
                       <Col lg="4" sm="6" className="box-col-3 mb-4" key={index}>
                         <div className="pricingtable">
                           <div className="pricingtable-header">
-                            <H4 className="title">{item.name}</H4>
+                            <H4 className="title">{item?.name}</H4>
                           </div>
                           <div className="price-value">
-                            <span className="amount" style={{fontSize: "1.8rem"}}>₹{item.amount}/{item.validity.split(" ")[0]}</span>
-                            <p className="duration">per days</p>
+                            <span className="amount" style={{fontSize: "1.8rem"}}>₹{item?.amount}/{item?.validity.split(" ")[0]}</span>
+                            <p className="duration">{item?.validity.split(' ')[1]}</p>
                           </div>
                           <UL className="pricing-content simple-list">
-                              <LI>API calls : {item.api_call}</LI>
+                              <LI>API calls : {item?.api_call}</LI>
                               <LI>Deliver : API pull</LI>
                               <LI>Maintenance</LI>
                           </UL>
                           <div className="pricingtable-signup">
                             {/* <Btn className='mx-2' onClick={HandleSubscribe} tag="a" size="lg" color="primary">Subscribe</Btn> */}
-                            <Btn onClick={() => handleEditPlan(item.id)} className='mx-3' tag="a" color="primary">Edit</Btn>
-                            <Btn tag="a" onClick={() => handleDeletePlan(item.id)} color="danger">Delete</Btn>
+                            <Btn onClick={() => handleEditPlan(item?.id)} className='mx-3' tag="a" color="primary">Edit</Btn>
+                            <Btn tag="a" onClick={() => handleDeletePlan(item?.id)} color="danger">Delete</Btn>
                           </div>
                         </div>
                       </Col>

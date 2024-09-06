@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../ReduxToolkit/Hooks';
 import { setFilterToggle } from '../../../ReduxToolkit/Reducers/ProductSlice';
 import { Href } from '../../../utils/Constant';
+import { P } from '../../../AbstractElements';
 
-const UsersInvoiceProductListFilterHeader = () => {
+const UsersInvoiceProductListFilterHeader = ({fetchMasterDashboardUsersInvoiceData}: any) => {
     const { filterToggle } = useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
   
@@ -16,10 +17,10 @@ const UsersInvoiceProductListFilterHeader = () => {
             <i className={`icon-close filter-close ${filterToggle ? "show" : "hide"}`} />
           </Link>
         </div>
-        <Link className="btn btn-primary" to={Href}>
+        <span className="btn btn-primary" onClick={fetchMasterDashboardUsersInvoiceData}>
           {/* <i className="fa fa-plus" /> */}
           {"Re-Fetch"}
-        </Link>
+        </span>
       </div>
     );
 }

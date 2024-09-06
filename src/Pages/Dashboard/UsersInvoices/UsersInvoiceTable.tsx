@@ -20,7 +20,7 @@ export interface ProductListTableDataColumnType {
     amount: string;
 }
 
-const UsersInvoiceTable = () => {
+const UsersInvoiceTable = ({fetchMasterDashboardUsersInvoiceData}: any) => {
   const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.usersInvoice);
   const [filterText, setFilterText] = useState("");
   const [filters, setFilters] = useState({
@@ -77,9 +77,11 @@ const UsersInvoiceTable = () => {
     {
       name: "Action",
       cell: () => (
-        <>
-            <P>Refresh</P>
-        </>
+        <div className="status-box">
+            <Btn className={`background-light-${'primary'} f-w-500`} color="">
+                Refresh
+            </Btn>
+        </div>
       ),
     },
   ];
@@ -117,23 +119,26 @@ const UsersInvoiceTable = () => {
           <Card>
             <CardBody>
               <div className="list-product-header">
-                <UsersInvoiceProductListFilterHeader />
+                <UsersInvoiceProductListFilterHeader fetchMasterDashboardUsersInvoiceData={fetchMasterDashboardUsersInvoiceData} />
                 <UsersInvoiceCollapseFilterData onFilterChange={handleFilterChange} />
               </div>
-              <div className="list-product">
-                <div className="table-responsive">
-                  <DataTable 
-                    data={filteredItems} 
-                    columns={productListTableDataColumn} 
-                    striped 
-                    highlightOnHover 
-                    pagination 
-                    selectableRows 
-                    subHeader 
-                    subHeaderComponent={subHeaderComponentMemo} 
-                  />
+              {
+                maApiLogsData?.isLoading ? "Loading...":
+                <div className="list-product">
+                  <div className="table-responsive">
+                    <DataTable 
+                      data={filteredItems} 
+                      columns={productListTableDataColumn} 
+                      striped 
+                      highlightOnHover 
+                      pagination 
+                      selectableRows 
+                      subHeader 
+                      subHeaderComponent={subHeaderComponentMemo} 
+                    />
+                  </div>
                 </div>
-              </div>
+              }
             </CardBody>
           </Card>
         </Col>

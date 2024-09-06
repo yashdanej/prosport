@@ -213,7 +213,7 @@ const BillingStatement = () => {
                     <div className="">
                       <div className='my-4'>
                       <p style={{ fontSize: '18px', lineHeight: '10px' }}>
-                        Active until {new Date(maABillingData?.data?.[0]?.current_plan?.[0]?.expire_date || "Expire or not subscribed").toLocaleDateString('en-IN', {
+                        Active until {new Date(maABillingData?.data?.[0]?.current_plan?.[0]?.expire_date ?? "Expire or not subscribed").toLocaleDateString('en-IN', {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
@@ -223,7 +223,7 @@ const BillingStatement = () => {
                         <p style={{fontSize: '16px', color: 'lightgray', lineHeight: '10px'}}>We will send you a notification upon Subscription expiration.</p>
                       </div>
                       <div className='my-4'>
-                        <p style={{fontSize: '18px', lineHeight: '10px'}}>₹{maABillingData?.data?.[0]?.current_plan?.[0]?.amount || "Expire or not subscribed"} For {maABillingData?.data?.[0]?.current_plan?.[0]?.validity || "Expire or not subscribed"} <span className='badge bg-secondary'>{maABillingData?.data?.[0]?.current_plan?.[0]?.name}</span></p>
+                        <p style={{fontSize: '18px', lineHeight: '10px'}}>₹{maABillingData?.data?.[0]?.current_plan?.[0]?.amount ?? "Expire or not subscribed"} For {maABillingData?.data?.[0]?.current_plan?.[0]?.validity ?? "Expire or not subscribed"} <span className='badge bg-secondary'>{maABillingData?.data?.[0]?.current_plan?.[0]?.name}</span></p>
                         <p style={{fontSize: '16px', color: 'lightgray', lineHeight: '10px'}}>Standard plan for small to medium businesses.</p>
                       </div>
                       <div className='my-4'>
@@ -235,11 +235,11 @@ const BillingStatement = () => {
                         <Col md="12">
                             <div className="ttl-info text-start">
                                 <H6 className='mb-2'>
-                                    Days ({maABillingData?.data?.[0]?.current_plan?.[0]?.days_used || "Expire or not subscribed"} of {maABillingData?.data?.[0]?.current_plan?.[0]?.total_days || "Expire or not subscribed"} Days)
+                                    Days ({maABillingData?.data?.[0]?.current_plan?.[0]?.days_used ?? "Expire or not subscribed"} of {maABillingData?.data?.[0]?.current_plan?.[0]?.total_days ?? "Expire or not subscribed"} Days)
                                 </H6>
-                                <Progressbar animated={true} color={'success'} value={maABillingData?.data?.[0]?.current_plan?.[0]?.days_used_percentage || "Expire or not subscribed"} style={{ height: '5px' }} />
+                                <Progressbar animated={true} color={'success'} value={maABillingData?.data?.[0]?.current_plan?.[0]?.days_used_percentage ?? "Expire or not subscribed"} style={{ height: '5px' }} />
                                 <H6 className='mt-2'>
-                                    {maABillingData?.data?.[0]?.current_plan?.[0]?.days_left || "Expire or not subscribed"} days remaining until your plan requires update
+                                    {maABillingData?.data?.[0]?.current_plan?.[0]?.days_left ?? "Expire or not subscribed"} days remaining until your plan requires update
                                 </H6>
                                 <div className='d-flex mt-4'>
                                     <Btn className='mr-3' tag="a" color="secondary">Cancel Subscription</Btn>

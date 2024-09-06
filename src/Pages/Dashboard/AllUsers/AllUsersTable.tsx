@@ -17,7 +17,7 @@ export interface ProductListTableDataColumnType {
     expire_date: string;
 }
 
-const AllUsersTable = () => {
+const AllUsersTable = ({fetchMasterDashboardAllUsersData}: any) => {
   const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.allUsers);
   const [filterText, setFilterText] = useState("");
   const [filters, setFilters] = useState({
@@ -69,9 +69,11 @@ const AllUsersTable = () => {
     {
       name: "Action",
       cell: () => (
-        <>
-            <P>Refresh</P>
-        </>
+        <div className="status-box">
+            <Btn className={`background-light-primary f-w-500`} color="">
+                Refresh
+            </Btn>
+        </div>
       ),
     },
   ];
@@ -108,23 +110,26 @@ const AllUsersTable = () => {
           <Card>
             <CardBody>
               <div className="list-product-header">
-                <AllUserProductListFilterHeader />
+                <AllUserProductListFilterHeader fetchMasterDashboardAllUsersData={fetchMasterDashboardAllUsersData} />
                 <AllUsersCollapseFilterData onFilterChange={handleFilterChange} />
               </div>
-              <div className="list-product">
-                <div className="table-responsive">
-                  <DataTable 
-                    data={filteredItems} 
-                    columns={productListTableDataColumn} 
-                    striped 
-                    highlightOnHover 
-                    pagination 
-                    selectableRows 
-                    subHeader 
-                    subHeaderComponent={subHeaderComponentMemo} 
-                  />
+              {
+                maApiLogsData?.isLoading ? "Loading...":
+                <div className="list-product">
+                  <div className="table-responsive">
+                    <DataTable 
+                      data={filteredItems} 
+                      columns={productListTableDataColumn} 
+                      striped 
+                      highlightOnHover 
+                      pagination 
+                      selectableRows 
+                      subHeader 
+                      subHeaderComponent={subHeaderComponentMemo} 
+                    />
+                  </div>
                 </div>
-              </div>
+              }
             </CardBody>
           </Card>
         </Col>

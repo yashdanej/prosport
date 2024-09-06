@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../ReduxToolkit/Hooks';
 import { setFilterToggle } from '../../../ReduxToolkit/Reducers/ProductSlice';
 import { Href } from '../../../utils/Constant';
 
-const AllUserProductListFilterHeader = () => {
+const AllUserProductListFilterHeader = ({fetchMasterDashboardAllUsersData}: any) => {
     const { filterToggle } = useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
   
@@ -16,10 +16,10 @@ const AllUserProductListFilterHeader = () => {
             <i className={`icon-close filter-close ${filterToggle ? "show" : "hide"}`} />
           </Link>
         </div>
-        <Link className="btn btn-primary" to={Href}>
+        <span onClick={fetchMasterDashboardAllUsersData} className="btn btn-primary">
           {/* <i className="fa fa-plus" /> */}
           {"Re-Fetch"}
-        </Link>
+        </span>
       </div>
     );
 }

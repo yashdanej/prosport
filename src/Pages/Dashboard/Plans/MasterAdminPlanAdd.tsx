@@ -97,7 +97,7 @@ const MasterAdminPlanAdd = () => {
                             <Col sm="6" md="6">
                                 <FormGroup>
                                     <Label>Api Call Count</Label>
-                                    <Input onChange={(e) => changeText(e, setPlan, plan)} type="text" name='api_call_count' placeholder="Enter Api Call Count" value={plan.api_call_count} />
+                                    <Input onChange={(e) => changeText(e, setPlan, plan)} type="number" name='api_call_count' placeholder="Enter Api Call Count" value={plan.api_call_count} />
                                 </FormGroup>
                             </Col>
                             <Col sm="12" md="12">

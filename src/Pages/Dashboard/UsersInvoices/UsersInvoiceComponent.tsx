@@ -24,7 +24,7 @@ const UsersInvoiceComponent = () => {
   return (
     <div>
       <UsersInvoiceTopBar/>
-      <UsersInvoiceTable/>
+      <UsersInvoiceTable fetchMasterDashboardUsersInvoiceData={fetchMasterDashboardUsersInvoiceData} />
     </div>
   )
 }
