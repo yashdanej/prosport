@@ -202,7 +202,9 @@ exports.createToken = async (req, res, next) => {
                 console.log("getApiHits", getApiHits);
                 if(getApiHits){
                 }else{
-                    return res.status(400).json({ success: false, message: "Already subscribed" });
+                    if(getSub[0].status){
+                        return res.status(400).json({ success: false, message: "Already subscribed" });
+                    }
                 }
             }
         }
@@ -211,17 +213,17 @@ exports.createToken = async (req, res, next) => {
 
         // Proceed to create a new subscription or renew existing subscription
         const createSubscriptionQuery = isNewSubscription
-            ? `INSERT INTO user_subscriptions (userId, planId, start_date, expire_date, token) VALUES (?, ?, ?, ?, ?)`
-            : `UPDATE user_subscriptions SET planId = ?, api_hits = ?, start_date = ?, expire_date = ?, token = ? WHERE userId = ?`;
+            ? `INSERT INTO user_subscriptions (userId, planId, start_date, expire_date, token, status) VALUES (?, ?, ?, ?, ?, ?)`
+            : `UPDATE user_subscriptions SET planId = ?, api_hits = ?, start_date = ?, expire_date = ?, token = ?, status = ? WHERE userId = ?`;
 
         const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         console.log("isNewSubscription", isNewSubscription);
         
         if (isNewSubscription) {
-            await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token]);
+            await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token, 1]);
         } else {
-            await query(createSubscriptionQuery, [id, 0, startDate, expireDateIST, token, getUser]);
+            await query(createSubscriptionQuery, [id, 0, startDate, expireDateIST, token, 1, getUser]);
         }
 
         // Log subscription history
@@ -289,18 +291,21 @@ exports.GetCommission = async (req, res, next) => {
 // Fetch Subscriptions
 exports.apiKeys = async (req, res, next) => {
     try {
+        console.log("inn");
         // Verify the token and get the user
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         
         // Get the user's subscriptions
         const plans = await query("SELECT * FROM user_subscriptions WHERE userId = ?", [getUser]);
         const [getSelectedUser] = await query("select * from users where id = ?", [getUser]);
-
+        console.log("plans", plans);
+        
         // Add the domain to each plan
         const plansWithDomain = plans.map(plan => ({
             ...plan,
             domain: getSelectedUser.company_domain,
         }));
+        console.log("plansWithDomain", plansWithDomain);
 
         // Send the response
         return res.status(200).json({

@@ -70,12 +70,12 @@ export const MasterMenuList: MenuItem[] = [{
         { path: `${process.env.PUBLIC_URL}/masteradmin/pricing`, title: "Pricing", type: "link"},
       ],
     },
-    { 
-      path: `${process.env.PUBLIC_URL}/masteradmin/allusers`, 
-      title: "All Users", 
-      type: "link", 
-      icon: "home",
-    },
+    // { 
+    //   path: `${process.env.PUBLIC_URL}/masteradmin/allusers`, 
+    //   title: "All Users", 
+    //   type: "link", 
+    //   icon: "home",
+    // },
     { 
       path: `${process.env.PUBLIC_URL}/masteradmin/users-invoices`, 
       title: "Users Invoices", 

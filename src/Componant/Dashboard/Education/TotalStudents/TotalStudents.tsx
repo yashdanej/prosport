@@ -60,8 +60,10 @@ const TotalStudents = ({ analytics }: any) => {
     console.log("plan", plan);
     if(!plan){
       return "Not subscribe";
-    }else if(apiKeyData?.data?.[0]?.api_hits == plan.api_call.split(" ")[0]){
+    }else if(apiKeyData?.data?.[0]?.api_hits >= plan.api_call.split(" ")[0]){
       return "API call limit reached"
+    }else if(apiKeyData?.data?.[0]?.status == false){
+      return "Plan expired"
     }else {
       if(from==="total"){
         return plan?.api_call.split(" ")[0];

@@ -17,5 +17,8 @@ router
     router.patch('/update-plan/:planid', verifyToken, dashboardController.UpdatePlan);
     router.get('/user/:id', verifyToken, dashboardController.GetUser);
     router.get('/user/details/:path/:id?', verifyToken, dashboardController.GetUsers);
+    router.patch('/user/change-plan-status/:id', verifyToken, dashboardController.ChangePlanStatus);
+
+    router.get('/user/reffered/:id', verifyToken, dashboardController.UserReffered);
 
 module.exports = router;

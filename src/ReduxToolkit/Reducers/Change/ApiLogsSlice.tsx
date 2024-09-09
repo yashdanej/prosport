@@ -209,6 +209,21 @@ export const getMasterAdminRefferalsData = createAsyncThunk('getMasterAdminReffe
       return rejectWithValue(err.message);
   }
 });
+
+export const ChangeMasterAdminUsersPlan = createAsyncThunk('ChangeMasterAdminUsersPlan', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("ChangeMasterAdminUsersPlan---------", data);
+      const res = await api(`/master-admin/user/change-plan-status/${id}`, "patch", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
   
   // ApiLogs slice
 const ApiLogsSlice = createSlice({
@@ -503,6 +518,21 @@ const ApiLogsSlice = createSlice({
         console.log("error in getMasterAdminRefferalsData", action.payload);
         state.masterAdmin.accountUsers.refferals.isLoading = false;
         state.masterAdmin.accountUsers.refferals.isError = true;
+    });
+
+    // ChangeMasterAdminUsersPlan
+    builder.addCase(ChangeMasterAdminUsersPlan.pending, (state, action) => {
+      state.masterAdmin.accountUsers.billing_statement.isLoading = true;
+    });
+    builder.addCase(ChangeMasterAdminUsersPlan.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.billing_statement.isLoading = false;
+        console.log("ChangeMasterAdminUsersPlan action...pa", action.payload);
+        state.masterAdmin.accountUsers.billing_statement.data[0].current_plan[0].status = action.payload.data;
+    });
+    builder.addCase(ChangeMasterAdminUsersPlan.rejected, (state, action) => {
+        console.log("error in ChangeMasterAdminUsersPlan", action.payload);
+        state.masterAdmin.accountUsers.billing_statement.isLoading = false;
+        state.masterAdmin.accountUsers.billing_statement.isError = true;
     });
   },
 });

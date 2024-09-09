@@ -6,7 +6,7 @@ import { Btn, H2, H3, H6, Image, P, Progressbar } from '../../../../AbstractElem
 import { dynamicImage } from '../../../../Service';
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { getMasterAdminBillingDetailsData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
+import { ChangeMasterAdminUsersPlan, getMasterAdminBillingDetailsData } from '../../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
 import { useLocation } from 'react-router-dom';
 import InvoiceTwo from '../../../Application/Ecommerce/Invoices/Invoice-2/Invoice-2';
 import html2pdf from "html2pdf.js";
@@ -127,6 +127,15 @@ const BillingStatement = () => {
           console.log("error from fetchAccountUsersTable", error);
         }
       }
+      const ChangePlanStatus = async () => {
+        try {
+          console.log("ChangePlanStatus in");
+          
+          await dispatch(ChangeMasterAdminUsersPlan(+id)).unwrap();
+        } catch (error) {
+          console.log("error from ChangePlanStatus", error);
+        }
+      }
 
       useEffect(() => {
         const getInvoices = maABillingData?.data?.[1]?.invoices_and_billing_history.map((item: any) => {
@@ -242,7 +251,7 @@ const BillingStatement = () => {
                                     {maABillingData?.data?.[0]?.current_plan?.[0]?.days_left ?? "Expire or not subscribed"} days remaining until your plan requires update
                                 </H6>
                                 <div className='d-flex mt-4'>
-                                    <Btn className='mr-3' tag="a" color="secondary">Cancel Subscription</Btn>
+                                    <Btn onClick={() => maABillingData?.data?.[0]?.current_plan?.[0]?.status?ChangePlanStatus():ChangePlanStatus()} className='mr-3' tag="a" color="secondary">{maABillingData?.data?.[0]?.current_plan?.[0]?.status?'Cancel Subscription':'Resume Plan'}</Btn>
                                     <Btn className='mx-3' tag="a" color="success">Upgrade Plan</Btn>
                                 </div>
                             </div>

@@ -89,26 +89,15 @@ const Referrals = () => {
 
       const data = [
         {
-            title: 'Earning',
-            amount: '127,589',
+            title: 'Reffered',
+            amount: maRefferalsData?.data?.[0]?.reffered_and_earned?.reffered ,
             percentage: '+16.70%'
         },
         {
-            title: 'Profit',
-            amount: '67,325',
+            title: 'Earned',
+            amount: maRefferalsData?.data?.[0]?.reffered_and_earned?.earned,
             percentage: '-1.23%'
         },
-        {
-            title: 'Average Value',
-            amount: '69.00',
-            percentage: '+3.28%'
-        },
-        {
-            title: 'Refund Rate',
-            amount: '5,70%',
-            percentage: '-1.42%'
-        },
-        
       ]
   return (
     <>
@@ -126,7 +115,7 @@ const Referrals = () => {
                                     <H6>{item.title}</H6>
                                 </div>
                                 <div style={{display: 'flex', justifyContent: 'space-between', background: '#F8F9FA'}} className='p-4'>
-                                    <H6>${item.amount}</H6>
+                                    <H6>{item.title === 'Earned' && '₹'}{item.amount}</H6>
                                     <H6 className='badge bg-primary'>{item.percentage}</H6>
                                 </div>
                                 </CardBody>

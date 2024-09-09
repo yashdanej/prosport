@@ -10,60 +10,220 @@ const ipinfo = require('ipinfo');
 var geoip = require('geoip-lite');
 var useragent = require('useragent');
 
+// exports.Dashboard = async (req, res, next) => {
+//     try {
+//         // Verify the token and get the user
+//         const getUser = await verifyToken(req, res, next, { verifyUser: true });
+//         const [getSelectedUser] = await query("SELECT * FROM users WHERE id = ?", [getUser]);
+        
+//         if (!getSelectedUser?.isAdmin) {
+//             return res.status(403).json({ success: false, message: "Access denied" });
+//         }
+
+//         // Initialize the response object
+//         let response = {};
+
+//         // Query to get new registrations and subscriptions for the current month
+//         const [subscriptionStats] = await query(`
+//             SELECT 
+//                 (SELECT COUNT(*) 
+//                  FROM users 
+//                  WHERE MONTH(created_at) = MONTH(CURRENT_DATE) 
+//                  AND YEAR(created_at) = YEAR(CURRENT_DATE)) AS newRegistration,
+                
+//                 COUNT(CASE WHEN MONTH(h.created_at) = MONTH(CURRENT_DATE) 
+//                          AND YEAR(h.created_at) = YEAR(CURRENT_DATE) 
+//                     THEN 1 END) AS newSubscription,
+                
+//                 COUNT(CASE WHEN s.expire_date BETWEEN DATE_FORMAT(CURRENT_DATE, '%Y-%m-01') 
+//                          AND CURRENT_DATE 
+//                     THEN 1 END) AS expiredSubscription
+//             FROM 
+//                 user_subscription_histories h
+//             JOIN 
+//                 user_subscriptions s
+//             ON 
+//                 h.user_id = s.userId AND h.plan_id = s.planId
+//         `);
+
+//         // Add the results to the response object
+//         response.newRegistration = subscriptionStats.newRegistration;
+//         response.newSubscription = subscriptionStats.newSubscription;
+//         response.expiredSubscription = subscriptionStats.expiredSubscription;
+
+        
+//         const { from, to } = req.query;
+
+//         const today = new Date().toISOString().split('T')[0]; // Gets today's date in 'YYYY-MM-DD' format
+
+//         // Calculate the date 7 days before today
+//         const sevenDaysAgo = new Date();
+//         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+//         const sevenDaysAgoDate = sevenDaysAgo.toISOString().split('T')[0];
+        
+//         // If 'from' and 'to' are not provided, default to the last 7 days
+//         const startDate = from || sevenDaysAgoDate;
+//         const endDate = to || today;
+
+//         // Fetch all users with their API hits within the date range
+//         const usersWithApiHits = await query(`
+//             SELECT 
+//                 a.userId, u.name, u.lastname, u.image, COUNT(*) as apiHits
+//             FROM 
+//                 api_call_logs a
+//             left join users u
+//                 on a.userId = u.id
+//             GROUP BY 
+//                 userId
+//             ORDER BY 
+//                 apiHits DESC
+//         `);
+
+//         // Fetch day-wise API hits within the date range
+//         const dayWiseApiHits = await query(`
+//             SELECT 
+//                 DATE(created_at) as date, COUNT(*) as hits
+//             FROM 
+//                 api_call_logs
+//             WHERE 
+//                 DATE(created_at) BETWEEN ? AND ?
+//             GROUP BY 
+//                 DATE(created_at)
+//             ORDER BY 
+//                 DATE(created_at) ASC
+//         `, [startDate, endDate]);
+
+//          // Fetch API hits by sportId within the date range
+//          const apiHitsBySport = await query(`
+//             SELECT 
+//                 s.id as sportId, 
+//                 s.name, 
+//                 COUNT(a.sportId) as hits,
+//                 ROUND((COUNT(a.sportId) / totalHits.total) * 100, 2) as percentage
+//             FROM 
+//                 sports s
+//             LEFT JOIN 
+//                 api_call_logs a ON s.id = a.sportId
+//             CROSS JOIN 
+//                 (SELECT COUNT(*) as total FROM api_call_logs) as totalHits
+//             GROUP BY 
+//                 s.id, s.name, totalHits.total
+//             ORDER BY 
+//                 hits DESC
+//         `);
+
+//          // Fetch device usage statistics within the date range
+//         const deviceUsage = await query(`
+//             SELECT 
+//                 device, COUNT(*) as count
+//             FROM 
+//                 stored_ip
+//             GROUP BY 
+//                 device
+//         `);
+
+//         // Categorize devices
+//         const categorizedDevices = deviceUsage.reduce((acc, item) => {
+//             let category = categorizeDevice(item.device);
+//             if (!acc[category]) {
+//                 acc[category] = { count: 0 };
+//             }
+//             acc[category].count += item.count;
+//             return acc;
+//         }, {});
+
+//         // Calculate total counts for percentage calculation
+//         const totalDeviceCount = Object.values(categorizedDevices).reduce((total, device) => total + device.count, 0);
+
+//         // Calculate percentages for each device category
+//         const deviceUsageWithPercentage = Object.entries(categorizedDevices).map(([device, stats]) => ({
+//             device,
+//             count: stats.count,
+//             percentage: totalDeviceCount > 0 ? ((stats.count / totalDeviceCount) * 100).toFixed(2) : 0
+//         }));
+
+//         // fetch most api endpoint hits
+//         const mostApiEndpointHits = await query(`
+//             SELECT 
+//                 TRIM(BOTH '/' FROM ale.endpoint) AS normalized_endpoint,
+//                 ale.name,
+//                 COUNT(acl.endpoint) AS count,
+//                 ROUND((COUNT(acl.endpoint) / totalHits.total) * 100, 2) AS percentage
+//             FROM 
+//                 all_live_api_endpoint ale
+//             LEFT JOIN 
+//                 api_call_logs acl ON TRIM(BOTH '/' FROM acl.endpoint) = TRIM(BOTH '/' FROM ale.endpoint)
+//             CROSS JOIN 
+//                 (SELECT COUNT(*) as total FROM api_call_logs) AS totalHits
+//             GROUP BY 
+//                 normalized_endpoint, ale.name, totalHits.total
+//             ORDER BY 
+//                 count DESC;
+//         `);
+
+//         // Return the users with API hits and day-wise API hits in the response
+//         return res.status(200).json({
+//             success: true,
+//             data: {
+//                 response,
+//                 usersWithApiHits,
+//                 dayWiseApiHits,
+//                 apiHitsBySport,
+//                 deviceUsage: deviceUsageWithPercentage,
+//                 mostApiEndpointHits
+//             }
+//         });
+//     } catch (error) {
+//         console.error("Error fetching dashboard data:", error);
+//         return res.status(500).json({ success: false, message: "Internal Server Error" });
+//     }
+// };
+
 exports.Dashboard = async (req, res, next) => {
     try {
         // Verify the token and get the user
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
         const [getSelectedUser] = await query("SELECT * FROM users WHERE id = ?", [getUser]);
-        
+
         if (!getSelectedUser?.isAdmin) {
             return res.status(403).json({ success: false, message: "Access denied" });
         }
 
+        const { from, to } = req.query;
+
         // Initialize the response object
         let response = {};
 
-        // Query to get new registrations and subscriptions for the current month
+        // Fetch today's date and the date 7 days ago for default range
+        const today = new Date().toISOString().split('T')[0];
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        const sevenDaysAgoDate = sevenDaysAgo.toISOString().split('T')[0];
+
+        // Use provided date range or default to the last 7 days
+        const startDate = from || sevenDaysAgoDate;
+        const endDate = to || today;
+
+        // Query to get new registrations and subscriptions for the date range
         const [subscriptionStats] = await query(`
             SELECT 
                 (SELECT COUNT(*) 
                  FROM users 
-                 WHERE MONTH(created_at) = MONTH(CURRENT_DATE) 
-                 AND YEAR(created_at) = YEAR(CURRENT_DATE)) AS newRegistration,
+                 WHERE DATE(created_at) BETWEEN ? AND ?) AS newRegistration,
                 
-                COUNT(CASE WHEN MONTH(h.created_at) = MONTH(CURRENT_DATE) 
-                         AND YEAR(h.created_at) = YEAR(CURRENT_DATE) 
-                    THEN 1 END) AS newSubscription,
+                COUNT(CASE WHEN DATE(h.created_at) BETWEEN ? AND ? THEN 1 END) AS newSubscription,
                 
-                COUNT(CASE WHEN s.expire_date BETWEEN DATE_FORMAT(CURRENT_DATE, '%Y-%m-01') 
-                         AND CURRENT_DATE 
-                    THEN 1 END) AS expiredSubscription
+                COUNT(CASE WHEN s.expire_date BETWEEN ? AND ? THEN 1 END) AS expiredSubscription
             FROM 
                 user_subscription_histories h
             JOIN 
-                user_subscriptions s
-            ON 
-                h.user_id = s.userId AND h.plan_id = s.planId
-        `);
+                user_subscriptions s ON h.user_id = s.userId AND h.plan_id = s.planId
+        `, [startDate, endDate, startDate, endDate, startDate, endDate]);
 
         // Add the results to the response object
         response.newRegistration = subscriptionStats.newRegistration;
         response.newSubscription = subscriptionStats.newSubscription;
         response.expiredSubscription = subscriptionStats.expiredSubscription;
-
-        
-        const { from, to } = req.query;
-
-        const today = new Date().toISOString().split('T')[0]; // Gets today's date in 'YYYY-MM-DD' format
-
-        // Calculate the date 7 days before today
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-        const sevenDaysAgoDate = sevenDaysAgo.toISOString().split('T')[0];
-        
-        // If 'from' and 'to' are not provided, default to the last 7 days
-        const startDate = from || sevenDaysAgoDate;
-        const endDate = to || today;
 
         // Fetch all users with their API hits within the date range
         const usersWithApiHits = await query(`
@@ -71,13 +231,15 @@ exports.Dashboard = async (req, res, next) => {
                 a.userId, u.name, u.lastname, u.image, COUNT(*) as apiHits
             FROM 
                 api_call_logs a
-            left join users u
-                on a.userId = u.id
+            LEFT JOIN 
+                users u ON a.userId = u.id
+            WHERE 
+                DATE(a.created_at) BETWEEN ? AND ?
             GROUP BY 
-                userId
+                a.userId
             ORDER BY 
                 apiHits DESC
-        `);
+        `, [startDate, endDate]);
 
         // Fetch day-wise API hits within the date range
         const dayWiseApiHits = await query(`
@@ -93,8 +255,8 @@ exports.Dashboard = async (req, res, next) => {
                 DATE(created_at) ASC
         `, [startDate, endDate]);
 
-         // Fetch API hits by sportId within the date range
-         const apiHitsBySport = await query(`
+        // Fetch API hits by sportId within the date range
+        const apiHitsBySport = await query(`
             SELECT 
                 s.id as sportId, 
                 s.name, 
@@ -105,22 +267,26 @@ exports.Dashboard = async (req, res, next) => {
             LEFT JOIN 
                 api_call_logs a ON s.id = a.sportId
             CROSS JOIN 
-                (SELECT COUNT(*) as total FROM api_call_logs) as totalHits
+                (SELECT COUNT(*) as total FROM api_call_logs WHERE DATE(created_at) BETWEEN ? AND ?) as totalHits
+            WHERE 
+                DATE(a.created_at) BETWEEN ? AND ?
             GROUP BY 
                 s.id, s.name, totalHits.total
             ORDER BY 
                 hits DESC
-        `);
+        `, [startDate, endDate, startDate, endDate]);
 
-         // Fetch device usage statistics within the date range
+        // Fetch device usage statistics within the date range
         const deviceUsage = await query(`
             SELECT 
                 device, COUNT(*) as count
             FROM 
                 stored_ip
+            WHERE 
+                DATE(created_at) BETWEEN ? AND ?
             GROUP BY 
                 device
-        `);
+        `, [startDate, endDate]);
 
         // Categorize devices
         const categorizedDevices = deviceUsage.reduce((acc, item) => {
@@ -142,7 +308,7 @@ exports.Dashboard = async (req, res, next) => {
             percentage: totalDeviceCount > 0 ? ((stats.count / totalDeviceCount) * 100).toFixed(2) : 0
         }));
 
-        // fetch most api endpoint hits
+        // Fetch most API endpoint hits within the date range
         const mostApiEndpointHits = await query(`
             SELECT 
                 TRIM(BOTH '/' FROM ale.endpoint) AS normalized_endpoint,
@@ -154,14 +320,16 @@ exports.Dashboard = async (req, res, next) => {
             LEFT JOIN 
                 api_call_logs acl ON TRIM(BOTH '/' FROM acl.endpoint) = TRIM(BOTH '/' FROM ale.endpoint)
             CROSS JOIN 
-                (SELECT COUNT(*) as total FROM api_call_logs) AS totalHits
+                (SELECT COUNT(*) as total FROM api_call_logs WHERE DATE(created_at) BETWEEN ? AND ?) AS totalHits
+            WHERE 
+                DATE(acl.created_at) BETWEEN ? AND ?
             GROUP BY 
                 normalized_endpoint, ale.name, totalHits.total
             ORDER BY 
-                count DESC;
-        `);
+                count DESC
+        `, [startDate, endDate, startDate, endDate]);
 
-        // Return the users with API hits and day-wise API hits in the response
+        // Return the data in the response
         return res.status(200).json({
             success: true,
             data: {
@@ -178,6 +346,7 @@ exports.Dashboard = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
+
 
 // Helper function to categorize devices based on user agent
 function categorizeDevice(userAgent) {
@@ -328,27 +497,30 @@ exports.InvoicePaidUnpaid = async (req, res, next) => {
                 u.company_name AS company,
                 ush.subscribe_date AS date,
                 CASE 
+                    WHEN su.status = 0 THEN 'Cancel'
                     WHEN ush.amount = 0 THEN 'Free'
-                    WHEN ush.amount IS NOT NULL THEN 'Paid'
-                    ELSE 'Cancel'
+                    WHEN ush.amount > 0 THEN 'Paid'
+                    ELSE 'Generated'
                 END AS status,
                 ush.amount
             FROM user_subscription_histories ush
             JOIN users u ON u.id = ush.user_id
-            JOIN plans p ON p.id = ush.plan_id;
+            JOIN plans p ON p.id = ush.plan_id
+            JOIN user_subscriptions su ON su.userId = u.id; 
         `;
 
         // Query to fetch invoice summary
         const summaryQuery = `
             SELECT 
                 COUNT(*) AS total_invoices,
+                SUM(CASE WHEN su.status = 0 THEN 1 ELSE 0 END) AS cancel_invoices,
+                SUM(CASE WHEN su.status = 0 THEN 0 ELSE 0 END) AS cancel_amount,
                 SUM(CASE WHEN ush.amount > 0 THEN 1 ELSE 0 END) AS paid_invoices,
                 SUM(CASE WHEN ush.amount > 0 THEN ush.amount ELSE 0 END) AS paid_amount,
                 SUM(CASE WHEN ush.amount = 0 THEN 1 ELSE 0 END) AS free_invoices,
-                SUM(CASE WHEN ush.amount = 0 THEN ush.amount ELSE 0 END) AS free_amount,
-                SUM(CASE WHEN ush.amount IS NULL THEN 1 ELSE 0 END) AS cancel_invoices,
-                SUM(CASE WHEN ush.amount IS NULL THEN 0 ELSE 0 END) AS cancel_amount
-            FROM user_subscription_histories ush;
+                SUM(CASE WHEN ush.amount = 0 THEN ush.amount ELSE 0 END) AS free_amount
+            FROM user_subscription_histories ush
+            JOIN user_subscriptions su ON su.userId = ush.user_id;
         `;
 
         // Execute both queries
@@ -369,6 +541,7 @@ exports.InvoicePaidUnpaid = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
+
 
 
 exports.GetPlans = async (req, res) => {
@@ -561,7 +734,7 @@ exports.GetUsers = async (req, res) => {
         }else if(path === 'billing-statements'){
             let data = [];
             const getCurrentPlan = await query(
-                `SELECT s.*, p.*, 
+                `SELECT s.*, p.*, s.status as status,
                         DATEDIFF(s.expire_date, CURDATE()) AS days_left, 
                         DATEDIFF(s.expire_date, s.start_date) AS total_days,
                         DATEDIFF(CURDATE(), s.start_date) AS days_used,
@@ -585,6 +758,7 @@ exports.GetUsers = async (req, res) => {
         }else if(path === 'referrals'){
             let data = [];
             const user = await query("select reffer_code from users where id = ?", [id]);
+            // const commissions = await query("SELECT * FROM wallet WHERE referrer_id = ?", [getUser]);
             const refferers = await query(`
                 SELECT 
                   u.name,
@@ -606,7 +780,29 @@ exports.GetUsers = async (req, res) => {
                 ORDER BY 
                   r.id DESC
               `, [id]);
-              data.push({refferers: refferers, user})
+
+                const commissions = await query("SELECT * FROM wallet WHERE referrer_id = ?", [id]);
+                // Calculate total commission
+                let totalCommission = 0;
+                commissions.forEach(commission => {
+                    totalCommission += commission.commission;
+                });
+                // // Send the response
+                // return res.status(200).json({
+                //     status: true,
+                //     data: {
+                //         reffered: commissions.length,
+                //         totalCommission
+                //     },
+                // });
+              data.push({
+                    reffered_and_earned: {
+                        reffered: commissions.length, 
+                        earned: totalCommission
+                    }, 
+                    refferers: refferers, 
+                    user
+                })
             return res.status(200).json({ success: true, message: "Data fetched successfully", data: data});
         }else if(path === 'api_keys'){
             const getApiKey = await query(`
@@ -625,3 +821,43 @@ exports.GetUsers = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
+
+exports.ChangePlanStatus = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [getSub] = await query("select * from user_subscriptions where userId = ?", [id]);
+        const status = getSub.status == 1 ? 0 : 1;
+        await query("update user_subscriptions set status = ? where userId = ?", [status, id]);
+        return res.status(200).json({
+            success: true,
+            message: `Subscription ${status?"resume":"cencelled"} successfully`,
+            data: status
+        });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+exports.UserReffered = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const commissions = await query("SELECT * FROM wallet WHERE referrer_id = ?", [id]);
+        // Calculate total commission
+        let totalCommission = 0;
+        commissions.forEach(commission => {
+            totalCommission += commission.commission;
+        });
+        // Send the response
+        return res.status(200).json({
+            status: true,
+            data: {
+                reffered: commissions.length,
+                totalCommission
+            },
+        });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};

@@ -19,9 +19,11 @@ exports.Cricket = async (req, res, next) => {
         const status = parseInt(req.query.status) || 0;
 
         // Fetch subscription token from the database
-        const [getSubscriptionToken] = await query("SELECT token FROM user_subscriptions WHERE userId = ?", [getUser]);
+        const [getSubscriptionToken] = await query("SELECT token FROM user_subscriptions WHERE userId = ? and status = ?", [getUser, 1]);
         console.log("getSubscriptionToken", getSubscriptionToken);
-
+        if(!getSubscriptionToken){
+            return res.status(400).json({success: false, message: "Your plan has been deacivated"});
+        }
         // Define the API URL
         const cricketApiUrl = `${process.env.BACKEND_LIVE_URL}/v1/matches`; // Replace with actual API URL
 

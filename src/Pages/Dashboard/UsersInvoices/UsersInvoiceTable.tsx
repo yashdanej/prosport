@@ -35,7 +35,17 @@ const UsersInvoiceTable = ({fetchMasterDashboardUsersInvoiceData}: any) => {
       [filterKey]: value
     }));
   };
-
+  const activeColor = (status: string) => {
+    if(status === 'Free'){
+      return '#FCDE70';
+    }else if(status === 'Paid'){
+      return '#88D66C';
+    }else if(status === 'Cancel'){
+      return '#C96868';
+    }else{
+      return '#6495ED';
+    }
+  }
   const productListTableDataColumn: TableColumn<ProductListTableDataColumnType>[] = [
     {
       name: "ID",
@@ -62,7 +72,7 @@ const UsersInvoiceTable = ({fetchMasterDashboardUsersInvoiceData}: any) => {
       name: "STATUS",
       cell: (row) => (
         <div className="status-box">
-            <Btn className={`background-light-${'success'} font-${'success'} f-w-500`} color="">
+            <Btn style={{background: activeColor(row.status)}} color="">
                 {row.status}
             </Btn>
         </div>

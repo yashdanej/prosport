@@ -35,7 +35,6 @@ const StatusApiLogTable = () => {
       name: "API's NAME",
       selector: (row) => row.endpoint_name,
       sortable: true,
-      grow: 2,
     },
     {
       name: "API URL",
@@ -66,9 +65,11 @@ const StatusApiLogTable = () => {
     {
       name: "Action",
       cell: () => (
-        <>
-            <P>Refresh</P>
-        </>
+        <div className="status-box">
+            <Btn className={`background-light-${'primary'} f-w-500`} color="">
+                Refresh
+            </Btn>
+        </div>
       ),
     },
   ];

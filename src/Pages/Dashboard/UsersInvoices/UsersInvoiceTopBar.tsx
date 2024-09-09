@@ -13,48 +13,48 @@ const UsersInvoiceTopBar = () => {
   useEffect(() => {
     setTopCards(
       [
-      {
-        student: maAllUsersData?.data?.summary?.total_invoices,
-        color:"success",
-        status: "Invoice Gen.",
-        icon:"up",
-        percentage: maAllUsersData?.data?.summary?.total_invoices,
-        detail:"this week",
-        image:"teacher.png",
-        class:"student-2"
-      },
-      {
-        student: maAllUsersData?.data?.summary?.paid_invoices,
-        color:"danger",
-        status: "Paid Invoice",
-        icon:"down",
-        percentage: maAllUsersData?.data?.summary?.paid_amount,
-        detail:"this week",
-        image:"teacher.png",
-        class:"student-2"
-      },
-      {
-        student: maAllUsersData?.data?.summary?.free_invoices,
-        color:"success",
-        status: "Free Invoice",
-        icon:"up",
-        percentage: maAllUsersData?.data?.summary?.free_amount,
-        detail:"this week",
-        image:"teacher.png",
-        class:"student-2"
-      },
-      {
-        student: maAllUsersData?.data?.summary?.cancel_invoices,
-        color:"success",
-        status: "Cancel Invoice",
-        icon:"up",
-        percentage: maAllUsersData?.data?.summary?.cancel_amount,
-        detail:"this week",
-        image:"teacher.png",
-        class:"student-2"
-      },
-    ]
-  )
+        {
+          student: maAllUsersData?.data?.summary?.total_invoices,
+          color:"#6495ED",
+          status: "Invoice Gen.",
+          icon:"up",
+          percentage: maAllUsersData?.data?.summary?.total_invoices,
+          detail:"this week",
+          image:"teacher.png",
+          class:"student-2"
+        },
+        {
+          student: maAllUsersData?.data?.summary?.paid_invoices,
+          color:"#88D66C",
+          status: "Paid Invoice",
+          icon:"down",
+          percentage: maAllUsersData?.data?.summary?.paid_amount,
+          detail:"this week",
+          image:"teacher.png",
+          class:"student-2"
+        },
+        {
+          student: maAllUsersData?.data?.summary?.free_invoices,
+          color:"#FCDE70",
+          status: "Free Invoice",
+          icon:"up",
+          percentage: maAllUsersData?.data?.summary?.free_amount,
+          detail:"this week",
+          image:"teacher.png",
+          class:"student-2"
+        },
+        {
+          student: maAllUsersData?.data?.summary?.cancel_invoices,
+          color:"#C96868",
+          status: "Cancel Invoice",
+          icon:"up",
+          percentage: maAllUsersData?.data?.summary?.cancel_amount,
+          detail:"this week",
+          image:"teacher.png",
+          class:"student-2"
+        },
+      ]
+    )
   }, [maAllUsersData]);
   return (
     <>
@@ -67,7 +67,7 @@ const UsersInvoiceTopBar = () => {
                   <div className="d-flex py-2 gap-2 align-items-center" style={{justifyContent: 'space-between'}}>
                     <div className="">
                         <div className="status-box">
-                            <Btn className={`background-light-${data.color} font-${data.color} f-w-500`} color="">
+                            <Btn style={{background: data.color}} color="">
                                 {data.status}
                             </Btn>
                         </div>

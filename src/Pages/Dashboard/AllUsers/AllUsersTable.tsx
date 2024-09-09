@@ -38,7 +38,6 @@ const AllUsersTable = ({fetchMasterDashboardAllUsersData}: any) => {
       name: "Users ID",
       selector: (row) => row?.id,
       sortable: true,
-      grow: 2,
     },
     {
       name: "API KEY",
