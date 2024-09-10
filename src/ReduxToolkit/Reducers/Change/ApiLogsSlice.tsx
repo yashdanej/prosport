@@ -224,6 +224,37 @@ export const ChangeMasterAdminUsersPlan = createAsyncThunk('ChangeMasterAdminUse
       return rejectWithValue(err.message);
   }
 });
+
+export const ChangeUsersStatus = createAsyncThunk('ChangeUsersStatus', async (id: number, { rejectWithValue }) => {
+  try {
+      // console.log("ChangeUsersStatus---------", data);
+      const res = await api(`/master-admin/user/change-plan-status/${id}`, "patch", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      return {data: res.data, id};
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
+
+export const changeMasterAdminPlanData = createAsyncThunk('changeMasterAdminPlanData', async (data: {user_id: any, plan_id: number}, { dispatch, rejectWithValue }) => {
+  try {
+      console.log("patchMasterAdminPlanData---------", data);
+      const res = await api(`/master-admin/user/${data.user_id}/upgrade-plan/${data.plan_id}`, "patch", false, false, true);
+      console.log("res---", res);
+      if (!res?.data?.success) {
+          return rejectWithValue(res?.response?.data?.message);
+      }
+      dispatch(getMasterAdminBillingDetailsData(data.user_id));
+      return res?.data;
+  } catch (err: any) {
+      console.log("err", err);
+      return rejectWithValue(err.message);
+  }
+});
   
   // ApiLogs slice
 const ApiLogsSlice = createSlice({
@@ -531,6 +562,44 @@ const ApiLogsSlice = createSlice({
     });
     builder.addCase(ChangeMasterAdminUsersPlan.rejected, (state, action) => {
         console.log("error in ChangeMasterAdminUsersPlan", action.payload);
+        state.masterAdmin.accountUsers.billing_statement.isLoading = false;
+        state.masterAdmin.accountUsers.billing_statement.isError = true;
+    });
+
+    // ChangeUsersStatus
+    builder.addCase(ChangeUsersStatus.pending, (state, action) => {
+      state.masterAdmin.allUsers.isLoading = true;
+    });
+    builder.addCase(ChangeUsersStatus.fulfilled, (state, action) => {
+        state.masterAdmin.allUsers.isLoading = false;
+        console.log("ChangeUsersStatus action...pa", action.payload);
+        // Destructure id and data from payload
+        const { id, data } = action.payload;
+        
+        // Find the user record by id in the data array
+        const user = state.masterAdmin.allUsers.data.records.find((record: any) => record.userId === id);
+        
+        // If the user is found, update its status
+        if (user) {
+          user.status = data.data; // Assuming `data.data` holds the status value from the response
+        }
+    });
+    builder.addCase(ChangeUsersStatus.rejected, (state, action) => {
+        console.log("error in ChangeUsersStatus", action.payload);
+        state.masterAdmin.allUsers.isLoading = false;
+        state.masterAdmin.allUsers.isError = true;
+    });
+
+    //changeMasterAdminPlanData
+    builder.addCase(changeMasterAdminPlanData.pending, (state, action) => {
+      state.masterAdmin.accountUsers.billing_statement.isLoading = true;
+    });
+    builder.addCase(changeMasterAdminPlanData.fulfilled, (state, action) => {
+        state.masterAdmin.accountUsers.billing_statement.isLoading = false;
+        console.log("changeMasterAdminPlanData action...pa", action.payload);
+    });
+    builder.addCase(changeMasterAdminPlanData.rejected, (state, action) => {
+        console.log("error in changeMasterAdminPlanData", action.payload);
         state.masterAdmin.accountUsers.billing_statement.isLoading = false;
         state.masterAdmin.accountUsers.billing_statement.isError = true;
     });

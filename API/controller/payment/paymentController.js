@@ -213,15 +213,16 @@ exports.createToken = async (req, res, next) => {
 
         // Proceed to create a new subscription or renew existing subscription
         const createSubscriptionQuery = isNewSubscription
-            ? `INSERT INTO user_subscriptions (userId, planId, start_date, expire_date, token, status) VALUES (?, ?, ?, ?, ?, ?)`
+            ? `INSERT INTO user_subscriptions (userId, planId, start_date, expire_date, token, status, sportId) VALUES (?, ?, ?, ?, ?, ?, ?)`
             : `UPDATE user_subscriptions SET planId = ?, api_hits = ?, start_date = ?, expire_date = ?, token = ?, status = ? WHERE userId = ?`;
 
-        const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        // const startDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const startDate = moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         console.log("isNewSubscription", isNewSubscription);
         
         if (isNewSubscription) {
-            await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token, 1]);
+            await query(createSubscriptionQuery, [getUser, id, startDate, expireDateIST, token, 1, 1]);
         } else {
             await query(createSubscriptionQuery, [id, 0, startDate, expireDateIST, token, 1, getUser]);
         }

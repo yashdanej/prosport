@@ -25,7 +25,6 @@ const AccountAllUsersTable = () => {
       name: "Name",
       selector: (row) => `${row?.name} ${row?.lastname?row?.lastname:""}`,
       sortable: true,
-      grow: 2,
     },
     {
       name: "Company",

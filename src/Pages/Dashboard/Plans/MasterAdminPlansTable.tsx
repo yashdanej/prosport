@@ -2,7 +2,7 @@ import { Card, CardBody, Col, Container, Input, Label, Row } from 'reactstrap';
 import DataTable, { TableColumn } from "react-data-table-component";
 import ProductListFilterHeader from '../../../Componant/Application/Ecommerce/ProductList/ProductListFilterHeader';
 import CollapseFilterData from '../../../Componant/Application/Ecommerce/ProductList/CollapseFilterData';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Btn, H4, LI, P, UL } from '../../../AbstractElements';
 import { AppDispatch, RootState } from '../../../ReduxToolkit/Store';
@@ -11,8 +11,8 @@ import AllUsersCollapseFilterData from './MasterAdminPlansCollapseFilterData';
 import UsersInvoiceProductListFilterHeader from './MasterAdminPlansProductListFilterHeader';
 import UsersInvoiceCollapseFilterData from './MasterAdminPlansCollapseFilterData';
 import CommonCardHeader from '../../../CommonElements/CommonCardHeader/CommonCardHeader';
-import { Link, useNavigate } from 'react-router-dom';
-import { deleteMasterAdminPlanData, editMasterAdminPlanData } from '../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { changeMasterAdminPlanData, deleteMasterAdminPlanData, editMasterAdminPlanData, getMasterDashboardPlansData } from '../../../ReduxToolkit/Reducers/Change/ApiLogsSlice';
 import BottomRightToast from '../../../Componant/BonusUi/Toast/LiveToast/BottomRightToast/BottomRightToast';
 
 export interface ProductListTableDataColumnType {
@@ -24,7 +24,7 @@ export interface ProductListTableDataColumnType {
     amount: string;
 }
 
-const MasterAdminPlansTable = () => {
+const MasterAdminPlansTable = ({from}: any) => {
   const maApiLogsData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.plans);
   const [showToast, setShowToast] = useState(false);
   const [txt, setTxt] = useState("");
@@ -55,12 +55,47 @@ const MasterAdminPlansTable = () => {
       setShowToast(true);
     }
   }
+
+  const location = useLocation();
+  const userid = location.pathname.split("/")[3];
+  const selectPlan = async (id: number) => {
+    try {
+      const data = {
+        user_id: userid,
+        plan_id: id
+      }
+      const res: any = await dispatch(changeMasterAdminPlanData(data)).unwrap();
+      console.log("res on dis", res);
+      setTxt(`${res.message}`);
+      setShowToast(true);
+      // navigate('/masteradmin/plan/edit')
+    } catch (error) {
+      console.log("res on dis err", error);
+      setTxt(`${error}`);
+      setShowToast(true);
+    }
+  }
+
+  const fetchMasterDashboardPlansData = async () => {
+    try {
+      await dispatch(getMasterDashboardPlansData()).unwrap();
+    } catch (error) {
+      console.log("error from getMasterDashboardPlansData", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMasterDashboardPlansData();
+  }, [dispatch]);
   return (
     <Container className='my-5' fluid>
-      <div className='mb-2' style={{display: 'flex', justifyContent: 'end'}}>
-        {/* <Btn className='mx-2' tag="a" size="lg" color="primary">Edit Plan</Btn> */}
-        <Link to={`${process.env.PUBLIC_URL}/masteradmin/plan/add`}><Btn tag="a" size="lg" color="primary">Add Plan</Btn></Link>
-      </div>
+      {
+        from!=='UpgradePlan' &&
+        <div className='mb-2' style={{display: 'flex', justifyContent: 'end'}}>
+          {/* <Btn className='mx-2' tag="a" size="lg" color="primary">Edit Plan</Btn> */}
+          <Link to={`${process.env.PUBLIC_URL}/masteradmin/plan/add`}><Btn tag="a" size="lg" color="primary">Add Plan</Btn></Link>
+        </div>
+      }
       <Row>
         <Col sm="12">
             <Card>
@@ -91,9 +126,15 @@ const MasterAdminPlansTable = () => {
                               <LI>Maintenance</LI>
                           </UL>
                           <div className="pricingtable-signup">
-                            {/* <Btn className='mx-2' onClick={HandleSubscribe} tag="a" size="lg" color="primary">Subscribe</Btn> */}
-                            <Btn onClick={() => handleEditPlan(item?.id)} className='mx-3' tag="a" color="primary">Edit</Btn>
-                            <Btn tag="a" onClick={() => handleDeletePlan(item?.id)} color="danger">Delete</Btn>
+                            {
+                              from!=='UpgradePlan' ?
+                              <>
+                                {/* <Btn className='mx-2' onClick={HandleSubscribe} tag="a" size="lg" color="primary">Subscribe</Btn> */}
+                                <Btn onClick={() => handleEditPlan(item?.id)} className='mx-3' tag="a" color="primary">Edit</Btn>
+                                <Btn tag="a" onClick={() => handleDeletePlan(item?.id)} color="danger">Delete</Btn>
+                              </>:
+                                <Btn tag="a" onClick={() => selectPlan(item?.id)} color="danger">Select & Change</Btn>
+                            }
                           </div>
                         </div>
                       </Col>

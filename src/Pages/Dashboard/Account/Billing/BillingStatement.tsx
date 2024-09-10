@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../ReduxToolkit/Store';
-import { Card, CardBody, Col, Container, Input, Label, Row } from 'reactstrap';
+import { Button, Card, CardBody, Col, Container, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import { Btn, H2, H3, H6, Image, P, Progressbar } from '../../../../AbstractElements';
 import { dynamicImage } from '../../../../Service';
 import CommonCardHeader from '../../../../CommonElements/CommonCardHeader/CommonCardHeader';
@@ -10,6 +10,7 @@ import { ChangeMasterAdminUsersPlan, getMasterAdminBillingDetailsData } from '..
 import { useLocation } from 'react-router-dom';
 import InvoiceTwo from '../../../Application/Ecommerce/Invoices/Invoice-2/Invoice-2';
 import html2pdf from "html2pdf.js";
+import UpgradePlanModal from './UpgradePlanModal';
 
 
 export interface ProductListTableDataColumnType {
@@ -26,6 +27,8 @@ export interface ProductListTableDataColumnType {
 
 
 const BillingStatement = () => {
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
     const maABillingData = useSelector((state: RootState) => state.ApiLogs.masterAdmin.accountUsers.billing_statement);
     const [filterText, setFilterText] = useState("");
     const [filters, setFilters] = useState({
@@ -252,8 +255,10 @@ const BillingStatement = () => {
                                 </H6>
                                 <div className='d-flex mt-4'>
                                     <Btn onClick={() => maABillingData?.data?.[0]?.current_plan?.[0]?.status?ChangePlanStatus():ChangePlanStatus()} className='mr-3' tag="a" color="secondary">{maABillingData?.data?.[0]?.current_plan?.[0]?.status?'Cancel Subscription':'Resume Plan'}</Btn>
-                                    <Btn className='mx-3' tag="a" color="success">Upgrade Plan</Btn>
+                                    <Btn onClick={toggle} className='mx-3' tag="a" color="success">Upgrade Plan</Btn>
                                 </div>
+                                {/* modal */}
+                                <UpgradePlanModal modal={modal} toggle={toggle} />
                             </div>
                         </Col>
                         </div>

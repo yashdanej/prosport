@@ -839,22 +839,29 @@ exports.ChangePlanStatus = async (req, res) => {
     }
 };
 
-exports.UserReffered = async (req, res) => {
-    const { id } = req.params;
+exports.UpgradePlan = async (req, res) => {
+    const { user_id, plan_id } = req.params;
     try {
-        const commissions = await query("SELECT * FROM wallet WHERE referrer_id = ?", [id]);
-        // Calculate total commission
-        let totalCommission = 0;
-        commissions.forEach(commission => {
-            totalCommission += commission.commission;
-        });
-        // Send the response
+        const [getPlan] = await query("select * from plans where id = ?", [plan_id]);
+        const startDate = moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
+        const validity = getPlan.validity;
+        // Calculate expiry date based on the validity
+        const date = moment(new Date());
+        let expireDate;
+        if (validity.includes('days')) {
+            const days = parseInt(validity);
+            expireDate = date.add(days, 'days');
+        } else if (validity.includes('months')) {
+            const months = parseInt(validity);
+            expireDate = date.add(months, 'months');
+        }
+        const expireDateIST = moment(expireDate).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
+        await query("update user_subscriptions set start_date = ?, expire_date = ?, api_hits = ?, status = ?, created_at = ?, updated_at = ?, planId = ? where userId = ?", [startDate, expireDateIST, 0, 1, startDate, startDate, plan_id, user_id]);
+        await query("INSERT INTO user_subscription_histories (user_id, plan_id, amount, subscribe_date, created_at) VALUES (?, ?, ?, ?, ?)", [user_id, plan_id, getPlan.amount, startDate, startDate]);
+
         return res.status(200).json({
-            status: true,
-            data: {
-                reffered: commissions.length,
-                totalCommission
-            },
+            success: true,
+            message: "Plan changed successfully"
         });
     } catch (error) {
         console.error('Error fetching user:', error);

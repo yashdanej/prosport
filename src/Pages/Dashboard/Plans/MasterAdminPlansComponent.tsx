@@ -26,7 +26,7 @@ const MasterAdminPlansComponent = () => {
   return (
     <div>
       <MasterAdminPlansTopBar/>
-      <MasterAdminPlansTable/>
+      <MasterAdminPlansTable from='Plan' />
     </div>
   )
 }
