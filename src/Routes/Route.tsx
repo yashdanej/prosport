@@ -140,26 +140,59 @@ import MasterAdminPlanAdd from "../Pages/Dashboard/Plans/MasterAdminPlanAdd";
 import AccountUser from "../Pages/Dashboard/Account/AccountUser";
 import AccountAllUsers from "../Pages/Dashboard/Account/Users/AccountAllUsers";
 import Commingsoon from "../Pages/Dashboard/Commingsoon/Commingsoon";
+import Dash from "../Pages/OtherPages/EnhanceAnalytics";
+import ChangeCricket from "../Pages/OtherPages/ChangeCricket";
+import ApiKeysetComponent from "../Pages/OtherPages/ApiKeysetComponent";
+import BillingComponent from "../Pages/OtherPages/BillingComponent";
+import SubscriptionPlansComponent from "../Pages/OtherPages/SubscriptionPlansComponent";
+import SubscriptionPlansComponent_ from "../Pages/OtherPages/SubscriptionPlansComponent_";
+import EnhancedDashboard from "../Pages/OtherPages/Dashboard";
+import EnhanceAnalytics from "../Pages/OtherPages/EnhanceAnalytics";
+import ReferralProgramComponent from "../Pages/OtherPages/ReferralProgramComponent";
+import SettingsComponent from "../Pages/OtherPages/SettingsComponent";
+import ApiDocumentationComponent from "../Pages/OtherPages/ApiDocumentationComponent";
+import SupportComponent from "../Pages/OtherPages/SupportComponent";
+import CustomSupportComponent from "../Pages/OtherPages/CustomSupportComponent";
 
 const routes = [
   // dashboard 
   // { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/project`, Component:<ProjectDashboard />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EducationDashboard />},
-  { path: `${process.env.PUBLIC_URL}/sports/cricket`, Component:<Cricket />},
+
+  // { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EducationDashboard />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/home`, Component: <EnhancedDashboard />},
+
+  // { path: `${process.env.PUBLIC_URL}/sports/cricket`, Component:<Cricket />},
+  { path: `${process.env.PUBLIC_URL}/sports/cricket`, Component:<ChangeCricket />},
+
   { path: `${process.env.PUBLIC_URL}/invoice`, Component:<InternetBilling />},
   { path: `${process.env.PUBLIC_URL}/dashboard/education`, Component: <EcommerceDashborad />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
+
+  // { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EducationDashboard analytics={true} />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/Analytics`, Component: <EnhanceAnalytics />},
+
   { path: `${process.env.PUBLIC_URL}/dashboard/api_keyset`, Component: <ApiKeySet />},
   { path: `${process.env.PUBLIC_URL}/dashboard/shop_widget`, Component: <Shop />},
   { path: `${process.env.PUBLIC_URL}/dashboard/logout`, Component: <LogOut />},
-  { path: `${process.env.PUBLIC_URL}/dashboard/setting`, Component: <ApiKeySet />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/setting`, Component: <EditProfile />},
   { path: `${process.env.PUBLIC_URL}/dashboard/reffer`, Component: <Reffer />},
   { path: `${process.env.PUBLIC_URL}/setting/profile`, Component: <EditProfile />},
   { path: `${process.env.PUBLIC_URL}/dashboard/billing`, Component: <OrderHistory />},
   { path: `${process.env.PUBLIC_URL}/api/docs`, Component: <ApiDocs />},
   { path: `${process.env.PUBLIC_URL}/dashboard/pricing`, Component: <Pricing />},
   { path: `${process.env.PUBLIC_URL}/dashboard/support`, Component: <SupportCompo />},
+
+  { path: `${process.env.PUBLIC_URL}/dashboard/dashboard`, Component: <EnhancedDashboard />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/dash`, Component: <Dash />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/cricket`, Component: <ChangeCricket />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/apikeysetchange`, Component: <ApiKeysetComponent />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/billingcomp`, Component: <BillingComponent />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/subscriptionchange`, Component: <SubscriptionPlansComponent_ />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/changereffer`, Component: <ReferralProgramComponent />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/changesetting`, Component: <SettingsComponent />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/enhance_api_doc`, Component: <ApiDocumentationComponent />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/enhance_support`, Component: <SupportComponent />},
+  { path: `${process.env.PUBLIC_URL}/dashboard/enhance_custom_support`, Component: <CustomSupportComponent />},
   // master admin
   { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/cricket-api`, Component: <Status />},

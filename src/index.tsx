@@ -5,6 +5,9 @@ import App from "./App";
 import { Provider } from "react-redux";
 import './i18n'
 import Store from "./ReduxToolkit/Store";
+// Import and register Chart.js components
+import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../ReduxToolkit/Hooks";
 import { Link, useLocation } from "react-router-dom";
 import { MenuListType, SidebarItemTypes } from "../../Types/Layout/SidebarType";
@@ -7,97 +7,99 @@ import { LI, SVG, UL } from "../../AbstractElements";
 import { Href } from "../../utils/Constant";
 import { useTranslation } from "react-i18next";
 
-const Menulist: React.FC<MenuListType> = ({ menu,setActiveMenu,activeMenu,level,className}) => {
+const Menulist: React.FC<MenuListType> = ({ menu, setActiveMenu, activeMenu, level, className }) => {
   const { pinedMenu } = useAppSelector((state) => state.layout);
-  const { sidebarIconType } = useAppSelector((state) => state.themeCustomizer)
+  const { sidebarIconType } = useAppSelector((state) => state.themeCustomizer);
   const location = useLocation();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const ActiveNavLinkUrl = (path?: string, active?: boolean) => {
-    return location.pathname === path ? (active ? active : true) : "";
-  };
+  const isActiveNavLink = useCallback((path?: string): boolean => {
+    return location.pathname === path;
+  }, [location.pathname]);
 
-  const shouldSetActive = ({ item }: SidebarItemTypes) => {
-    var returnValue = false;
-    if (item?.path === location.pathname) returnValue = true;
-    if (!returnValue && item?.children) {
-      item?.children.every((subItem) => {
-        returnValue = shouldSetActive({ item: subItem });
-        return !returnValue;
-      });
+  const shouldSetActive = useCallback(({ item }: SidebarItemTypes): boolean => {
+    if (item?.path === location.pathname) return true;
+    if (item?.children) {
+      return item.children.some(subItem => shouldSetActive({ item: subItem }));
     }
-    return returnValue;
-  };
-  const handleClick = ((item: string) => {
-    const temp = activeMenu;
-    temp[level] = item !== temp[level] ? item : "";
-    setActiveMenu([...temp]);
-  })
+    return false;
+  }, [location.pathname]);
+
+  const handleClick = useCallback((item: string) => {
+    setActiveMenu((prev: any) => {
+      const temp = [...prev];
+      temp[level] = item !== temp[level] ? item : "";
+      return temp;
+    });
+  }, [level, setActiveMenu]);
+
   useEffect(() => {
     menu?.forEach((item: any) => {
-      let gotValue = shouldSetActive({ item });
-      if (gotValue) {
-        let temp = [...activeMenu];
-        temp[level] = item.title;
-        setActiveMenu(temp);
+      if (shouldSetActive({ item })) {
+        setActiveMenu((prev: any) => {
+          const temp = [...prev];
+          temp[level] = item.title;
+          return temp;
+        });
       }
     });
-  }, []);
+  }, [menu, shouldSetActive, level, setActiveMenu]);
 
-  return (
-    <>
-      {menu?.map((item, index) => (
-        <LI
-          key={index}
-          className={`${level === 0 ? "sidebar-list" : ""} ${ pinedMenu.includes(item.title || "") ? "pined" : ""}  
-          ${(item.children
-              ? item.children.map((innerItem) => ActiveNavLinkUrl(innerItem.path)).includes(true)
-              : ActiveNavLinkUrl(item.path)) || activeMenu[level] === item.title
-              ? "active"
-              : ""
-          } `}
+  const renderMenuItem = (item: any, index: number) => {
+    const isActive = item.children
+      ? item.children.some((innerItem: any) => isActiveNavLink(innerItem.path))
+      : isActiveNavLink(item.path);
+    const isOpen = activeMenu[level] === item.title;
+
+    return (
+      <LI
+        key={index}
+        className={`
+          ${level === 0 ? "sidebar-list" : ""}
+          ${pinedMenu.includes(item.title || "") ? "pined" : ""}
+          ${isActive || isOpen ? "active" : ""}
+        `}
+      >
+        <Link
+          className={`
+            ${!className && level !== 2 ? "sidebar-link sidebar-title" : ""}
+            ${isActive || isOpen ? "active" : ""}
+          `}
+          to={item.path || Href}
+          onClick={() => handleClick(item.title)}
         >
-          {/* {level === 0 && (<i className="fa fa-thumb-tack" onClick={() => dispatch(handlePined(item.title))} ></i>)} */}
-          <Link
-            className={`${!className && level !== 2 ? "sidebar-link sidebar-title" : ""} 
-            ${(item.children
-                ? item.children.map((innerItem) => ActiveNavLinkUrl(innerItem.path)).includes(true)
-                : ActiveNavLinkUrl(item.path)) || activeMenu[level] === item.title ? "active" : ""
-            }`}
-            to={item.path ? item.path : Href }
-            onClick={() => handleClick(item.title)}
-          >
-            {item.icon && (
-              <SVG className={`${sidebarIconType}-icon`} iconId={`${sidebarIconType}-${item.icon}`} />
-            )}
-            <span className={item.lanClass && item.lanClass}>{t(item.title)}</span>
-            {item.children && (activeMenu[level] === item.title ? (
-              <div className="according-menu">
-                <i className="fa fa-angle-down" />
-              </div>
-            ) : (
-              <div className="according-menu">
-                <i className="fa fa-angle-right" />
-              </div>
-            ))}
-          </Link>
-          {item.children && (
-            <UL className={`simple-list ${ level !== 0 ? "nav-sub-childmenu submenu-content" : "sidebar-submenu " }`}
-              style={{
-                display: `${
-                  (item.children
-                    ? item.children.map((innerItem) => ActiveNavLinkUrl(innerItem.path)).includes(true) : ActiveNavLinkUrl(item.path)) || activeMenu[level] === item.title ? "block" : "none"
-                }`
-              }}
-            >
-              <Menulist menu={item.children} activeMenu={activeMenu} setActiveMenu={setActiveMenu} level={level + 1} className="sidebar-submenu" />
-            </UL>
+          {item.icon && (
+            <SVG className={`${sidebarIconType}-icon`} iconId={`${sidebarIconType}-${item.icon}`} />
           )}
-        </LI>
-      ))}
-    </>
-  );
+          <span className={item.lanClass}>{t(item.title)}</span>
+          {item.children && (
+            <div className="according-menu">
+              <i className={`fa fa-angle-${isOpen ? 'down' : 'right'}`} />
+            </div>
+          )}
+        </Link>
+        {item.children && (
+          <UL
+            className={`simple-list ${
+              level !== 0 ? "nav-sub-childmenu submenu-content" : "sidebar-submenu"
+            }`}
+            style={{ display: isActive || isOpen ? "block" : "none" }}
+          >
+            <Menulist
+              menu={item.children}
+              activeMenu={activeMenu}
+              setActiveMenu={setActiveMenu}
+              level={level + 1}
+              className="sidebar-submenu"
+            />
+          </UL>
+        )}
+      </LI>
+    );
+  };
+
+  return <>{menu?.map(renderMenuItem)}</>;
 };
 
-export default Menulist;
+export default React.memo(Menulist);
