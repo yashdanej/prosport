@@ -152,7 +152,7 @@ const ChangeCricket: React.FC = () => {
   return (
     <div className='page-body'>
     <Container fluid className="p-4">
-      <h1 className="mb-4">Cricket</h1>
+      {/* <h1 className="mb-4">Cricket</h1> */}
       <Nav tabs className="mb-4">
         {['Completed', 'Scheduled', 'Live'].map((tab) => (
           <NavItem key={tab}>

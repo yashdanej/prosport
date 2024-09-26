@@ -50,6 +50,7 @@
     "react-accessible-treeview": "^2.8.0",
     "react-ace": "^10.1.0",
     "react-apexcharts": "^1.4.1",
+    "react-bootstrap": "^2.10.5",
     "react-bootstrap-typeahead": "^6.2.3",
     "react-calendar": "^4.6.0",
     "react-calendar-timeline": "^0.28.0",

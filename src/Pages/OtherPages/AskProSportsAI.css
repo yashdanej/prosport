@@ -1,0 +1,39 @@
+.chat-container {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  max-width: 70%;
+}
+
+.message.user {
+  background-color: #007bff;
+  color: white;
+}
+
+.message.ai {
+  background-color: #f0f0f0;
+}
+
+.question{
+  padding: 20px;
+}
+
+.question>button{
+  padding: 10px 0;
+}
+
+.sample-question:hover {
+  cursor: pointer;
+  background-color: #f8f9fa;
+}

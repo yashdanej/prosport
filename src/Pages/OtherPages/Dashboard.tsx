@@ -152,11 +152,11 @@ const EnhancedDashboard = () => {
                 <div className="d-grid gap-2">
                   <button className="btn btn-primary">
                     <Key size={20} className="me-2" />
-                    <Link style={{color: 'inherit'}} to="/dashboard/api_keyset">View API Key</Link>
+                    <Link style={{color: 'inherit'}} to="/dashboard/api-keys">View API Key</Link>
                   </button>
                   <button className="btn btn-secondary">
                     <FileText size={20} className="me-2" />
-                    <Link style={{color: 'inherit'}} to="/api/docs">API Documentation</Link>
+                    <Link style={{color: 'inherit'}} to="/dashboard/api-docs">API Documentation</Link>
                   </button>
                 </div>
               </CardBody>
