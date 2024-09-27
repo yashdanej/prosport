@@ -4,6 +4,12 @@ import { Copy, RefreshCw, Eye, EyeOff, Plus, Search, Download, RotateCcw, Shield
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { getApiKeys, getSubscribe, updateStatus } from '../../ReduxToolkit/Reducers/Change/Subscribe';
+import { AppDispatch, RootState } from '../../ReduxToolkit/Store';
+import { useDispatch, useSelector } from 'react-redux';
+import { convertToIST } from '../../Utils';
+import CommonCardHeader from '../../CommonElements/CommonCardHeader/CommonCardHeader';
+import { getAllSports } from '../../ReduxToolkit/Reducers/Change/AuthSlice';
 
 const ApiKeysetComponent = () => {
   const [apiKeys, setApiKeys] = useState<any>([]);
@@ -22,32 +28,37 @@ const ApiKeysetComponent = () => {
   const [whitelistModalOpen, setWhitelistModalOpen] = useState<any>(false);
   const [whitelistData, setWhitelistData] = useState<any>({ domains: '', ips: '' });
 
-  useEffect(() => {
-    fetchApiKeys();
-    fetchUsageMetrics();
-  }, []);
+  
+  const apiKeysData = useSelector((state: RootState) => state.subscribe.api_keys);
+  const allSportsData = useSelector((state: RootState) => state.auth.all_sports);
+  const userData = localStorage.getItem("login-user");
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+  const plansData = useSelector((state: RootState) => state.subscribe.plans);
+  const [showToast, setShowToast] = useState(false);
+  const [txt, setTxt] = useState("");
+  const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
+  
+  // useEffect(() => {
+  //   fetchApiKeys();
+  //   fetchUsageMetrics();
+  // }, []);
 
-  const fetchApiKeys = async () => {
-    // Simulated API call
-    const keys: any = [
-      { id: 1, category: 'Cricket', plan: 'Starter Bundle', tokenExpiry: '2024-12-10', secretKey: 'bd51vfbO2fB407k', accessKey: 'gsk4nRr9jBdhnzzgp7p', domain: '', status: 'Active', usageLimit: 10000, usageCount: 5000 },
-      { id: 2, category: 'Football', plan: 'Pro Plan', tokenExpiry: '2024-11-15', secretKey: 'ay72kfbR3gC508m', accessKey: 'htn5Ss0kCeijaaih8q', domain: 'example.com', status: 'Active', usageLimit: 50000, usageCount: 20000 },
-      { id: 3, category: 'Tennis', plan: 'Basic Plan', tokenExpiry: '2024-10-20', secretKey: 'cx93lfbT4hD609n', accessKey: 'jvp6Tt1lDfjkbbjh9r', domain: '', status: 'Revoked', usageLimit: 5000, usageCount: 5000 }
-    ];
-    setApiKeys(keys);
-  };
+  // const fetchApiKeys = async () => {
+  //   // Simulated API call
+  //   const keys: any = [
+  //     { id: 1, category: 'Cricket', plan: 'Starter Bundle', tokenExpiry: '2024-12-10', secretKey: 'bd51vfbO2fB407k', accessKey: 'gsk4nRr9jBdhnzzgp7p', domain: '', status: 'Active', usageLimit: 10000, usageCount: 5000 },
+  //     { id: 2, category: 'Football', plan: 'Pro Plan', tokenExpiry: '2024-11-15', secretKey: 'ay72kfbR3gC508m', accessKey: 'htn5Ss0kCeijaaih8q', domain: 'example.com', status: 'Active', usageLimit: 50000, usageCount: 20000 },
+  //     { id: 3, category: 'Tennis', plan: 'Basic Plan', tokenExpiry: '2024-10-20', secretKey: 'cx93lfbT4hD609n', accessKey: 'jvp6Tt1lDfjkbbjh9r', domain: '', status: 'Revoked', usageLimit: 5000, usageCount: 5000 }
+  //   ];
+  //   setApiKeys(keys);
+  // };
 
   const fetchUsageMetrics = async () => {
     // Simulated API call for usage metrics
-    const metrics = [
-      { date: '2023-01-01', calls: 1000 },
-      { date: '2023-01-02', calls: 1200 },
-      { date: '2023-01-03', calls: 800 },
-      { date: '2023-01-04', calls: 1500 },
-      { date: '2023-01-05', calls: 2000 },
-      { date: '2023-01-06', calls: 1800 },
-      { date: '2023-01-07', calls: 1600 }
-    ];
+    const metrics = apiKeysData?.dayWiseApiHits.map((metric: any) => ({
+      ...metric,
+      date: convertToIST(metric.date).split(",")[0] // Assuming metric.date holds the original date string
+    }));;
     setUsageMetrics(metrics);
   };
 
@@ -61,21 +72,24 @@ const ApiKeysetComponent = () => {
     setTimeout(() => setCopiedAlert({ show: false, id: null }), 2000);
   };
 
-  const generateNewKey = () => {
-    // Implement key generation logic
-    setModalOpen(false);
-    fetchApiKeys();
+  // const generateNewKey = () => {
+  //   // Implement key generation logic
+  //   setModalOpen(false);
+  //   fetchApiKeys();
+  // };
+
+  const revokeKey = async (id: any, status: any) => {
+    try {
+      await dispatch(updateStatus({id, status})).unwrap();
+    } catch (error) {
+      console.log("error from revokeKey", error);
+    }
   };
 
-  const revokeKey = (id: any) => {
-    // Implement key revocation logic
-    fetchApiKeys();
-  };
-
-  const rotateKey = (id: any) => {
-    // Implement key rotation logic
-    fetchApiKeys();
-  };
+  // const rotateKey = (id: any) => {
+  //   // Implement key rotation logic
+  //   fetchApiKeys();
+  // };
 
   const handleSort = (column: any) => {
     if (column === sortColumn) {
@@ -86,30 +100,78 @@ const ApiKeysetComponent = () => {
     }
   };
 
-  const filteredKeys = apiKeys.filter((key: any) => 
-    (activeTab === 'all' || (activeTab === 'active' && key.status === 'Active') || (activeTab === 'revoked' && key.status === 'Revoked')) &&
-    (key.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     key.plan.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     key.accessKey.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredKeys = React.useMemo(() => {
+    if (!apiKeysData?.data || !Array.isArray(apiKeysData.data)) {
+      return [];
+    }
 
-  const sortedKeys = [...filteredKeys].sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1;
-    if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1;
-    return 0;
-  });
+    return apiKeysData.data.filter((key: any) => {
+      const sportName = allSportsData?.data?.find((sport: any) => sport?.id === key?.sportId)?.name || '';
+      const planName = plansData?.data?.find((plan: any) => plan?.id === key?.planId)?.name || '';
 
-  const updateWhitelist = () => {
-    // Implement whitelist update logic
-    console.log('Updating whitelist for key:', selectedKey.id, whitelistData);
-    setWhitelistModalOpen(false);
+      const matchesTab = activeTab === 'all' || 
+        (activeTab === 'active' && key.status) || 
+        (activeTab === 'revoked' && !key.status);
+
+      const matchesSearch = searchTerm === '' ||
+        sportName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        planName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (key.token && key.token.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      return matchesTab && matchesSearch;
+    });
+  }, [apiKeysData, allSportsData, plansData, activeTab, searchTerm]);
+
+  const sortedKeys = React.useMemo(() => {
+    if (!filteredKeys || filteredKeys.length === 0) {
+      return [];
+    }
+
+    return [...filteredKeys].sort((a, b) => {
+      if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1;
+      if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [filteredKeys, sortColumn, sortDirection]);
+
+  // const updateWhitelist = () => {
+  //   // Implement whitelist update logic
+  //   console.log('Updating whitelist for key:', selectedKey.id, whitelistData);
+  //   setWhitelistModalOpen(false);
+  //   fetchApiKeys();
+  // };
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const fetchApiKeys = () => {
+    dispatch(getApiKeys());
+  }
+
+  const fetchAllSports = () => {
+    dispatch(getAllSports());
+  }
+
+  useEffect(() => {
     fetchApiKeys();
-  };
+    fetchAllSports();
+    fetchUsageMetrics();
+  }, [dispatch]);
+  const fetchPlans = () => {
+    dispatch(getSubscribe());
+  }
+
+  useEffect(() => {
+    fetchPlans();
+  }, [dispatch]);
 
   return (
     <div className='page-body'>
     <Container fluid className="p-4">
-      <h1 className="mb-4">API Keyset Management</h1>
+    <Card>
+          <CommonCardHeader title="API Keyset" />
+          <CardBody>
+            
+      {/* <h1 className="mb-4">API Keyset Management</h1> */}
       <Row className="mb-3">
         <Col md={4}>
           <Input
@@ -176,17 +238,17 @@ const ApiKeysetComponent = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedKeys.map(key => (
-            <tr key={key.id}>
-              <td>{key.category}</td>
-              <td>{key.plan}</td>
-              <td>{key.tokenExpiry}</td>
+          {sortedKeys?.map((key: any) => (
+            <tr key={key?.id}>
+              <td>{allSportsData?.data?.find((sport: any) => sport?.id === key?.sportId)?.name}</td>
+              <td>{plansData?.data?.find((plan: any) => plan?.id === key?.planId)?.name}</td>
+              <td>{convertToIST(key?.expire_date)?.split(",")[0]}</td>
               <td>
-                {showSecretKey[key.id] ? key.secretKey : '••••••••••••••••'}
+                {showSecretKey[key.id] ? parsedUserData?.user?.secretKey : '••••••••••••••••'}
                 <Button color="link" size="sm" onClick={() => toggleSecretKey(key.id)}>
                   {showSecretKey[key.id] ? <EyeOff size={18} /> : <Eye size={18} />}
                 </Button>
-                <Button color="link" size="sm" onClick={() => copyToClipboard(key.secretKey, `secret-${key.id}`)}>
+                <Button color="link" size="sm" onClick={() => copyToClipboard(parsedUserData?.user?.secretKey, `secret-${key.id}`)}>
                   <Copy size={18} />
                 </Button>
                 {copiedAlert.show && copiedAlert.id === `secret-${key.id}` && (
@@ -194,8 +256,8 @@ const ApiKeysetComponent = () => {
                 )}
               </td>
               <td>
-                {key.accessKey}
-                <Button color="link" size="sm" onClick={() => copyToClipboard(key.accessKey, `access-${key.id}`)}>
+                {key.token}
+                <Button color="link" size="sm" onClick={() => copyToClipboard(key.token, `access-${key.id}`)}>
                   <Copy size={18} />
                 </Button>
                 {copiedAlert.show && copiedAlert.id === `access-${key.id}` && (
@@ -203,18 +265,20 @@ const ApiKeysetComponent = () => {
                 )}
               </td>
               <td>{key.domain || 'Not set'}</td>
-              <td><Badge color={key.status === 'Active' ? 'success' : 'danger'}>{key.status}</Badge></td>
+              <td><Badge color={key.status ? 'success' : 'danger'}>{key.status?"Active":"Revoked"}</Badge></td>
               <td>
-                <Progress value={(key.usageCount / key.usageLimit) * 100} className="mb-2">
-                  {Math.round((key.usageCount / key.usageLimit) * 100)}%
+                <Progress value={(key.api_hits / plansData?.data?.find((plan: any) => plan?.id === key?.planId)?.api_call?.split(" ")[0]) * 100} className="mb-2">
+                  {Math.round((key.api_hits / plansData?.data?.find((plan: any) => plan?.id === key?.planId)?.api_call?.split(" ")[0]) * 100)}%
                 </Progress>
-                {key.usageCount} / {key.usageLimit}
+                {key.api_hits} / {plansData?.data?.find((plan: any) => plan?.id === key?.planId)?.api_call?.split(" ")[0]}
               </td>
               <td>
-                <Button color="warning" size="sm" className="me-2" onClick={() => revokeKey(key.id)}>
-                  Revoke
+                <Button color="warning" size="sm" className="me-2" onClick={() => revokeKey(key.id, !key.status)}>
+                {/* <Button color="warning" size="sm" className="me-2"> */}
+                  {!key.status?"Active":"Revoke"}
                 </Button>
-                <Button color="info" size="sm" className="me-2" onClick={() => rotateKey(key.id)}>
+                {/* <Button color="info" size="sm" className="me-2" onClick={() => rotateKey(key.id)}> */}
+                <Button color="info" size="sm" className="me-2">
                   <RotateCcw size={18} />
                 </Button>
                 <Button color="secondary" size="sm" onClick={() => setSelectedKey(key)}>
@@ -243,7 +307,8 @@ const ApiKeysetComponent = () => {
           {/* Add more fields as needed for key generation */}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={generateNewKey}>Generate</Button>
+          {/* <Button color="primary" onClick={generateNewKey}>Generate</Button> */}
+          <Button color="primary">Generate</Button>
           <Button color="secondary" onClick={() => setModalOpen(false)}>Cancel</Button>
         </ModalFooter>
       </Modal>
@@ -261,7 +326,7 @@ const ApiKeysetComponent = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="calls" stroke="#8884d8" />
+                  <Line type="monotone" dataKey="hits" stroke="#8884d8" />
                 </LineChart>
               </ResponsiveContainer>
             </CardBody>
@@ -298,10 +363,13 @@ const ApiKeysetComponent = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={updateWhitelist}>Update</Button>
+          {/* <Button color="primary" onClick={updateWhitelist}>Update</Button> */}
+          <Button color="primary">Update</Button>
           <Button color="secondary" onClick={() => setWhitelistModalOpen(false)}>Cancel</Button>
         </ModalFooter>
       </Modal>
+      </CardBody>
+            </Card>
     </Container>
     </div>
   );

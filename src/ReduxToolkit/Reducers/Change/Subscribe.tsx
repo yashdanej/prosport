@@ -25,7 +25,7 @@ export const getApiKeys = createAsyncThunk('getApiKeys', async (id) => {
     try {
         const res = await api(`/order/api_key`, "get", false, false, true);
         console.log("res--------", res);
-        return res.data.data;
+        return res.data;
     } catch (err) {
         console.log("err", err);
         throw err;
@@ -65,6 +65,17 @@ export const getSubscribe = createAsyncThunk('getSubscribe', async (id) => {
   }
 });
 
+export const updateStatus = createAsyncThunk('updateStatus', async (data: any) => {
+  try {
+      const res = await api(`/order/update-subscription-status`, "post", data, false, true);
+      console.log("res--------", res);
+      return data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 // Define the type of dispatch that includes Thunks
 export type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
 
@@ -81,6 +92,7 @@ const subscribeSlice = createSlice({
     api_keys: {
         isLoading: false,
         data: null as any | null,
+        dayWiseApiHits: null as any | null,
         isError: false,
         errorMessage: "",
     },
@@ -132,7 +144,8 @@ const subscribeSlice = createSlice({
     builder.addCase(getApiKeys.fulfilled, (state, action) => {
         state.api_keys.isLoading = false;
         console.log("action...pa", action.payload);
-        state.api_keys.data = action.payload;
+        state.api_keys.data = action.payload.data;
+        state.api_keys.dayWiseApiHits = action.payload.dayWiseApiHits;
     });
     builder.addCase(getApiKeys.rejected, (state, action) => {
         console.log("error in getApiKeys", action.payload);
@@ -183,6 +196,25 @@ const subscribeSlice = createSlice({
         console.log("error in getCommission", action.payload);
         state.commission.isLoading = false;
         state.commission.isError = true;
+    });
+
+    // updateStatus
+    builder.addCase(updateStatus.pending, (state, action) => {
+      state.api_keys.isLoading = true;
+    });
+    builder.addCase(updateStatus.fulfilled, (state, action) => {
+        state.api_keys.isLoading = false;
+        console.log("action...pa", action.payload);
+        // Update the status of the item with the matching id
+        const index = state.api_keys.data.findIndex((item: any) => item.id === action.payload.id);
+        if (index !== -1) {
+            state.api_keys.data[index].status = action.payload.status;
+        }
+    });
+    builder.addCase(updateStatus.rejected, (state, action) => {
+        console.log("error in updateStatus", action.payload);
+        state.api_keys.isLoading = false;
+        state.api_keys.isError = true;
     });
   }
 });

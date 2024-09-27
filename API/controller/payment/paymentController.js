@@ -295,6 +295,8 @@ exports.apiKeys = async (req, res, next) => {
         console.log("inn");
         // Verify the token and get the user
         const getUser = await verifyToken(req, res, next, { verifyUser: true });
+        console.log("startDate", req.body.startDate);
+        console.log("endDate", req.body.endDate);
         
         // Get the user's subscriptions
         const plans = await query("SELECT * FROM user_subscriptions WHERE userId = ?", [getUser]);
@@ -308,10 +310,25 @@ exports.apiKeys = async (req, res, next) => {
         }));
         console.log("plansWithDomain", plansWithDomain);
 
+         // Fetch day-wise API hits within the date range
+        const dayWiseApiHits = await query(`
+            SELECT 
+                DATE(created_at) as date, COUNT(*) as hits
+            FROM 
+                api_call_logs
+            WHERE 
+                userId = ?
+            GROUP BY 
+                DATE(created_at)
+            ORDER BY 
+                DATE(created_at) ASC
+        `, [getUser]);
+
         // Send the response
         return res.status(200).json({
             status: true,
             data: plansWithDomain,
+            dayWiseApiHits
         });
     } catch (error) {
         console.error("Error fetching API keys:", error);
@@ -362,7 +379,7 @@ exports.updateSubscriptionStatus = async (req, res) => {
         const { id, status } = req.body;
 
         const updateQuery = `UPDATE user_subscriptions SET status = ? WHERE id = ?`;
-        const updateResult = await db.query(updateQuery, [status, id]);
+        const updateResult = await query(updateQuery, [status, id]);
 
         if (updateResult.affectedRows > 0) {
             return res.status(200).json({

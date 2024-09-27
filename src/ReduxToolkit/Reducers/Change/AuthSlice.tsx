@@ -78,6 +78,18 @@ export const getLogEvents = createAsyncThunk('getLogEvents', async (id) => {
   }
 });
 
+
+export const getAllSports = createAsyncThunk('getAllSports', async (id) => {
+  try {
+      const res = await api(`/all_sports`, "get", false, false, true);
+      console.log("res--------", res);
+      return res.data.data;
+  } catch (err) {
+      console.log("err", err);
+      throw err;
+  }
+});
+
 // Auth slice
 const authSlice = createSlice({
   name: "auth",
@@ -101,6 +113,12 @@ const authSlice = createSlice({
       errorMessage: "",
     },
     logs: {
+      isLoading: false,
+      data: null as any | null,
+      isError: false,
+      errorMessage: "",
+    },
+    all_sports: {
       isLoading: false,
       data: null as any | null,
       isError: false,
@@ -193,6 +211,21 @@ const authSlice = createSlice({
         console.log("error in getLogEvents", action.payload);
         state.logs.isLoading = false;
         state.logs.isError = true;
+    });
+
+    // getAllSports
+    builder.addCase(getAllSports.pending, (state, action) => {
+      state.all_sports.isLoading = true;
+    });
+    builder.addCase(getAllSports.fulfilled, (state, action) => {
+        state.all_sports.isLoading = false;
+        console.log("action...pa", action.payload);
+        state.all_sports.data = action.payload;
+    });
+    builder.addCase(getAllSports.rejected, (state, action) => {
+        console.log("error in getAllSports", action.payload);
+        state.all_sports.isLoading = false;
+        state.all_sports.isError = true;
     });
   }
 });

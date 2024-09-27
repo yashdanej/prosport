@@ -157,6 +157,23 @@ import ShopWidget from "../Pages/OtherPages/ShopWidget";
 import LiveScoringPage from "../Pages/OtherPages/LiveScoringPage";
 import AskProSportsAI from "../Pages/OtherPages/AskProSportsAI";
 import EnhancedAnalytics from "../Pages/OtherPages/EnhancedAnalytics";
+import SportsDashboard from "../Pages/OtherPages/Masteradmin/SportsDashboard";
+import MasterDashboard from "../Pages/OtherPages/Masteradmin/MasterDashboard";
+import APIOverview from "../Pages/OtherPages/Masteradmin/APIOverview";
+import APIKeys from "../Pages/OtherPages/Masteradmin/APIKeys";
+import UsageAnalytics from "../Pages/OtherPages/Masteradmin/UsageAnalytics";
+import APIDocumentation from "../Pages/OtherPages/Masteradmin/APIDocumentation";
+import APIVersioning from "../Pages/OtherPages/Masteradmin/APIVersioning";
+import UserList from "../Pages/OtherPages/Masteradmin/UserList";
+import UserRoles from "../Pages/OtherPages/Masteradmin/UserRoles";
+import Permissions from "../Pages/OtherPages/Masteradmin/Permissions";
+import ActivityLogs from "../Pages/OtherPages/Masteradmin/ActivityLogs";
+import FinancialOverview from "../Pages/OtherPages/Masteradmin/FinancialOverview";
+import Invoices from "../Pages/OtherPages/Masteradmin/Invoices";
+import Subscriptions from "../Pages/OtherPages/Masteradmin/Subscriptions";
+import PricingManagement from "../Pages/OtherPages/Masteradmin/PricingManagement";
+import FinancialReports from "../Pages/OtherPages/Masteradmin/FinancialReports";
+import ScoringAndDataComponent from "../Pages/OtherPages/Masteradmin/ScoringAndDataComponent";
 
 const routes = [
   // dashboard 
@@ -220,11 +237,62 @@ const routes = [
   // { path: `${process.env.PUBLIC_URL}/dashboard/enhance_api_doc`, Component: <ApiDocumentationComponent />},
   // { path: `${process.env.PUBLIC_URL}/dashboard/enhance_support`, Component: <SupportComponent />},
   // { path: `${process.env.PUBLIC_URL}/dashboard/enhance_custom_support`, Component: <CustomSupportComponent />},
+  
   // master admin
-  { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
-  { path: `${process.env.PUBLIC_URL}/masteradmin/cricket-api`, Component: <Status />},
-  { path: `${process.env.PUBLIC_URL}/masteradmin/football-api`, Component: <Status />},
-  { path: `${process.env.PUBLIC_URL}/masteradmin/basketball-api`, Component: <Status />},
+  // { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<ProjectDashboard />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/dashboard/home`, Component:<MasterDashboard />},
+
+  // { path: `${process.env.PUBLIC_URL}/masteradmin/cricket-api`, Component: <Status />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/sports/cricket`, Component: <SportsDashboard />},
+
+  // api overview
+  { path: `${process.env.PUBLIC_URL}/masteradmin/api/overview`, Component: <APIOverview />},
+
+  // api keys
+  { path: `${process.env.PUBLIC_URL}/masteradmin/api/keys`, Component: <APIKeys />},
+
+  // usage and analytics
+  { path: `${process.env.PUBLIC_URL}/masteradmin/api/usage`, Component: <UsageAnalytics />},
+
+  // api documentation
+  { path: `${process.env.PUBLIC_URL}/masteradmin/api/documentation`, Component: <APIDocumentation />},
+
+  // api versioning
+  { path: `${process.env.PUBLIC_URL}/masteradmin/api/versioning`, Component: <APIVersioning />},
+
+  // users list
+  { path: `${process.env.PUBLIC_URL}/masteradmin/users/list`, Component: <UserList />},
+
+  // users roles
+  { path: `${process.env.PUBLIC_URL}/masteradmin/users/roles`, Component: <UserRoles />},
+
+  // users permissions
+  { path: `${process.env.PUBLIC_URL}/masteradmin/users/permissions`, Component: <Permissions />},
+
+  // users activity-logs
+  { path: `${process.env.PUBLIC_URL}/masteradmin/users/activity-logs`, Component: <ActivityLogs />},
+
+  //finance overview
+  { path: `${process.env.PUBLIC_URL}/masteradmin/finance/overview`, Component: <FinancialOverview />},
+
+  // finance invoices
+  { path: `${process.env.PUBLIC_URL}/masteradmin/finance/invoices`, Component: <Invoices />},
+
+  // finance subscriptions
+  { path: `${process.env.PUBLIC_URL}/masteradmin/finance/subscriptions`, Component: <Subscriptions />},
+
+  // pricing management
+  { path: `${process.env.PUBLIC_URL}/masteradmin/finance/pricing`, Component: <PricingManagement />},
+
+  // finance reports
+  { path: `${process.env.PUBLIC_URL}/masteradmin/finance/reports`, Component: <FinancialReports />},
+
+  // scoring live
+  { path: `${process.env.PUBLIC_URL}/masteradmin/scoring/live`, Component: <ScoringAndDataComponent />},
+  
+  { path: `${process.env.PUBLIC_URL}/masteradmin/sports/football`, Component: <Status />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/sports/basketball`, Component: <Status />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/sports/add-sport`, Component: <Status />},
   // { path: `${process.env.PUBLIC_URL}/masteradmin/user-api-key-manager-api`, Component: <Status />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/user-api-key-manager-api`, Component: <AllUsers />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/users-invoices`, Component: <UsersInvoice />},

@@ -107,6 +107,23 @@ exports.AllUsers = async (req, res, next) => {
   }
 };
 
+// Fetch Sports
+exports.AllSports = async (req, res, next) => {
+  try {
+      // Get the user's subscriptions
+      const sports = await query("SELECT * FROM sports");
+
+      // Send the response
+      return res.status(200).json({
+          status: true,
+          data: sports
+      });
+  } catch (error) {
+      console.error("Error fetching sports:", error);
+      return res.status(500).json({ status: false, message: "Internal Server Error" });
+  }
+};
+
 exports.Login = async (req, res) => {
   const { email, password } = req.body;
 
