@@ -140,8 +140,21 @@ export const MasterMenuList: MenuItem[] = [{
       ],
     },
     {
-      title: "Content Management",
+      title: "Clients Account & Security",
       id: 5,
+      icon: "file-text",
+      type: "sub",
+      lanClass: "lan-6",
+      active: false,
+      children: [
+        // { path: `${process.env.PUBLIC_URL}/masteradmin/client/account-security`, title: "Client List", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/client/list`, title: "Client List", type: "link"},
+        { path: `${process.env.PUBLIC_URL}/masteradmin/content/blogs`, title: "Add / Edit Client", type: "link"},
+      ],
+    },
+    {
+      title: "Content Management",
+      id: 6,
       icon: "file-text",
       type: "sub",
       lanClass: "lan-6",
@@ -155,7 +168,7 @@ export const MasterMenuList: MenuItem[] = [{
     },
     {
       title: "Scoring & Data",
-      id: 6,
+      id: 7,
       icon: "database",
       type: "sub",
       lanClass: "lan-6",
@@ -169,7 +182,7 @@ export const MasterMenuList: MenuItem[] = [{
     },
     {
       title: "Financial Management",
-      id: 7,
+      id: 8,
       icon: "dollar-sign",
       type: "sub",
       lanClass: "lan-6",
@@ -184,7 +197,7 @@ export const MasterMenuList: MenuItem[] = [{
     },
     {
       title: "Analytics & Reporting",
-      id: 8,
+      id: 9,
       icon: "bar-chart-2",
       type: "sub",
       lanClass: "lan-6",
@@ -198,7 +211,7 @@ export const MasterMenuList: MenuItem[] = [{
     },
     {
       title: "System Configuration",
-      id: 9,
+      id: 10,
       icon: "settings",
       type: "sub",
       lanClass: "lan-6",
@@ -212,7 +225,7 @@ export const MasterMenuList: MenuItem[] = [{
     },
     {
       title: "Support & Help",
-      id: 10,
+      id: 11,
       icon: "help-circle",
       type: "sub",
       lanClass: "lan-6",

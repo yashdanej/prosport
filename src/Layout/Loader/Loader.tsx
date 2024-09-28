@@ -15,11 +15,12 @@ const Loader = () => {
     <>
       {show && (
         <div className="loader-wrapper">
-          <div className="loader loader-1">
+          <img style={{width: '50rem'}} src="/assets/images/loader/pro-sports-gif.gif" alt="" />
+          {/* <div className="loader loader-1">
             <div className="loader-outter" />
             <div className="loader-inner" />
             <div className="loader-inner-1" />
-          </div>
+          </div> */}
         </div>
       )}
     </>

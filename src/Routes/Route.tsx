@@ -174,6 +174,13 @@ import Subscriptions from "../Pages/OtherPages/Masteradmin/Subscriptions";
 import PricingManagement from "../Pages/OtherPages/Masteradmin/PricingManagement";
 import FinancialReports from "../Pages/OtherPages/Masteradmin/FinancialReports";
 import ScoringAndDataComponent from "../Pages/OtherPages/Masteradmin/ScoringAndDataComponent";
+import AnalyticsAndReportingComponent from "../Pages/OtherPages/Masteradmin/AnalyticsAndReportingComponent";
+import GeneralSettingsComponent from "../Pages/OtherPages/Masteradmin/GeneralSettingsComponent";
+import IntegrationsComponent from "../Pages/OtherPages/Masteradmin/IntegrationsComponent";
+import SecuritySettingsComponent from "../Pages/OtherPages/Masteradmin/SecuritySettingsComponent";
+import BackupsMaintenanceComponent from "../Pages/OtherPages/Masteradmin/BackupsMaintenanceComponent";
+import ClientAccountSecurityComponent from "../Pages/OtherPages/Masteradmin/ClientAccountSecurityComponent";
+import EnhancedAccountManagement from "../Pages/OtherPages/Masteradmin/EnhancedAccountManagement";
 
 const routes = [
   // dashboard 
@@ -289,6 +296,25 @@ const routes = [
 
   // scoring live
   { path: `${process.env.PUBLIC_URL}/masteradmin/scoring/live`, Component: <ScoringAndDataComponent />},
+
+  // analytics overview
+  { path: `${process.env.PUBLIC_URL}/masteradmin/analytics/overview`, Component: <AnalyticsAndReportingComponent />},
+
+  // system general-settings
+  { path: `${process.env.PUBLIC_URL}/masteradmin/system/general-settings`, Component: <GeneralSettingsComponent />},
+
+  // system integrations
+  { path: `${process.env.PUBLIC_URL}/masteradmin/system/integrations`, Component: <IntegrationsComponent />},
+
+  // system security
+  { path: `${process.env.PUBLIC_URL}/masteradmin/system/security`, Component: <SecuritySettingsComponent />},
+
+  // system backups
+  { path: `${process.env.PUBLIC_URL}/masteradmin/system/backups`, Component: <BackupsMaintenanceComponent />},
+
+  // client account-security
+  { path: `${process.env.PUBLIC_URL}/masteradmin/client/account-security`, Component: <ClientAccountSecurityComponent />},
+  { path: `${process.env.PUBLIC_URL}/masteradmin/client/list`, Component: <EnhancedAccountManagement />},
   
   { path: `${process.env.PUBLIC_URL}/masteradmin/sports/football`, Component: <Status />},
   { path: `${process.env.PUBLIC_URL}/masteradmin/sports/basketball`, Component: <Status />},
