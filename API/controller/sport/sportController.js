@@ -26,7 +26,8 @@ exports.Cricket = async (req, res, next) => {
         }
         // Define the API URL
         const cricketApiUrl = `${process.env.BACKEND_LIVE_URL}/v1/matches`; // Replace with actual API URL
-
+        console.log("statuds", status);
+        
         // Fetch cricket data from the external API with pagination parameters and headers
         const response = await axios.get(cricketApiUrl, {
             params: {

@@ -55,7 +55,7 @@ const ApiKeysetComponent = () => {
 
   const fetchUsageMetrics = async () => {
     // Simulated API call for usage metrics
-    const metrics = apiKeysData?.dayWiseApiHits.map((metric: any) => ({
+    const metrics = apiKeysData?.dayWiseApiHits?.map((metric: any) => ({
       ...metric,
       date: convertToIST(metric.date).split(",")[0] // Assuming metric.date holds the original date string
     }));;
