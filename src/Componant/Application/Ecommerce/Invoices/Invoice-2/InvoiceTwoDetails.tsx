@@ -28,8 +28,8 @@ const InvoiceTwoDetails = ({data}: any) => {
               <span style={{ opacity: "0.8", fontSize: 12, fontWeight: 500 }}>
                 {PaymentStatus} :
               </span>
-              <H4 style={{ margin: 0, fontWeight: 400, fontSize: 12, padding: "6px 18px", backgroundColor: "rgba(84, 186, 74, 0.1)", color: "#0DA759", borderRadius: 5 }} >
-                Paid
+              <H4 style={{ margin: 0, fontWeight: 400, fontSize: 12, padding: "6px 18px", backgroundColor: `${data?.status === "Paid"?'rgba(84, 186, 74, 0.1)':'#DC4C64'}`, color: `${data?.status === "Paid"?'#0DA759':'#ffffff'}`, borderRadius: 5 }} >
+                {data?.status}
               </H4>
             </td>
             <td style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap"}}>

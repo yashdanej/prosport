@@ -3,6 +3,12 @@ import { Container, Row, Col, Card, CardBody, Button, Table, Input, Modal, Modal
 
 import { Line } from 'react-chartjs-2';
 import { Copy, RefreshCw, DollarSign, Users, TrendingUp, Share2 } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../ReduxToolkit/Store';
+import { getRefferer } from '../../ReduxToolkit/Reducers/Change/AuthSlice';
+import { getCommission } from '../../ReduxToolkit/Reducers/Change/Subscribe';
+import { FaRupeeSign } from 'react-icons/fa';
+import { FRONTEND_URL } from '../../Utils';
 
 const ReferralProgramComponent = () => {
   const [referralStats, setReferralStats] = useState<any>({
@@ -14,6 +20,7 @@ const ReferralProgramComponent = () => {
   const [earningHistory, setEarningHistory] = useState<any>([]);
   const [referralModalOpen, setReferralModalOpen] = useState<any>(false);
   const [copiedAlert, setCopiedAlert] = useState<any>(false);
+  const [copieLink, setCopyLink] = useState<any>("");
 
   useEffect(() => {
     fetchReferralData();
@@ -23,6 +30,8 @@ const ReferralProgramComponent = () => {
 
   const fetchReferralData = async () => {
     // Simulated API call
+    dispatch(getRefferer());
+    dispatch(getCommission());
     const mockStats = {
       earning: Math.floor(Math.random() * 1000),
       references: Math.floor(Math.random() * 50),
@@ -47,14 +56,14 @@ const ReferralProgramComponent = () => {
     setEarningHistory(mockEarningHistory);
   };
 
-  const copyReferralCode = () => {
-    navigator.clipboard.writeText(referralStats.referralCode);
+  const copyReferralCode = (code: string) => {
+    navigator.clipboard.writeText(code);
     setCopiedAlert(true);
     setTimeout(() => setCopiedAlert(false), 2000);
   };
 
-  const generateReferralLink = () => {
-    return `https://prosportsapi.com/signup?ref=${referralStats.referralCode}`;
+  const generateReferralLink = (code: string) => {
+    return `${FRONTEND_URL}/authentication/register_simple/${code}`;
   };
 
   const earningChartData = {
@@ -70,6 +79,29 @@ const ReferralProgramComponent = () => {
     ]
   };
 
+
+  // change
+
+  const commissionData = useSelector((state: RootState) => state.subscribe.commission);
+  const reffererData = useSelector((state: RootState) => state.auth.refferer);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getRefferer());
+    dispatch(getCommission());
+  }, [dispatch]);
+
+  const userData = localStorage.getItem("login-user");
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+
+  const handleLinkCopied = (link: string) => {
+    navigator.clipboard.writeText(generateReferralLink(link));
+    setCopyLink("Link copied successfully");
+    setTimeout(() => {
+      setCopyLink("");
+    }, 2000);
+  }
+
   return (
     <div className='page-body'>
     <Container fluid className="p-4">
@@ -80,8 +112,8 @@ const ReferralProgramComponent = () => {
         <Col md={4}>
           <Card>
             <CardBody>
-              <h5><DollarSign size={20} className="me-2" />Earning</h5>
-              <h2>${referralStats.earning}</h2>
+              <h5><FaRupeeSign size={20} className="me-2" />Earning</h5>
+              <h2><FaRupeeSign size={20} className="me-2" />{commissionData.data?.totalCommission || 0}</h2>
               <Button color="primary" size="sm" onClick={() => setReferralModalOpen(true)}>View Details</Button>
             </CardBody>
           </Card>
@@ -90,7 +122,7 @@ const ReferralProgramComponent = () => {
           <Card>
             <CardBody>
               <h5><Users size={20} className="me-2" />References</h5>
-              <h2>{referralStats.references}</h2>
+              <h2>{reffererData.data?.length || 0}</h2>
               <Button color="info" size="sm" onClick={fetchReferralData}><RefreshCw size={16} /></Button>
             </CardBody>
           </Card>
@@ -99,8 +131,8 @@ const ReferralProgramComponent = () => {
           <Card>
             <CardBody>
               <h5><Share2 size={20} className="me-2" />Referral Code</h5>
-              <h2>{referralStats.referralCode}</h2>
-              <Button color="success" size="sm" onClick={copyReferralCode}>Copy Code</Button>
+              <h2>{parsedUserData?.user?.reffer_code}</h2>
+              <Button color="success" size="sm" onClick={() => copyReferralCode(parsedUserData?.user?.reffer_code)}>Copy Code</Button>
               {copiedAlert && <Alert color="success" className="mt-2">Copied!</Alert>}
             </CardBody>
           </Card>
@@ -144,10 +176,11 @@ const ReferralProgramComponent = () => {
         </ModalHeader>
         <ModalBody>
           <h4>Your Referral Link</h4>
-          <Input value={generateReferralLink()} readOnly />
-          <Button color="primary" className="mt-2" onClick={() => navigator.clipboard.writeText(generateReferralLink())}>
+          <Input value={generateReferralLink(parsedUserData?.user?.reffer_code)} readOnly />
+          <Button color="primary" className="mt-2" onClick={() => handleLinkCopied(parsedUserData?.user?.reffer_code)}>
             Copy Link
           </Button>
+          {copieLink !== "" && <Alert color="success" className="mt-2">{copieLink}</Alert>}
           <h4 className="mt-4">How It Works</h4>
           <ol>
             <li>Share your unique referral link with friends or colleagues</li>
