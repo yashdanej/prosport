@@ -209,7 +209,7 @@ const routes = [
 
   { path: `${process.env.PUBLIC_URL}/dashboard/logout`, Component: <LogOut />},
 
-  // { path: `${process.env.PUBLIC_URL}/dashboard/settings`, Component: <EditProfile />},
+  // { path: `${process.env.PUBFLIC_URL}/dashboard/settings`, Component: <EditProfile />},
   { path: `${process.env.PUBLIC_URL}/dashboard/settings/*`, Component: <SettingsComponent />},
 
   // { path: `${process.env.PUBLIC_URL}/dashboard/referral`, Component: <Reffer />},

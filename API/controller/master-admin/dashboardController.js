@@ -868,3 +868,71 @@ exports.UpgradePlan = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
+
+// features
+
+exports.createPlanFeature = async (req, res) => {
+    const { name, plan_id } = req.body;
+    try {
+        const createdAt = moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
+        const feature = await query("INSERT INTO plan_features (name, plan_id, created_at, updated_at) VALUES (?, ?, ?, ?)", [name, plan_id, createdAt, createdAt]);
+        const data = await query("select * from plan_features where id = ?", [feature.insertId]);
+        return res.status(201).json({ success: true, message: 'Plan feature created successfully', data: data });
+    } catch (error) {
+        console.error('Error creating plan feature:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+exports.getPlanFeatures = async (req, res) => {
+    try {
+        const planFeatures = await query("SELECT * FROM plan_features");
+        
+        return res.status(200).json({
+            success: true,
+            data: planFeatures
+        });
+    } catch (error) {
+        console.error('Error fetching plan features:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+exports.getPlanFeatureById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [planFeature] = await query("SELECT * FROM plan_features WHERE id = ?", [id]);
+        if (!planFeature) {
+            return res.status(404).json({ success: false, message: 'Plan feature not found' });
+        }
+        return res.status(200).json({ success: true, data: planFeature });
+    } catch (error) {
+        console.error('Error fetching plan feature:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+exports.updatePlanFeature = async (req, res) => {
+    const { id } = req.params;
+    const { name, plan_id } = req.body;
+    try {
+        const updatedAt = moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss');
+        await query("UPDATE plan_features SET name = ?, plan_id = ?, updated_at = ? WHERE id = ?", [name, plan_id, updatedAt, id]);
+        const data = await query("select * from plan_features where id = ?", [id]);
+        return res.status(200).json({ success: true, message: 'Plan feature updated successfully', data });
+    } catch (error) {
+        console.error('Error updating plan feature:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+exports.deletePlanFeature = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await query("DELETE FROM plan_features WHERE id = ?", [id]);
+        return res.status(200).json({ success: true, message: 'Plan feature deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting plan feature:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};

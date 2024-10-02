@@ -89,14 +89,6 @@ const EnhancedAnalytics = () => {
     <div className='page-body'>
       <Container fluid className="p-4 bg-light">
         {/* <h1 className="mb-4">Analytics Dashboard</h1> */}
-        <Row>
-          {analyticsCardData.map((item: any, index: any) => (
-            <Col key={index} md={3} className="mb-3">
-              <AnalyticsCard title={item.title} value={item.value} icon={item.icon} />
-            </Col>
-          ))}
-        </Row>
-
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -284,6 +276,13 @@ const EnhancedAnalytics = () => {
               </CardBody>
             </Card>
           </Col>
+        </Row>
+        <Row>
+          {analyticsCardData.map((item: any, index: any) => (
+            <Col key={index} md={3} className="mb-3">
+              <AnalyticsCard title={item.title} value={item.value} icon={item.icon} />
+            </Col>
+          ))}
         </Row>
       </Container>
     </div>

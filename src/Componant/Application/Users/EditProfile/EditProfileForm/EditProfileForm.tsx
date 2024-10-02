@@ -173,26 +173,6 @@ const EditProfileForm = () => {
               :
           <CardBody>
             <Row>
-              {/* <div className="profile-title">
-                <div className='d-flex'>
-                  <Image className="img-70 rounded-circle" style={{objectFit: "cover", height: "70px"}} alt="edit-user" src={user?.image} />
-                  <div className='flex-grow-1'>
-                    <H4 className="mb-1">{parsedUserData?.user?.name}</H4>
-                    <P>Operator</P>
-                  </div>
-                </div>
-              </div>
-              <Col lg="12">
-                <FormGroup>
-                  <FilePond
-                    files={file}
-                    allowMultiple={false}
-                    maxFiles={1}
-                    labelIdle={'Drag & Drop your profile pic or <span class="filepond--label-action text-danger text-decoration-none">Browse</span>'}
-                    onupdatefiles={handleFileChange}
-                  />
-                </FormGroup>
-              </Col> */}
               <Col sm="6" md="6">
                 <FormGroup>
                   <Label>First Name</Label>
@@ -238,13 +218,6 @@ const EditProfileForm = () => {
               <Col md="5">
                   <FormGroup>
                       <Label>{"Country"}</Label>
-                      {/* <Input type='select' className="btn-square form-select">
-                      <option>{'Select'}</option>
-                      <option>{'Germany'}</option>
-                      <option>{'Canada'}</option>
-                      <option>{'Usa'}</option>
-                      <option>{'Aus'}</option>
-                      </Input> */}
                       <Input onChange={(e) => changeText(e, setUser, user)} name='country' value={user?.country} type="text" placeholder="Country" />
                   </FormGroup>
               </Col>
@@ -268,18 +241,6 @@ const EditProfileForm = () => {
                 </FormGroup>
               </Col>
               
-              {/* <Col sm="6" md="6">
-                <FormGroup>
-                  <Label>DOB</Label>
-                  <Input 
-                    onChange={(e) => changeText(e, setUser, user)} 
-                    type="date"  
-                    name='dob' 
-                    placeholder="DOB" 
-                    value={user?.dob ? moment(user.dob).format('YYYY-MM-DD') : ''} 
-                  />
-                </FormGroup>
-              </Col> */}
               <Col sm="6" md="6">
                 <FormGroup>
                   <Label>Location</Label>

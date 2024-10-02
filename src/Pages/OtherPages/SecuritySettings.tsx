@@ -1,35 +1,51 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'react-feather';
+import { useDispatch } from 'react-redux';
 import { Card, CardBody, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { AppDispatch } from '../../ReduxToolkit/Store';
+import { changePassoword } from '../../ReduxToolkit/Reducers/Change/ProfileSlice';
+import { changeText } from '../../Utils';
+import TopLeftToast from '../../Componant/BonusUi/Toast/LiveToast/TopLeftToast/TopLeftToast';
 
 const SecuritySettings = () => {
-  const [activeTab, setActiveTab] = useState<any>('1');
-  const [profile, setProfile] = useState<any>({
-    firstName: 'mithun',
-    lastName: '',
-    email: 'developer@demo.com',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
-    companyName: '',
-    companyDomain: '',
-    location: '',
-    operator: 'Gaming'
-  });
-  const [password, setPassword] = useState<any>({ current: '', new: '', confirm: '' });
   const [showPassword, setShowPassword] = useState<any>({ current: false, new: false, confirm: false });
 
-  const handlePasswordChange = (e: any) => {
-    setPassword({ ...password, [e.target.name]: e.target.value });
-  };
+  const dispatch = useDispatch<AppDispatch>();
+  const [showToast, setShowToast] = useState(false);
+  const [txt, setTxt] = useState("");
+  const [changePassword, setChangePassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
 
-  const handleChangePassword = () => {
-    // Implement password change logic
-    console.log('Password change requested');
-    alert('Password changed successfully!');
-  };
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if(!changePassword.currentPassword || !changePassword.newPassword){
+      setTxt(`Password field is empty`);
+      setShowToast(true);
+    }else if(changePassword.newPassword !== changePassword.confirmPassword){
+      setTxt(`Password mismatch`);
+      setShowToast(true);
+    } else{
+      try {
+        const res = await dispatch(changePassoword(changePassword)).unwrap();
+        console.log("res on dis", res);
+        setTxt(`${res.message}`);
+        setShowToast(true);
+        setChangePassword({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: ""
+        })
+      } catch (error) {
+        console.log("res on dis err", error);
+        setTxt(`${error}`);
+        setShowToast(true);
+      }
+    }
+  }
+
   return (
     <Card>
       <CardBody>
@@ -39,10 +55,8 @@ const SecuritySettings = () => {
                   <Label for="currentPassword">Current Password</Label>
                   <Input 
                     type={showPassword.current ? "text" : "password"} 
-                    name="current" 
                     id="currentPassword" 
-                    value={password.current} 
-                    onChange={handlePasswordChange} 
+                    onChange={(e) => changeText(e, setChangePassword, changePassword)} name='currentPassword' value={changePassword.currentPassword}
                   />
                   <Button color="link" onClick={() => setShowPassword({...showPassword, current: !showPassword.current})}>
                     {showPassword.current ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -52,10 +66,8 @@ const SecuritySettings = () => {
                   <Label for="newPassword">New Password</Label>
                   <Input 
                     type={showPassword.new ? "text" : "password"} 
-                    name="new" 
                     id="newPassword" 
-                    value={password.new} 
-                    onChange={handlePasswordChange} 
+                    onChange={(e) => changeText(e, setChangePassword, changePassword)} name='newPassword' value={changePassword.newPassword}
                   />
                   <Button color="link" onClick={() => setShowPassword({...showPassword, new: !showPassword.new})}>
                     {showPassword.new ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -65,10 +77,8 @@ const SecuritySettings = () => {
                   <Label for="confirmPassword">Confirm New Password</Label>
                   <Input 
                     type={showPassword.confirm ? "text" : "password"} 
-                    name="confirm" 
                     id="confirmPassword" 
-                    value={password.confirm} 
-                    onChange={handlePasswordChange} 
+                    onChange={(e) => changeText(e, setChangePassword, changePassword)} name='confirmPassword' value={changePassword.confirmPassword}
                   />
                   <Button color="link" onClick={() => setShowPassword({...showPassword, confirm: !showPassword.confirm})}>
                     {showPassword.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -77,6 +87,7 @@ const SecuritySettings = () => {
                 <Button color="primary" onClick={handleChangePassword}>Change Password</Button>
               </Form>
       </CardBody>
+      {showToast && <TopLeftToast txt={txt} open={showToast} setOpenToast={setShowToast} />}
     </Card>
   );
 };

@@ -113,7 +113,7 @@ const SubscriptionPlansComponent_ = () => {
   return (
     <div className='page-body'>
     <Container fluid className="p-4">
-      <h1 className="mb-4">Subscription Plans</h1>
+      {/* <h1 className="mb-4">Subscription Plans</h1> */}
 
       <Nav tabs className="mb-4">
         {uniqueGames.map((game: any) => (
